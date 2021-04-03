@@ -1,0 +1,16 @@
+// main.sccss main styles 
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+body
+{
+    font-family: 'Montserrat', sans-serif;
+    // disable underline
+    .v-text-field  .v-input__control  .v-input__slot:before{
+        border-style: none;
+    }
+    .v-text-field > .v-input__control > .v-input__slot::after{
+        border-style: none;
+    }
+}
+
