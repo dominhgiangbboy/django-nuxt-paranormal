@@ -20,7 +20,7 @@ class GetProjectsList(APIView):
     def post(self, request):
         # GET data example
         try:
-            listPlant = projects.objects.raw('SELECT *  FROM fukakachi_django.processApp_projects')
+            listPlant = projects.objects.raw('SELECT *  FROM abnormal_django.processApp_projects')
             serializer  = ProjectSerializer(listPlant, many= True) 
         except:
             response = badRequestResponse
@@ -37,7 +37,7 @@ class GetProjectsListData(APIView):
             dataReq = request.data
             if "project_id" in dataReq:
                 project_id = dataReq["project_id"]
-            listPlant = projects.objects.raw(f"""SELECT *  FROM fukakachi_django.processApp_projects where id = {project_id}""")
+            listPlant = projects.objects.raw(f"""SELECT *  FROM abnormal_django.processApp_projects where id = {project_id}""")
             serializer  = ProjectDataSerializer(listPlant, many= True) 
         except:
             response = badRequestResponse
@@ -74,7 +74,7 @@ class AddProjectsList(APIView):
                     response = badRequestResponse
            
             listProject = projects.objects.raw(
-                    f"SELECT * FROM fukakachi_django.processApp_projects  where id = {current_id}")
+                    f"SELECT * FROM abnormal_django.processApp_projects  where id = {current_id}")
             serializer  = ProjectSerializer(listProject, many= True)
             response = serializer.data
             return Response(response)

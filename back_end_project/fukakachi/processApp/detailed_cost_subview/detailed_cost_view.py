@@ -23,7 +23,7 @@ class ListDetailedCost(APIView):
         # GET data example
         try:
             idReq = request.data['product_id']
-            dataRes = detailed_cost.objects.raw(f'SELECT * FROM fukakachi_django.processApp_detailed_cost where product_id = {idReq}; ')
+            dataRes = detailed_cost.objects.raw(f'SELECT * FROM abnormal_django.processApp_detailed_cost where product_id = {idReq}; ')
             serializer  = DetailedCostSerializer(dataRes, many= True) 
         except:
             response = serverErrorResponse
@@ -143,7 +143,7 @@ class UpdateListDetailedCost(APIView):
                     except:
                         return Response(badRequestResponse, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
-            dataRes = detailed_cost.objects.raw(f'SELECT * FROM fukakachi_django.processApp_detailed_cost where product_id = {product_id}; ')
+            dataRes = detailed_cost.objects.raw(f'SELECT * FROM abnormal_django.processApp_detailed_cost where product_id = {product_id}; ')
             serializer  = DetailedCostSerializer(dataRes, many= True) 
             response = serializer.data
             return Response(response)

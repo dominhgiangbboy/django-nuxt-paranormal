@@ -49,10 +49,10 @@ class GetProcessList(APIView):
                         ,c.name AS product_name
                         ,b.name AS plant_name
                         ,d.name AS name
-                        FROM fukakachi_django.processApp_process a
-                        LEFT JOIN fukakachi_django.indexApp_production_plant_list b ON a.plant_id = b.id
-                        LEFT JOIN fukakachi_django.processApp_products_list c ON a.product_id = c.id
-                        LEFT JOIN fukakachi_django.indexApp_process_list d ON a.process_type = d.id
+                        FROM abnormal_django.processApp_process a
+                        LEFT JOIN abnormal_django.indexApp_production_plant_list b ON a.plant_id = b.id
+                        LEFT JOIN abnormal_django.processApp_products_list c ON a.product_id = c.id
+                        LEFT JOIN abnormal_django.indexApp_process_list d ON a.process_type = d.id
                         {sql_requirement}
                         """)
             serializer  = ProcessSerializer(listPlant, many= True)
@@ -86,12 +86,12 @@ class AddProcessListPlant(APIView):
                                ,a.id
                             FROM (
                                 SELECT *
-                                FROM fukakachi_django.indexApp_process_list
+                                FROM abnormal_django.indexApp_process_list
                                 WHERE plant_id = {plant_id}
                             ) as a
                             LEFT JOIN (
                                 SELECT *
-                                FROM fukakachi_django.processApp_process
+                                FROM abnormal_django.processApp_process
                                 {sql_requirement}
                                 ) AS b ON a.id = b.process_type
                         where b.product_id is null {sql_requirement_2} {sql_requirement_3}
@@ -136,10 +136,10 @@ class AddProcessList(APIView):
                         ,c.name AS product_name
                         ,b.name AS plant_name
                         ,d.name AS name
-                        FROM fukakachi_django.processApp_process a
-                        LEFT JOIN fukakachi_django.indexApp_production_plant_list b ON a.plant_id = b.id
-                        LEFT JOIN fukakachi_django.processApp_products_list c ON a.product_id = c.id
-                        LEFT JOIN fukakachi_django.indexApp_process_list d ON a.process_type = d.id
+                        FROM abnormal_django.processApp_process a
+                        LEFT JOIN abnormal_django.indexApp_production_plant_list b ON a.plant_id = b.id
+                        LEFT JOIN abnormal_django.processApp_products_list c ON a.product_id = c.id
+                        LEFT JOIN abnormal_django.indexApp_process_list d ON a.process_type = d.id
                         where a.id = {current_id}
                         """)
             serializer  = ProcessSerializer(listProject, many= True)
@@ -195,7 +195,7 @@ class UpdateProcessList(APIView):
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # get projects list
-class GetProcessDataFukakachi(APIView):
+class GetProcessDataabnormal(APIView):
     permission_classes = (IsAuthenticated,  IsAdminUser)
     #   get cost list
     def post(self, request):
@@ -221,9 +221,9 @@ class GetProcessDataFukakachi(APIView):
                             a.日当りの目標生産数量 ,
                             a.比率 ,
                             a.部材点数 
-                        FROM  fukakachi_django . processApp_process  a 
-                        left join fukakachi_django.indexApp_process_list b on a.process_type = b.id
-                        left join fukakachi_django.processApp_products_list c on a.product_id = c.id
+                        FROM  abnormal_django . processApp_process  a 
+                        left join abnormal_django.indexApp_process_list b on a.process_type = b.id
+                        left join abnormal_django.processApp_products_list c on a.product_id = c.id
                         {sql_requirement}
                         """)
             serializer  = ProcessDataSerializer(listPlant, many= True)
@@ -233,7 +233,7 @@ class GetProcessDataFukakachi(APIView):
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # get projects list
-class UpdateProcessDataFukakachi(APIView):
+class UpdateProcessDataabnormal(APIView):
     permission_classes = (IsAuthenticated,  IsAdminUser)
     #   get cost list
     def post(self, request):

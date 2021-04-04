@@ -4,7 +4,7 @@ from .product_subview.product_views import GetProductList,AddProductsList,Delete
 from .project_subview.project_views import GetProjectsList,AddProjectsList, DeleteProjectsList,UpdateProjectsList,GetProjectsListData,CalculateValueMoney,AddAriseCostList,GetAriseCostList,DeleteAriseCostList,UpdateAriseCostList
 from .product_detail_subview.product_detail_views import GetProductDetail, UpdateProductDetail
 from .total_cost_subview.total_cost_subview import TotalCost
-from .process_subview.process_views import AddProcessList,GetProcessList, AddProcessListPlant, DeleteProcessList, UpdateProcessList ,GetProcessDataFukakachi ,UpdateProcessDataFukakachi
+from .process_subview.process_views import AddProcessList,GetProcessList, AddProcessListPlant, DeleteProcessList, UpdateProcessList ,GetProcessDataabnormal ,UpdateProcessDataabnormal
 app_name = 'mainApp'
 
 urlpatterns = [
@@ -35,8 +35,8 @@ urlpatterns = [
     path('get-process-plant/', AddProcessListPlant.as_view(), name="get-process-plant"),
     path('delete-process-detail/', DeleteProcessList.as_view(), name="delete-process-detail"),
     path('update-process-detail/', UpdateProcessList.as_view(), name="update-process-detail"),
-    path('get-process-data-detail/', GetProcessDataFukakachi.as_view(), name="get-process-data"),
-    path('update-process-data-detail/', UpdateProcessDataFukakachi.as_view(), name="update-process-data"),
+    path('get-process-data-detail/', GetProcessDataabnormal.as_view(), name="get-process-data"),
+    path('update-process-data-detail/', UpdateProcessDataabnormal.as_view(), name="update-process-data"),
     # total cost
     path('get-total-cost/', TotalCost.as_view(), name="get-total-cost"),
     # detailed cost

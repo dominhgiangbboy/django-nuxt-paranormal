@@ -21,8 +21,8 @@ class GetProductList(APIView):
                             ,a.name
                             ,a.id
                             ,a.project_id
-                        FROM fukakachi_django.processApp_products_list AS a
-                        LEFT JOIN fukakachi_django.processApp_projects AS b ON b.id = a.project_id"""
+                        FROM abnormal_django.processApp_products_list AS a
+                        LEFT JOIN abnormal_django.processApp_projects AS b ON b.id = a.project_id"""
         if 'project_id' in dataReq:
             if dataReq['project_id'] != 0 and dataReq['project_id'] != None:
                 project_id = dataReq['project_id']
@@ -61,8 +61,8 @@ class AddProductsList(APIView):
                             ,a.name
                             ,a.id
                             ,a.project_id
-                        FROM fukakachi_django.processApp_products_list AS a
-                        LEFT JOIN fukakachi_django.processApp_projects AS b ON b.id = a.project_id where a.id = {current_id}"""
+                        FROM abnormal_django.processApp_products_list AS a
+                        LEFT JOIN abnormal_django.processApp_projects AS b ON b.id = a.project_id where a.id = {current_id}"""
             # Create a new object for model
             if dataReq != []:
                 try:

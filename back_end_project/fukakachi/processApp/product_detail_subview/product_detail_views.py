@@ -19,7 +19,7 @@ class GetProductDetail(APIView):
         # GET data example
         try:
             idReq = request.data['id']
-            dataRes = products_list.objects.raw(f'select * from fukakachi_django.processApp_products_list as a where a.id = {idReq}')
+            dataRes = products_list.objects.raw(f'select * from abnormal_django.processApp_products_list as a where a.id = {idReq}')
             serializer  = ProductsDetailedSerializer(dataRes, many= True) 
         except:
             response = serverErrorResponse
@@ -43,7 +43,7 @@ class UpdateProductDetail(APIView):
                     return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             id  = dataReq['id']
             listPlant = products_list.objects.raw(
-                    f'select a.id,a.name from fukakachi_django.processApp_products_list as a where a.id = {id}')
+                    f'select a.id,a.name from abnormal_django.processApp_products_list as a where a.id = {id}')
             serializer  = ProductsDetailedSerializer(listPlant, many= True)
             response = serializer.data
             return Response(response)

@@ -1,7 +1,6 @@
 from django.shortcuts import render
 
 # Create your views here.
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
@@ -19,11 +18,11 @@ class GetProcessList(APIView):
             _plantID = 0
             if "plant_id" in dataReq:
                 _plantID = dataReq["plant_id"]
-                listData = process_list.objects.raw(f""" SELECT *,b.name as 工場  FROM fukakachi_django.indexApp_process_list a
-                                                        left join fukakachi_django.indexApp_production_plant_list b on  a.plant_id = b.id where a.plant_id = {_plantID}""")
+                listData = process_list.objects.raw(f""" SELECT *,b.name as 工場  FROM abnormal_django.indexApp_process_list a
+                                                        left join abnormal_django.indexApp_production_plant_list b on  a.plant_id = b.id where a.plant_id = {_plantID}""")
             else:
-                listData = process_list.objects.raw(""" SELECT *,b.name as 工場  FROM fukakachi_django.indexApp_process_list a
-                                                        left join fukakachi_django.indexApp_production_plant_list b on  a.plant_id = b.id""")
+                listData = process_list.objects.raw(""" SELECT *,b.name as 工場  FROM abnormal_django.indexApp_process_list a
+                                                        left join abnormal_django.indexApp_production_plant_list b on  a.plant_id = b.id""")
             serializer  = ProcessListSerializer(listData, many= True)
             return Response(serializer.data)
         except Exception:
