@@ -60,138 +60,61 @@
       </v-card>
     </v-dialog>
     <v-card outlined>
-      <v-tabs
-        v-model="tab"
-        background-color="#1d3557"
-        class="tab-bar"
-        dark
-      >
-        <v-tab>
-          工場
-        </v-tab>
-        <v-tab>
-          大工程
-        </v-tab>
-        <v-tab>
-          小工程
-        </v-tab>
-      </v-tabs>
-      <v-tabs-items v-model="tab">
-        <!-- Tab 1 -->
-        <v-tab-item  
-        class="tab-item"
-        >
-            <v-row>
-                <!-- Plant master table -->
-                <v-col :cols="mini?12:6">
-                    <custom-table
-                        :defaultPageSize="10"
-                        :headerItems="tableHeadersPlant"
-                        :isLoading="isLoadingPlant"
-                        :dataTableItems="tableItemsPlant"
-                        :singleSelect="true"
-                        :showSelect="true"
-                        v-on:selected="selectItemsPlant"
-                        dense
-                        :isShowAll="false"
-                        v-on:edit="editItemPlant"
-                        v-on:delete="deleteItemPlant"
-                        :isBanner="true"
-                        v-on:add="addItemPlant"
-                        toobarTitle="Master plant manage"
-                        :disableAddButton="false"
-                        height="500"
-                    >
-                    </custom-table>
-                </v-col>
-                <v-col :cols="mini?12:6">
-                    <custom-table
-                        :defaultPageSize="10"
-                        :headerItems="tableHeadersPlantProcess"
-                        :isLoading="isLoadingPlantProcess"
-                        :dataTableItems="tableItemsPlantProcess"
-                        toobarTitle="Plants process"
-                        dense
-                        :isShowAll="false"
-                        :isBanner="true"
-                        :disableAddButton="true"
-                        height="500"
-                    >
-                    </custom-table>
-                </v-col>
-            </v-row>
-        </v-tab-item>
-        <!-- Tab 2 -->
-        <v-tab-item 
-        class="tab-item"
-        >
-            <v-row>
-                <!-- Process master table -->
-                <v-col :cols="mini?12:6">
-                    <custom-table
-                        :headerItems="tableHeadersProcess"
-                        :isLoading="isLoadingProcess"
-                        :dataTableItems="tableItemsProcess"
-                        :singleSelect="true"
-                        :showSelect="true"
-                        v-on:selected="selectItemsProcess"
-                        dense
-                        :isShowAll="false"
-                        v-on:edit="editItemProcess"
-                        v-on:delete="deleteItemProcess"
-                        :isBanner="true"
-                        v-on:add="addItemProcess"
-                        toobarTitle="Master process manage"
-                        :disableAddButton="false"
-                        height="500"
-                    >
-                    </custom-table>
-                </v-col>
-                <v-col :cols="mini?12:6">
-                    <custom-table
-                        :headerItems="tableHeadersSubProcess"
-                        :isLoading="isLoadingPlantProcess"
-                        :dataTableItems="tableItemsSubProcess"
-                        toobarTitle="SubProcess"
-                        dense
-                        v-on:edit="editSubProcess"
-                        v-on:delete="deleteSubProcess"
-                        v-on:add="addSubProcess"
-                        :isBanner="true"
-                        :isShowAll="false"
-                        :disableAddButton="currentProcessID == 0? true: false" 
-                        height="500"
-                    >
-                    </custom-table>
-                </v-col>
-            </v-row>
-        </v-tab-item>
-        <!-- Tab 3 -->
-        <v-tab-item 
-        class="tab-item"
-        >
-           <v-row>
-                <!-- Process master table -->
-                <v-col :cols="mini?12:6">
-                    <custom-table
-                        :headerItems="tableHeadersSubProcess"
-                        :isLoading="isLoadingPlantProcess"
-                        :dataTableItems="tableAllItemsSubProcess"
-                        toobarTitle="SubProcess"
-                        dense
-                        v-on:edit="editSubProcessAll"
-                        v-on:delete="deleteSubProcessAll"
-                        v-on:add="addSubProcessAll"
-                        :isBanner="true"
-                        :isShowAll="false"
-                        :disableAddButton="false"
-                        height="500"
-                    >
-                    </custom-table>
-                </v-col>
-           </v-row>
-        </v-tab-item>
-      </v-tabs-items>
+      <v-row>
+        <v-col  :cols="mini?'6':'3'">
+        <custom-combo-box
+         
+          >
+          </custom-combo-box>
+        </v-col>
+        <v-col  :cols="mini?'6':'3'">
+          <custom-combo-box
+          
+          >
+          </custom-combo-box>
+        </v-col>
+      </v-row>
+    </v-card>
+    <v-card outlined>
+       <v-row>
+        <!-- Plant master table -->
+        <v-col :cols="mini?12:6">
+            <custom-table
+                :defaultPageSize="10"
+                :headerItems="tableHeadersPlant"
+                :isLoading="isLoadingPlant"
+                :dataTableItems="tableItemsPlant"
+                :singleSelect="true"
+                :showSelect="true"
+                v-on:selected="selectItemsPlant"
+                dense
+                :isShowAll="false"
+                v-on:edit="editItemPlant"
+                v-on:delete="deleteItemPlant"
+                :isBanner="true"
+                v-on:add="addItemPlant"
+                toobarTitle="Master plant manage"
+                :disableAddButton="false"
+                height="500"
+            >
+            </custom-table>
+        </v-col>
+        <v-col :cols="mini?12:6">
+            <custom-table
+                :defaultPageSize="10"
+                :headerItems="tableHeadersPlantProcess"
+                :isLoading="isLoadingPlantProcess"
+                :dataTableItems="tableItemsPlantProcess"
+                toobarTitle="Plants process"
+                dense
+                :isShowAll="false"
+                :isBanner="true"
+                :disableAddButton="true"
+                height="500"
+            >
+            </custom-table>
+        </v-col>
+    </v-row>
     </v-card>
   </v-container>
 </template>
