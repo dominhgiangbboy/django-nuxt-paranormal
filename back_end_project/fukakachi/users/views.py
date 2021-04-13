@@ -4,53 +4,44 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import RegisterUserSerializer,MyTokenObtainPairSerializer
+from .serializers import MyTokenObtainPairSerializer
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework_simplejwt.views import TokenObtainPairView
-from indexApp.models import roles_list
-from django.core import serializers
+from .models import CustomAccountManager
 from django.forms.models import model_to_dict
-import json
-from rest_framework_simplejwt.tokens import RefreshToken
 
-# def get_tokens_for_user(user):
-#     refresh = RefreshToken.for_user(user)
 
-#     return {
-#         'refresh': str(refresh),
-#         'access': str(refresh.access_token),
-#         'userID': str(user.name),
-#         'is_staff': str(user.is_staff)
-#     }
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
-class Login(APIView):
+# create user
+class CreateUser(APIView):
     permission_classes = ()
-    def post(user_name,password):
-        refresh = RefreshToken.for_user(user_name)
-
-        return {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            'userID': str('user_name'),
-        }
-class RoleList(APIView):
-    permission_classes = (IsAuthenticated)
    
-    def get(self, request):
+    def post(self, request):
+        try:
+            dataReq = request.data  
+            temp = CustomAccountManager().create_user(dataReq["user_name"], dataReq["password"],is_dev = dataReq["is_dev"] == "true")
+            if temp is None:
+                response = "User existed"
+            else:
+                response = "User Created"
+            return Response(response)
+        except:
+            response = "Server error please contact admin"
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+# create super user
+class CreateSuperUser(APIView):
+    permission_classes = ()
+   
+    def post(self, request):
         # GET data example
         dataReq = request.data
-        listPk = roles_list.objects.get(name = dataReq['name'])
-        data = serializers.serialize('json', [listPk,])
-        struct = json.loads(data)
-        return Response(struct)
-    def post(self, request):
-        # Update data example
-        dataReq = request.data
-        print(dataReq)
-        listPk = roles_list.objects.get(name = dataReq['name'])
-        listPk.access = dataReq['access']
-        listPk.save()
-        data = serializers.serialize('json', [listPk,])
-        struct = json.loads(data)
-        return Response(struct)
+        try:
+            CustomAccountManager().create_superuser(dataReq["user_name"], dataReq["password"],is_dev = dataReq["is_dev"] == "true")
+            return Response("UserCreated")
+        except:
+            response = "Server error please contact admin"
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        
+    

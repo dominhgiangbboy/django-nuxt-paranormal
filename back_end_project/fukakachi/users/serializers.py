@@ -27,6 +27,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Add extra responses here
         data['user'] = self.user.user_name
-        data['is_staff'] = self.user.is_staff
+        data['is_dev'] = self.user.is_dev
         return data
 

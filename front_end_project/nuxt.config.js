@@ -4,7 +4,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: "%s System",
-    title: "Fukakachi",
+    title: "Abnormal detection",
     htmlAttrs: {
       lang: "en"
     },

@@ -12,7 +12,7 @@ from django.db.models import Avg, Count, Q, Sum
 badRequestResponse = "Bad request"
 serverErrorResponse = "Server error please contact admin"
 class GetProductList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     #   get cost list
     def post(self, request):
         # GET data example
@@ -21,8 +21,8 @@ class GetProductList(APIView):
                             ,a.name
                             ,a.id
                             ,a.project_id
-                        FROM abnormal_django.processApp_products_list AS a
-                        LEFT JOIN abnormal_django.processApp_projects AS b ON b.id = a.project_id"""
+                        FROM django_abnormal.processApp_products_list AS a
+                        LEFT JOIN django_abnormal.processApp_projects AS b ON b.id = a.project_id"""
         if 'project_id' in dataReq:
             if dataReq['project_id'] != 0 and dataReq['project_id'] != None:
                 project_id = dataReq['project_id']
@@ -47,7 +47,7 @@ class GetProductList(APIView):
         
 # get products list
 class AddProductsList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         dataReq = request.data
         try:
@@ -61,8 +61,8 @@ class AddProductsList(APIView):
                             ,a.name
                             ,a.id
                             ,a.project_id
-                        FROM abnormal_django.processApp_products_list AS a
-                        LEFT JOIN abnormal_django.processApp_projects AS b ON b.id = a.project_id where a.id = {current_id}"""
+                        FROM django_abnormal.processApp_products_list AS a
+                        LEFT JOIN django_abnormal.processApp_projects AS b ON b.id = a.project_id where a.id = {current_id}"""
             # Create a new object for model
             if dataReq != []:
                 try:
@@ -89,7 +89,7 @@ class AddProductsList(APIView):
 
 # get products list
 class DeleteProductsList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         dataReq = request.data
         try:

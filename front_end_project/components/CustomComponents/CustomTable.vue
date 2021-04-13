@@ -71,7 +71,12 @@
        <v-row align-content="center" class="mt-1 mb-1">
           <v-col>
             <v-btn block class="table-action-btn" v-on:click="emitEvent(item,1)" dark>
-              集計結果２
+              Download
+            </v-btn>
+          </v-col> 
+          <v-col>
+            <v-btn block class="table-action-btn" v-on:click="emitEvent(item,2)" dark>
+              Feature
             </v-btn>
           </v-col> 
        </v-row>

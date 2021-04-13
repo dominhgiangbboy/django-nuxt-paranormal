@@ -89,15 +89,15 @@ export default {
       if(this.isAdmin){
           this.items= [
           ['mdi-home', 'Home','/'],
-          ['mdi-cog', 'Master','/Master'],
-          ['mdi-trending-up', 'Personal page','/Graphs'],
+          ['mdi-folder', 'Data Set','/DataSet'],
+          ['mdi-account-circle', 'Personal page','/Personal'],
           ['mdi-cog', 'Account Setting','/AccountSetting'],
         ];
       }
       else{
         this.items= [
           ['mdi-home', 'Home','/'],
-          ['mdi-clipboard-edit', 'Master','/Master'],
+          ['mdi-clipboard-edit', 'Master','/DataSet'],
         ];
       }
   },

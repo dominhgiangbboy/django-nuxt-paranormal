@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name='newuser',
-            name='is_staff',
+            name='is_dev',
             field=models.BooleanField(default=True),
         ),
         migrations.AlterField(

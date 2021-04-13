@@ -44,68 +44,45 @@
           </custom-button>
         </v-card-actions>
       </v-card>
+      
     </v-dialog>
-
-    <!-- edit dialog -->
-    <v-dialog
-      v-model="editDialog"
-      max-width="900px"
-    >
-      <v-card class="pa-2">
-        <v-card-title class="headline mb-5">
-          <span>Edit Project</span>
-        </v-card-title>
-        <v-card-text>
-            <v-row v-for="(headerItem,index) in tableHeaders" :key="index"  >
-              <v-col cols="2" v-if="headerItem.edditable"  class="mt-1"> 
-                  <div>
-                      {{headerItem.text}}
-                  </div>
-              </v-col> 
-              <v-col  v-if="headerItem.edditable"> 
-                  <v-text-field
-                      v-model="tempItemsEdit[headerItem.value]" 
-                      type="String"
-                      outlined
-                      dense
-                  >
-                  </v-text-field>
-              </v-col> 
-            </v-row>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="darken-1"
-            text
-            @click="editDialog = false"
-          >
-            Cancel
-          </v-btn>
+    <v-row>
+        <v-col cols="4">
           <custom-button
-            v-on:click="editItemAction"
-            label="Update"
+            v-on:click="addItem"
+            label="My analyzed data"
+            :isBlock="true"
           >
           </custom-button>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    
-    <custom-table
-        :is-show-all="true"
-        :defaultPageSize="10"
-        :headerItems="tableHeaders"
-        :isLoading="isLoading"
-        :dataTableItems="tableItems"
-        v-on:openlink ="openLink"
-        v-on:add="addDialog = true"
-        v-on:edit="editItem"
-        :disableAddButton="false"
-        toobarTitle="Project controls"
-        :isBanner="true"
-      >
-    </custom-table>
+        </v-col >
+          
+        <v-col cols="4">
+          <custom-button
+            v-on:click="addItem"
+            label="Upload new analyzed data"
+            :isBlock="true"
+          >
+          </custom-button>
+        </v-col>
+          
+        <v-col cols="4">
+          <custom-button
+            v-on:click="addItem"
+            label="Get data set"
+            :isBlock="true"
+          >
+          </custom-button>
+        </v-col>
+
+        <v-col cols="4">
+          <custom-button
+            v-on:click="addItem"
+            label="Pre-processed data"
+            :isBlock="true"
+          >
+          </custom-button>
+        </v-col>
+      </v-row>
   </v-container>
 </template>
 <style lang="scss" scoped>

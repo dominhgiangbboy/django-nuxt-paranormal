@@ -59,63 +59,58 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-card outlined>
+   
       <v-row>
         <v-col  :cols="mini?'6':'3'">
-        <custom-combo-box
-         
+          <custom-combo-box
+            label="Choose category"
           >
           </custom-combo-box>
         </v-col>
         <v-col  :cols="mini?'6':'3'">
           <custom-combo-box
-          
+            label="Choose data set"
           >
           </custom-combo-box>
         </v-col>
+        <v-col  :cols="mini?'6':'3'">
+          <custom-combo-box
+            label="Choose source"
+          >
+          </custom-combo-box>
+        </v-col>
+        <v-col  :cols="mini?'6':'3'">
+          <custom-button
+            v-on:click="addItem"
+            label="Search"
+          >
+          </custom-button>
+        </v-col>
       </v-row>
-    </v-card>
-    <v-card outlined>
-       <v-row>
-        <!-- Plant master table -->
-        <v-col :cols="mini?12:6">
-            <custom-table
+  
+    
+      <v-row>
+        <v-col>
+          <custom-table
                 :defaultPageSize="10"
-                :headerItems="tableHeadersPlant"
-                :isLoading="isLoadingPlant"
-                :dataTableItems="tableItemsPlant"
+                :headerItems="tableHeaders"
+                :isLoading="isLoading"
+                :dataTableItems="tableItems"
                 :singleSelect="true"
-                :showSelect="true"
-                v-on:selected="selectItemsPlant"
                 dense
                 :isShowAll="false"
                 v-on:edit="editItemPlant"
                 v-on:delete="deleteItemPlant"
                 :isBanner="true"
                 v-on:add="addItemPlant"
-                toobarTitle="Master plant manage"
+                toobarTitle="Data set list"
                 :disableAddButton="false"
                 height="500"
             >
-            </custom-table>
-        </v-col>
-        <v-col :cols="mini?12:6">
-            <custom-table
-                :defaultPageSize="10"
-                :headerItems="tableHeadersPlantProcess"
-                :isLoading="isLoadingPlantProcess"
-                :dataTableItems="tableItemsPlantProcess"
-                toobarTitle="Plants process"
-                dense
-                :isShowAll="false"
-                :isBanner="true"
-                :disableAddButton="true"
-                height="500"
-            >
-            </custom-table>
-        </v-col>
+          </custom-table>
+        </v-col>        
     </v-row>
-    </v-card>
+
   </v-container>
 </template>
 <style lang="scss" scoped>
@@ -160,25 +155,49 @@ export default {
   data() {
     return {
       // Plant data
-      tableHeadersPlant: [
+      tableHeaders: [
         {
-          text: '案件名',
+          text: "Dataset's name",
           align: 'start',
           sortable: false,
           value: 'name',
           edditable: true,
         },
         {
+          text: "Author",
+          align: 'start',
+          sortable: false,
+          value: 'author',
+          edditable: true,
+        },
+        {
+          text: "Information",
+          align: 'start',
+          sortable: false,
+          value: 'information',
+          edditable: true,
+        },
+        {
+          text: "Feature",
+          align: 'start',
+          sortable: false,
+          value: 'feature',
+          edditable: true,
+        },
+        {
           text: '',
           align: 'start',
           sortable: false,
-          width: 100,
-          value: 'input',
+          width: 400,
+          value: 'actions',
         },
-        
       ],
      
-      tableItemsPlant: [],  
+      tableItems: [
+        {
+
+        }
+      ],  
       plantAddDialog: false,
       currentPlantID : 0,
       isLoadingPlant: false,
