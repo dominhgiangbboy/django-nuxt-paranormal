@@ -52,7 +52,7 @@ export default {
     },
     label: {
       type: String,
-      default: 'Combobox'
+      default: ''
     },
   },
   watch:{

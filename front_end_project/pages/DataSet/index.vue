@@ -195,150 +195,29 @@ export default {
      
       tableItems: [
         {
-
+          name: "Running data set",
+          author: "BK's students",
+          information: "Created with crawled data from the internet"
         }
       ],  
       plantAddDialog: false,
       currentPlantID : 0,
       isLoadingPlant: false,
-       // Plant process
-      tableHeadersPlantProcess: [
-        {
-          text: '大工程名',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-          edditable: true,
-        },
-        {
-          text: '大工程番号',
-          align: 'start',
-          sortable: false,
-          value: '大工程番号',
-          edditable: false,
-        },
-        
-      ],
       tableItemsPlantProcess:  [],
       tableAllItemsSubProcess: [],
       isLoadingPlantProcess:false,
-      //Process Data
-      tableHeadersProcess: [
-        {
-          text: '案件名',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-          edditable: true,
-        },
-        {
-          text: '程番号',
-          align: 'start',
-          sortable: false,
-          value: '大工程番号',
-          edditable: true,
-        },
-        {
-          text: '工場',
-          align: 'start',
-          sortable: false,
-          value: '工場',
-          edditable: false,
-          isCombobox: true,
-        },
-        {
-          text: '',
-          align: 'start',
-          sortable: false,
-          width: 100,
-          value: 'input',
-        },
-        
-      ],
-     
       tableItemsProcess: [],  
       ProcessAddDialog: false,
       currentProcessID : 0,
       isLoadingProcess: false,
       // SUb process
       tableItemsSubProcess : [],
-      tableHeadersSubProcess: [
-        {
-          text: '案件名',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-          edditable: false,
-        },
-        {
-          text: '程番号',
-          align: 'start',
-          sortable: false,
-          value: '大工程番号',
-          edditable: false,
-        },
-        {
-          text: 'Sub',
-          align: 'start',
-          sortable: false,
-          value: 'id',
-          edditable: false,
-          isCombobox: true,
-          align: ' d-none' ,
-        },
-        {
-          text: '',
-          align: 'start',
-          sortable: false,
-          width: 100,
-          value: 'input',
-        },
-        
-      ],
-      tableHeadersAllSubProcess: [
-        {
-          text: '案件名',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-          edditable: true,
-        },
-        {
-          text: '程番号',
-          align: 'start',
-          sortable: false,
-          value: '程番号',
-          edditable: true,
-        },
-        
-        {
-          text: '',
-          align: 'start',
-          sortable: false,
-          width: 100,
-          value: 'input',
-        },
-        
-      ],
-      //Temp item
-      addTitle:"",
-      currentTempID: 0,
-      addDialog: false,
-      deleteTableTempID:0,
-      deleteTableTempApi:"",
-      tempItemsUpdate: {},
-      tempAddItems:{},
-      tempHeaderItems:[],
-      tempAPIUrl: "",
-      tableItemsTemp:{},
-      defaultCombo:{},
-      tableComboboxSubProcess:[],
+     
       //
       action: 0,
       currentItem:0,
       tab: null,
       isLoading: false,
-      title: "資材G所轄　材料補助材料費＆形鋼・鋼板外注一次加工費",
       dialog: false,
       search: "",
       date: new Date().toISOString().substr(0, 10),
@@ -364,11 +243,6 @@ export default {
   methods: {
     init(){
       this.refreshToken();
-      this.configButton('update',false, true)
-      this.configButton('delete', false, true)
-      this.getPlantsList()
-      this.getProcesssList()
-      this.getSubProcessItems()
     },
     async getPlantProcessItems(){
       var me = this;
