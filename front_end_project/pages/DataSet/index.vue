@@ -59,140 +59,58 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-card outlined>
-      <v-tabs
-        v-model="tab"
-        background-color="#1d3557"
-        class="tab-bar"
-        dark
-      >
-        <v-tab>
-          工場
-        </v-tab>
-        <v-tab>
-          大工程
-        </v-tab>
-        <v-tab>
-          小工程
-        </v-tab>
-      </v-tabs>
-      <v-tabs-items v-model="tab">
-        <!-- Tab 1 -->
-        <v-tab-item  
-        class="tab-item"
-        >
-            <v-row>
-                <!-- Plant master table -->
-                <v-col :cols="mini?12:6">
-                    <custom-table
-                        :defaultPageSize="10"
-                        :headerItems="tableHeadersPlant"
-                        :isLoading="isLoadingPlant"
-                        :dataTableItems="tableItemsPlant"
-                        :singleSelect="true"
-                        :showSelect="true"
-                        v-on:selected="selectItemsPlant"
-                        dense
-                        :isShowAll="false"
-                        v-on:edit="editItemPlant"
-                        v-on:delete="deleteItemPlant"
-                        :isBanner="true"
-                        v-on:add="addItemPlant"
-                        toobarTitle="Master plant manage"
-                        :disableAddButton="false"
-                        height="500"
-                    >
-                    </custom-table>
-                </v-col>
-                <v-col :cols="mini?12:6">
-                    <custom-table
-                        :defaultPageSize="10"
-                        :headerItems="tableHeadersPlantProcess"
-                        :isLoading="isLoadingPlantProcess"
-                        :dataTableItems="tableItemsPlantProcess"
-                        toobarTitle="Plants process"
-                        dense
-                        :isShowAll="false"
-                        :isBanner="true"
-                        :disableAddButton="true"
-                        height="500"
-                    >
-                    </custom-table>
-                </v-col>
-            </v-row>
-        </v-tab-item>
-        <!-- Tab 2 -->
-        <v-tab-item 
-        class="tab-item"
-        >
-            <v-row>
-                <!-- Process master table -->
-                <v-col :cols="mini?12:6">
-                    <custom-table
-                        :headerItems="tableHeadersProcess"
-                        :isLoading="isLoadingProcess"
-                        :dataTableItems="tableItemsProcess"
-                        :singleSelect="true"
-                        :showSelect="true"
-                        v-on:selected="selectItemsProcess"
-                        dense
-                        :isShowAll="false"
-                        v-on:edit="editItemProcess"
-                        v-on:delete="deleteItemProcess"
-                        :isBanner="true"
-                        v-on:add="addItemProcess"
-                        toobarTitle="Master process manage"
-                        :disableAddButton="false"
-                        height="500"
-                    >
-                    </custom-table>
-                </v-col>
-                <v-col :cols="mini?12:6">
-                    <custom-table
-                        :headerItems="tableHeadersSubProcess"
-                        :isLoading="isLoadingPlantProcess"
-                        :dataTableItems="tableItemsSubProcess"
-                        toobarTitle="SubProcess"
-                        dense
-                        v-on:edit="editSubProcess"
-                        v-on:delete="deleteSubProcess"
-                        v-on:add="addSubProcess"
-                        :isBanner="true"
-                        :isShowAll="false"
-                        :disableAddButton="currentProcessID == 0? true: false" 
-                        height="500"
-                    >
-                    </custom-table>
-                </v-col>
-            </v-row>
-        </v-tab-item>
-        <!-- Tab 3 -->
-        <v-tab-item 
-        class="tab-item"
-        >
-           <v-row>
-                <!-- Process master table -->
-                <v-col :cols="mini?12:6">
-                    <custom-table
-                        :headerItems="tableHeadersSubProcess"
-                        :isLoading="isLoadingPlantProcess"
-                        :dataTableItems="tableAllItemsSubProcess"
-                        toobarTitle="SubProcess"
-                        dense
-                        v-on:edit="editSubProcessAll"
-                        v-on:delete="deleteSubProcessAll"
-                        v-on:add="addSubProcessAll"
-                        :isBanner="true"
-                        :isShowAll="false"
-                        :disableAddButton="false"
-                        height="500"
-                    >
-                    </custom-table>
-                </v-col>
-           </v-row>
-        </v-tab-item>
-      </v-tabs-items>
-    </v-card>
+   
+      <v-row>
+        <v-col  :cols="mini?'6':'3'">
+          <custom-combo-box
+            label="Choose category"
+          >
+          </custom-combo-box>
+        </v-col>
+        <v-col  :cols="mini?'6':'3'">
+          <custom-combo-box
+            label="Choose data set"
+          >
+          </custom-combo-box>
+        </v-col>
+        <v-col  :cols="mini?'6':'3'">
+          <custom-combo-box
+            label="Choose source"
+          >
+          </custom-combo-box>
+        </v-col>
+        <v-col  :cols="mini?'6':'3'">
+          <custom-button
+            v-on:click="addItem"
+            label="Search"
+          >
+          </custom-button>
+        </v-col>
+      </v-row>
+  
+    
+      <v-row>
+        <v-col>
+          <custom-table
+                :defaultPageSize="10"
+                :headerItems="tableHeaders"
+                :isLoading="isLoading"
+                :dataTableItems="tableItems"
+                :singleSelect="true"
+                dense
+                :isShowAll="false"
+                v-on:edit="editItemPlant"
+                v-on:delete="deleteItemPlant"
+                :isBanner="true"
+                v-on:add="addItemPlant"
+                toobarTitle="Data set list"
+                :disableAddButton="false"
+                height="500"
+            >
+          </custom-table>
+        </v-col>        
+    </v-row>
+
   </v-container>
 </template>
 <style lang="scss" scoped>
@@ -237,166 +155,69 @@ export default {
   data() {
     return {
       // Plant data
-      tableHeadersPlant: [
+      tableHeaders: [
         {
-          text: '案件名',
+          text: "Dataset's name",
           align: 'start',
           sortable: false,
           value: 'name',
           edditable: true,
         },
         {
+          text: "Author",
+          align: 'start',
+          sortable: false,
+          value: 'author',
+          edditable: true,
+        },
+        {
+          text: "Information",
+          align: 'start',
+          sortable: false,
+          value: 'information',
+          edditable: true,
+        },
+        {
+          text: "Feature",
+          align: 'start',
+          sortable: false,
+          value: 'feature',
+          edditable: true,
+        },
+        {
           text: '',
           align: 'start',
           sortable: false,
-          width: 100,
-          value: 'input',
+          width: 400,
+          value: 'actions',
         },
-        
       ],
      
-      tableItemsPlant: [],  
+      tableItems: [
+        {
+          name: "Running data set",
+          author: "BK's students",
+          information: "Created with crawled data from the internet"
+        }
+      ],  
       plantAddDialog: false,
       currentPlantID : 0,
       isLoadingPlant: false,
-       // Plant process
-      tableHeadersPlantProcess: [
-        {
-          text: '大工程名',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-          edditable: true,
-        },
-        {
-          text: '大工程番号',
-          align: 'start',
-          sortable: false,
-          value: '大工程番号',
-          edditable: false,
-        },
-        
-      ],
       tableItemsPlantProcess:  [],
       tableAllItemsSubProcess: [],
       isLoadingPlantProcess:false,
-      //Process Data
-      tableHeadersProcess: [
-        {
-          text: '案件名',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-          edditable: true,
-        },
-        {
-          text: '程番号',
-          align: 'start',
-          sortable: false,
-          value: '大工程番号',
-          edditable: true,
-        },
-        {
-          text: '工場',
-          align: 'start',
-          sortable: false,
-          value: '工場',
-          edditable: false,
-          isCombobox: true,
-        },
-        {
-          text: '',
-          align: 'start',
-          sortable: false,
-          width: 100,
-          value: 'input',
-        },
-        
-      ],
-     
       tableItemsProcess: [],  
       ProcessAddDialog: false,
       currentProcessID : 0,
       isLoadingProcess: false,
       // SUb process
       tableItemsSubProcess : [],
-      tableHeadersSubProcess: [
-        {
-          text: '案件名',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-          edditable: false,
-        },
-        {
-          text: '程番号',
-          align: 'start',
-          sortable: false,
-          value: '大工程番号',
-          edditable: false,
-        },
-        {
-          text: 'Sub',
-          align: 'start',
-          sortable: false,
-          value: 'id',
-          edditable: false,
-          isCombobox: true,
-          align: ' d-none' ,
-        },
-        {
-          text: '',
-          align: 'start',
-          sortable: false,
-          width: 100,
-          value: 'input',
-        },
-        
-      ],
-      tableHeadersAllSubProcess: [
-        {
-          text: '案件名',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-          edditable: true,
-        },
-        {
-          text: '程番号',
-          align: 'start',
-          sortable: false,
-          value: '程番号',
-          edditable: true,
-        },
-        
-        {
-          text: '',
-          align: 'start',
-          sortable: false,
-          width: 100,
-          value: 'input',
-        },
-        
-      ],
-      //Temp item
-      addTitle:"",
-      currentTempID: 0,
-      addDialog: false,
-      deleteTableTempID:0,
-      deleteTableTempApi:"",
-      tempItemsUpdate: {},
-      tempAddItems:{},
-      tempHeaderItems:[],
-      tempAPIUrl: "",
-      tableItemsTemp:{},
-      defaultCombo:{},
-      tableComboboxSubProcess:[],
+     
       //
       action: 0,
       currentItem:0,
       tab: null,
       isLoading: false,
-      title: "資材G所轄　材料補助材料費＆形鋼・鋼板外注一次加工費",
       dialog: false,
       search: "",
       date: new Date().toISOString().substr(0, 10),
@@ -422,11 +243,6 @@ export default {
   methods: {
     init(){
       this.refreshToken();
-      this.configButton('update',false, true)
-      this.configButton('delete', false, true)
-      this.getPlantsList()
-      this.getProcesssList()
-      this.getSubProcessItems()
     },
     async getPlantProcessItems(){
       var me = this;

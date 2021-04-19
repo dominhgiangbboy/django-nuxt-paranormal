@@ -17,20 +17,20 @@ serverErrorResponse = "Server error please contact admin"
 
 
 class ListDetailedCost(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     #   get cost list
     def post(self, request):
         # GET data example
         try:
             idReq = request.data['product_id']
-            dataRes = detailed_cost.objects.raw(f'SELECT * FROM abnormal_django.processApp_detailed_cost where product_id = {idReq}; ')
+            dataRes = detailed_cost.objects.raw(f'SELECT * FROM django_abnormal.processApp_detailed_cost where product_id = {idReq}; ')
             serializer  = DetailedCostSerializer(dataRes, many= True) 
         except:
             response = serverErrorResponse
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.data)
 class UpdateListDetailedCost(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self,request):
             dataReq = request.data
         # try:
@@ -143,7 +143,7 @@ class UpdateListDetailedCost(APIView):
                     except:
                         return Response(badRequestResponse, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
-            dataRes = detailed_cost.objects.raw(f'SELECT * FROM abnormal_django.processApp_detailed_cost where product_id = {product_id}; ')
+            dataRes = detailed_cost.objects.raw(f'SELECT * FROM django_abnormal.processApp_detailed_cost where product_id = {product_id}; ')
             serializer  = DetailedCostSerializer(dataRes, many= True) 
             response = serializer.data
             return Response(response)

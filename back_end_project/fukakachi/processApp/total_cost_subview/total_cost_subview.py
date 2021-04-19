@@ -10,7 +10,7 @@ serverErrorResponse = "Server error please contact admin"
 
 # get products detail
 class TotalCost(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     #   get cost list
     def post(self, request):
         # GET data example

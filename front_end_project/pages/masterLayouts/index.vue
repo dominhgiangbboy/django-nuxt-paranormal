@@ -70,48 +70,15 @@
             案件
           </div>
         </v-col>
-        <v-col :cols="mini ? 7 : 3">
-          <custom-combo-box label="案件" :comboBoxItems="project_items" v-on:change="itemComboChangeProjects">
+        <v-col :cols="mini ? 3 : 3">
+          <custom-combo-box label="Category" :comboBoxItems="project_items" v-on:change="itemComboChangeProjects">
           </custom-combo-box>
-        </v-col>
-        <v-col cols="2"></v-col>
-        <!-- <v-col :cols="mini ? 2 :1"
-        class="jikan">
-          <div>時間</div>
-        </v-col>
-        <v-col :cols="mini ? 7 : 3">
-          <v-menu
-            v-model="menu2"
-            :close-on-content-click="false"
-            transition="slide-x-transition"
-            bottom
-            min-width="auto"
-            
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="date"
-                append-icon1="mdi-calendar"
-                outlined
-                v-bind="attrs"
-                v-on="on"
-                dense
-              ></v-text-field>
-            </template>
-            <v-date-picker v-model="date" @input="menu2 = false"></v-date-picker>
-          </v-menu>
-        </v-col> -->
+        </v-col>        
       </v-row>
       <v-row
       >
-        <v-col :cols="mini ? 2 :1"
-          class="koutei">
-          <div>
-            原価表
-          </div>
-        </v-col>
-        <v-col :cols="mini ? 7 : 3">
-          <custom-combo-box label="原価表" :comboBoxItems="product_items" v-on:change="itemComboChangeProducts">
+        <v-col :cols="mini ? 3 : 3">
+          <custom-combo-box label="Souce" :comboBoxItems="product_items" v-on:change="itemComboChangeProducts">
           </custom-combo-box>
         </v-col>
         <v-col cols="2">

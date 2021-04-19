@@ -2,13 +2,12 @@
   <v-app>
     <v-container fluid fill-height class="loginOverlay">
       <v-layout flex align-center :class="mobile?'welcome-section-mb':'welcome-section'">
-        <div class="welcome-text">Welcome to HUST's abnormal dataset system</div>
+        <div class="welcome-text">Welcome to Hust system</div>
       </v-layout>
-      <v-layout flex  :column="mobile" align-center="mobile" justify-center="mobile"  :class="mobile?'login-section-mb':'login-section'">
-        <div v-if="mobile" class="welcome-text-mb">Welcome to HUST's abnormal dataset system</div>
-        <v-flex xs12 sm8 elevation-6 style="box-shadow:none !important" class="pt-10">
+      <v-layout flex :column="mobile" align-center="mobile" justify-center="mobile"  :class="mobile?'login-section-mb':'login-section'">
+        <v-flex  xs12 sm8 elevation-6 style="box-shadow:none !important" class="pt-10">
           <v-card class="login-form">
-            <div class="login-header">LOGIN</div>
+            <div class="login-header">Sign up</div>
             <v-card-text class="pt-4">
               <div>
                 <v-form v-model="valid" ref="form">
@@ -19,12 +18,10 @@
                     :rules="userRules"
                     filled
                     required
-                    background-color="#E8E8E8"
                   ></v-text-field>
                   <v-text-field
                     class="text-input"
                     label="Enter your password"
-                    background-color="#E8E8E8"
                     v-model="password"
                     min="8"
                     filled
@@ -36,11 +33,44 @@
                     :rules="passwordRules"
                     required
                   ></v-text-field>
+                  <v-text-field
+                    class="text-input"
+                    label="Re-Enter your password"
+                    v-model="passwordReenter"
+                    min="8"
+                    filled
+                    :append-icon="passwordVisibility ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:append="iconClick"
+                    :type="passwordVisibility ? 'password' : 'text'"
+                    :rules="passwordReenterRule"
+                    required
+                  ></v-text-field>
+                  <v-text-field
+                    class="text-input"
+                    label="Enter your email"
+                    v-model="email"
+                    filled
+                    :rules="passwordReenterRule"
+                  ></v-text-field>
+                  <v-text-field
+                    class="text-input"
+                    label="Enter your company name"
+                    v-model="company"
+                    filled
+                    :rules="passwordReenterRule"
+                  ></v-text-field>
+                  <custom-combo-box
+                    label="Select your role"
+                    :comboBoxItems="roleCombo"
+                    :itemValue="defaultComboValue"
+                    v-on:change="selectCombobox"
+                  >
+                  </custom-combo-box>
                   <v-layout class="pt-10">
-                    <v-btn @click="submit" class="login-button">Login</v-btn>
+                    <v-btn @click="submit" class="login-button">Sign Up</v-btn>
                   </v-layout>
                   <div class="mt-5" style="text-align: center">
-                    <NuxtLink to="/signup">New to HUST's abnormal system? Sign up</NuxtLink>
+                    <NuxtLink to="/login">Have an acount? please login</NuxtLink>
                   </div>
                 </v-form>
               </div>
@@ -71,8 +101,21 @@ export default {
   data() {
     return {
       valid: true,
+      roleCombo: [
+        {
+          id: 1 , name: "Data sciencetist"
+        },
+        {
+          id: 2 , name: "User"
+        },
+      ],
+      company: '',
+      email: '',
+      currentRole: 0,
       passwordVisibility: true,
       password: "",
+      passwordReenter: "",
+      passwordReenterRule: [v => !!v || "Please enter your password again"],
       passwordRules: [v => !!v || "Password is required"],
       userName: "",
       userRules: [
@@ -80,19 +123,36 @@ export default {
       ]
     };
   },
+  created(){
+    this.defaultComboValue = this.roleCombo[0].id
+    this.currentRole = this.defaultComboValue
+  },
   methods: {
     iconClick() {
       this.passwordVisibility = !this.passwordVisibility;
     },
     async submit() {
       var me = this;
-      try {
-          me.login(
-            me.userName,
-            me.password
-          );
-      } catch (e) {
-        me.sweetsAlert('Errors', e , 'error');
+      if(me.passwordReenter != me.password){
+        me.swAlert("Error", "Password not match please check your password again","error", ()=>{return}) 
+      }
+      else if (me.password.length < 8)
+      {
+        me.swAlert("Error", "Please input password with more than 8 character","error", ()=>{return}) 
+      }
+      else if (me.currentRole == 0 || me.currentRole == undefined){
+        me.swAlert("Error", "Please select role","error", ()=>{return}) 
+      }
+      else{        
+        me.signup(me.userName, me.password,me.currentRole == 1, this.email, this.company)
+      }
+    },
+    selectCombobox(item){
+      if(item == undefined){
+        this.currentRole = 0
+      }
+      else{
+        this.currentRole = item
       }
     },
     clear() {
@@ -141,13 +201,14 @@ export default {
 .login-form {
   border-radius: 20px;
   padding: 2rem;
+  min-width: 500px;
 }
 .welcome-section {
   background-color: white;
   width: 50%;
 }
 .welcome-section-mb {
-  background:  rgba(51, 45, 253, 1) 78%;
+  background: rgb(34, 145, 195);
   width: 100%;
   height: 50%;
   display: none;
@@ -163,6 +224,7 @@ export default {
 }
 .login-section-mb {
   background: rgb(34, 145, 195);
+  width: 100%;
   background: linear-gradient(
     0deg,
     rgba(34, 145, 195, 1) 0%,

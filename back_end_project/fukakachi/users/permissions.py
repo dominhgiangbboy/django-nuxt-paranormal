@@ -1,11 +1,7 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 
+class CustomerAccessPermission(permissions.BasePermission):
+    message = 'Adding customers not allowed.'
 
-class HelloView(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def get(self, request):
-        content = {'message': 'Hello, World!'}
-        return Response(content)
+    def has_permission(self, request, view):
+        return request.user and request.user.is_dev

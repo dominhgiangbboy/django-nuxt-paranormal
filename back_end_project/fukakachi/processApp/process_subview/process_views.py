@@ -14,7 +14,7 @@ serverErrorResponse = "Server error please contact admin"
 
 # get projects list
 class GetProcessList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     #   get cost list
     def post(self, request):
         # GET data example
@@ -49,10 +49,10 @@ class GetProcessList(APIView):
                         ,c.name AS product_name
                         ,b.name AS plant_name
                         ,d.name AS name
-                        FROM abnormal_django.processApp_process a
-                        LEFT JOIN abnormal_django.indexApp_production_plant_list b ON a.plant_id = b.id
-                        LEFT JOIN abnormal_django.processApp_products_list c ON a.product_id = c.id
-                        LEFT JOIN abnormal_django.indexApp_process_list d ON a.process_type = d.id
+                        FROM django_abnormal.processApp_process a
+                        LEFT JOIN django_abnormal.indexApp_production_plant_list b ON a.plant_id = b.id
+                        LEFT JOIN django_abnormal.processApp_products_list c ON a.product_id = c.id
+                        LEFT JOIN django_abnormal.indexApp_process_list d ON a.process_type = d.id
                         {sql_requirement}
                         """)
             serializer  = ProcessSerializer(listPlant, many= True)
@@ -62,7 +62,7 @@ class GetProcessList(APIView):
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 # get projects list
 class AddProcessListPlant(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     #   get cost list
     def post(self, request):
         # GET data example
@@ -86,12 +86,12 @@ class AddProcessListPlant(APIView):
                                ,a.id
                             FROM (
                                 SELECT *
-                                FROM abnormal_django.indexApp_process_list
+                                FROM django_abnormal.indexApp_process_list
                                 WHERE plant_id = {plant_id}
                             ) as a
                             LEFT JOIN (
                                 SELECT *
-                                FROM abnormal_django.processApp_process
+                                FROM django_abnormal.processApp_process
                                 {sql_requirement}
                                 ) AS b ON a.id = b.process_type
                         where b.product_id is null {sql_requirement_2} {sql_requirement_3}
@@ -104,7 +104,7 @@ class AddProcessListPlant(APIView):
 # add projects list
 class AddProcessList(APIView):
     # Add project example
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
             dataReq = request.data
         # try:
@@ -136,10 +136,10 @@ class AddProcessList(APIView):
                         ,c.name AS product_name
                         ,b.name AS plant_name
                         ,d.name AS name
-                        FROM abnormal_django.processApp_process a
-                        LEFT JOIN abnormal_django.indexApp_production_plant_list b ON a.plant_id = b.id
-                        LEFT JOIN abnormal_django.processApp_products_list c ON a.product_id = c.id
-                        LEFT JOIN abnormal_django.indexApp_process_list d ON a.process_type = d.id
+                        FROM django_abnormal.processApp_process a
+                        LEFT JOIN django_abnormal.indexApp_production_plant_list b ON a.plant_id = b.id
+                        LEFT JOIN django_abnormal.processApp_products_list c ON a.product_id = c.id
+                        LEFT JOIN django_abnormal.indexApp_process_list d ON a.process_type = d.id
                         where a.id = {current_id}
                         """)
             serializer  = ProcessSerializer(listProject, many= True)
@@ -152,7 +152,7 @@ class AddProcessList(APIView):
 # delete project
 class DeleteProcessList(APIView):
     # Add project example
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         dataReq = request.data
         try:
@@ -172,7 +172,7 @@ class DeleteProcessList(APIView):
 # update
 class UpdateProcessList(APIView):
     # Add project example
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         dataReq = request.data
         try:
@@ -196,7 +196,7 @@ class UpdateProcessList(APIView):
 
 # get projects list
 class GetProcessDataabnormal(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     #   get cost list
     def post(self, request):
         # GET data example
@@ -221,9 +221,9 @@ class GetProcessDataabnormal(APIView):
                             a.日当りの目標生産数量 ,
                             a.比率 ,
                             a.部材点数 
-                        FROM  abnormal_django . processApp_process  a 
-                        left join abnormal_django.indexApp_process_list b on a.process_type = b.id
-                        left join abnormal_django.processApp_products_list c on a.product_id = c.id
+                        FROM  django_abnormal . processApp_process  a 
+                        left join django_abnormal.indexApp_process_list b on a.process_type = b.id
+                        left join django_abnormal.processApp_products_list c on a.product_id = c.id
                         {sql_requirement}
                         """)
             serializer  = ProcessDataSerializer(listPlant, many= True)
@@ -234,7 +234,7 @@ class GetProcessDataabnormal(APIView):
 
 # get projects list
 class UpdateProcessDataabnormal(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     #   get cost list
     def post(self, request):
         # GET data example
@@ -308,7 +308,7 @@ class UpdateProcessDataabnormal(APIView):
 
 
 class getCalculateTotalData(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     #   get cost list
     def post(self, request):
         # GET data example

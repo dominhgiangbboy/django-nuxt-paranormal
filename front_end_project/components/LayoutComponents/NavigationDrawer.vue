@@ -17,10 +17,10 @@
           <v-list-item class="ml-10">
             <v-list-item-content>
               <v-list-item-title class="title-icon"  v-on:click="openLink">
-                  Fukakachi
+                  Abnormal
               </v-list-item-title>
               <v-list-item-subtitle>
-                  System
+                  HUST 's System
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-btn 
@@ -88,17 +88,16 @@ export default {
       this.drawerFlag = false
       if(this.isAdmin){
           this.items= [
-          ['mdi-home', 'ホーム','/'],
-          ['mdi-scale-balance', '付加価値額配分表','/AddedValue'],
-          ['mdi-cog', 'セッティング','/Master'],
-          ['mdi-trending-up', 'グラフ','/Graphs'],
-          ['mdi-clipboard-edit', '工程別実績入力画面','/insertValue'],
+          ['mdi-home', 'Home','/'],
+          ['mdi-folder', 'Data Set','/DataSet'],
+          ['mdi-account-circle', 'Personal page','/Personal'],
+          ['mdi-cog', 'Account Setting','/AccountSetting'],
         ];
       }
       else{
         this.items= [
-          ['mdi-home', 'ホーム','/'],
-          ['mdi-clipboard-edit', '工程別実績入力画面','/insertValue'],
+          ['mdi-home', 'Home','/'],
+          ['mdi-clipboard-edit', 'Master','/DataSet'],
         ];
       }
   },
@@ -139,13 +138,7 @@ export default {
     },
     data: () => ({
       items: [
-        ['mdi-home', 'ホーム','/'],
-        ['mdi-scale-balance', '付加価値額配分表','/AddedValue'],
-        ['mdi-table', '鉄骨工事予算実行原価表','/masterLayouts'],
-        ['mdi-cog', 'セッティング','/Settings'],
-        ['mdi-trending-up', 'グラフ','/Graphs'],
-        ['mdi-clipboard-edit', '工程別実績入力画面','/insertValue'],
-        ['mdi-account-circle', 'Accounts','/Accounts'],
+  
       ],
     }),
     methods: {

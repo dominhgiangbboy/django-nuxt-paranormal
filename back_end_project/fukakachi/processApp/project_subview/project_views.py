@@ -15,12 +15,12 @@ serverErrorResponse = "Server error please contact admin"
 
 # get projects list
 class GetProjectsList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes = [IsAuthenticated]
     #   get cost list
     def post(self, request):
         # GET data example
         try:
-            listPlant = projects.objects.raw('SELECT *  FROM abnormal_django.processApp_projects')
+            listPlant = projects.objects.raw('SELECT *  FROM django_abnormal.processApp_projects')
             serializer  = ProjectSerializer(listPlant, many= True) 
         except:
             response = badRequestResponse
@@ -29,7 +29,7 @@ class GetProjectsList(APIView):
 
 # get projects list
 class GetProjectsListData(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     #   get cost list
     def post(self, request):
         # GET data example
@@ -37,7 +37,7 @@ class GetProjectsListData(APIView):
             dataReq = request.data
             if "project_id" in dataReq:
                 project_id = dataReq["project_id"]
-            listPlant = projects.objects.raw(f"""SELECT *  FROM abnormal_django.processApp_projects where id = {project_id}""")
+            listPlant = projects.objects.raw(f"""SELECT *  FROM django_abnormal.processApp_projects where id = {project_id}""")
             serializer  = ProjectDataSerializer(listPlant, many= True) 
         except:
             response = badRequestResponse
@@ -46,7 +46,7 @@ class GetProjectsListData(APIView):
 # add projects list
 class AddProjectsList(APIView):
     # Add project example
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         dataReq = request.data
         try:
@@ -74,7 +74,7 @@ class AddProjectsList(APIView):
                     response = badRequestResponse
            
             listProject = projects.objects.raw(
-                    f"SELECT * FROM abnormal_django.processApp_projects  where id = {current_id}")
+                    f"SELECT * FROM django_abnormal.processApp_projects  where id = {current_id}")
             serializer  = ProjectSerializer(listProject, many= True)
             response = serializer.data
             return Response(response)
@@ -85,7 +85,7 @@ class AddProjectsList(APIView):
 # delete project
 class DeleteProjectsList(APIView):
     # Add project example
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         dataReq = request.data
         try:
@@ -105,7 +105,7 @@ class DeleteProjectsList(APIView):
 # update project
 class UpdateProjectsList(APIView):
     # Add project example
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         dataReq = request.data
         try:
@@ -144,7 +144,7 @@ class UpdateProjectsList(APIView):
 # add  more different
 class AddAriseCostList(APIView):
     # Add project example
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         dataReq = request.data
         try:
@@ -184,7 +184,7 @@ class AddAriseCostList(APIView):
 # add  more different
 class GetAriseCostList(APIView):
     # Add project example
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         dataReq = request.data
         try:
@@ -212,7 +212,7 @@ class GetAriseCostList(APIView):
 # add  more different
 class DeleteAriseCostList(APIView):
     # Add project example
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         dataReq = request.data
         try:
@@ -241,7 +241,7 @@ class DeleteAriseCostList(APIView):
 # update project
 class UpdateAriseCostList(APIView):
     # Add project example
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         dataReq = request.data
         try:
@@ -272,7 +272,7 @@ class UpdateAriseCostList(APIView):
 # update project
 class CalculateValueMoney(APIView):
     # Add project example
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         dataReq = request.data
         try:

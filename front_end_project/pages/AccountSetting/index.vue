@@ -1,190 +1,43 @@
 <template>
   <v-container class="container" fluid>
-     <!-- add Plant dialog -->
-    <v-dialog
-      v-model="addDialog"
-      max-width="900px"
-    >
-      <v-card class="pa-2">
-        <v-card-title class="headline mb-5">
-          <span>{{addTitle}}</span>
-        </v-card-title>
-        <v-card-text>
-            <v-row v-for="(headerItem,index) in tempHeaderItems" :key="index"  >
-              <v-col cols="2" v-if="headerItem.edditable"  class="mt-1"> 
-                  <div>
-                      {{headerItem.text}}
-                  </div>
-              </v-col> 
-              <v-col  v-if="headerItem.edditable"> 
-                  <v-text-field
-                      v-model="tempAddItems[headerItem.value]" 
-                      type="String"
-                      outlined
-                      dense
-                  >
-                  </v-text-field>
-              </v-col>
-              <v-col cols="2" v-if="headerItem.isCombobox"  class="mt-1"> 
-                    <div>
-                        {{headerItem.text}}
-                    </div>
-                </v-col> 
-                <v-col  v-if="headerItem.isCombobox"> 
-                    <custom-combo-box
-                    :label="headerItem.text"
-                    :comboBoxItems="tableItemsTemp[headerItem.text + 'data']"
-                    :itemValue="parseInt(defaultCombo[headerItem.text])"
-                    v-on:change="selectCombobox"
-                    >
-                    </custom-combo-box>
-                </v-col> 
-            </v-row>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="darken-1"
-            text
-            @click="addDialog = false"
-          >
-            Cancel
-          </v-btn>
-          <custom-button
-            v-on:click="updateItemAction"
-            label="Update"
-          >
-          </custom-button>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-card outlined class="section-2">
-      <v-row>
-        <v-col :cols="mini?2:2">
-          <div class="header-text">
-            工場
-          </div>
-        </v-col>
-        <v-col cols="4">
-            <custom-combo-box label="工場" :comboBoxItems="projectList" :itemValue="parseInt(currentProjectID)" v-on:change="selectProject">
-            </custom-combo-box>
-        </v-col>
-        <v-col :cols="mini?6:6">
-              <!-- Main Table -->
-            <custom-table
-              :isShowAll="false"
-              :defaultPageSize="10"
-              :headerItems="tableHeadersDifferent"
-              :isLoading="isLoadingDifferent"
-              :dataTableItems="tableItemsDifferent"
-              :isBanner="false"
-              toobarTitle="Arise cost table"
-              dense
-              :disableAddButton="false"
-              height="200"
-              v-on:add="addItem"
-              v-on:delete="deleteItem"
-              v-on:edit="editItem"
-            >
-            </custom-table>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col :cols="mini?12:6">
-          <v-row class="row-title">
-             <v-col cols="6" class="rm-padding-right">
-              <div class="header-title">
-                  年間必要固定費額
-              </div>
-            </v-col>
-            <v-col cols="6" class="rm-padding-left">
-              <div>
-                <v-text-field
-                  dense
-                  outlined
-                  placeholder="0"
-                  v-model="dataTempProject['年間必要固定費額']"
-                ></v-text-field>
-              </div>
-            </v-col>
-            
-          </v-row>     
-          <v-row class="row-title">
-             <v-col cols="6" class="rm-padding-right">
-              <div class="header-title">
-                  月間必要固定費額
-              </div>
-            </v-col>
-            <v-col cols="6" class="rm-padding-left">
-              <div class="info-section">{{dataTempProject['月間必要固定費額']}}</div>
-            </v-col>
-            
-          </v-row>
-          <v-row class="row-title">
-            <v-col cols="6" class="rm-padding-right">
-              <div class="header-title">
-                  一日当り必要固定費額
-              </div>
-            </v-col>
-            <v-col cols="6" class="rm-padding-left">
-              <div class="info-section">{{dataTempProject['一日当り必要固定費額']}}</div>
-            </v-col>
-            
-          </v-row>
-        </v-col>
-    
-            
-      <v-col :cols="mini?12:6">
-        
-          <v-row class="row-title">
-            <v-col cols="6" class="rm-padding-right">
-              <div class="header-title">
-                  一日当り付加価値額収支
-              </div>
-            </v-col>
-            <v-col cols="6" class="rm-padding-left">
-              <div class="info-section">{{dataTempProject['一日当り付加価値額収支']}}</div>
-            </v-col>
-          </v-row>
-          <v-row class="row-title">
-            <v-col cols="6" class="rm-padding-right">
-              <div class="header-title">
-                  総付加価値額
-              </div>
-            </v-col>
-            <v-col cols="6" class="rm-padding-left">
-              <div class="info-section">{{dataTempProject['総付加価値額']}}</div>
-            </v-col>
-            
-          </v-row>
-         
-        </v-col>
-      </v-row>
-      <v-row justify="end" class="mt-10 mr-1 mb-5">
-        <custom-button label="Calculate" v-on:click="calculateAction">
-          
-        </custom-button>
-      </v-row>
-    </v-card>    
+    <!-- add Plant dialog -->
     <v-row>
-      <v-col>
-        <!-- Main Table -->
-        <custom-table
-          :isShowAll="false"
-          :defaultPageSize="10"
-          :headerItems="tableHeaders"
-          :isLoading="isLoading"
-          :dataTableItems="tableItems"
-          :isBanner="false"
-          toobarTitle="Plants process"
-          dense
-          :disableAddButton="true"
-          height="400"
-          v-on:add="addItem"
-          v-on:edit="editItem"
-        >
-        </custom-table>
+      <v-col align-self="center" :cols="mini?'12':'6'">
+        <v-avatar size="128" class="align-center">
+          <img
+            src="https://cdn.vuetifyjs.com/images/john.jpg"
+            alt="John"
+          >
+        </v-avatar>
+      </v-col>
+      <v-col :cols="mini?'12':'6'">
+        <v-form v-model="valid" ref="form">
+          <v-text-field
+            class="text-input"
+            label="Enter your username"
+            v-model="userName"
+            :rules="userRules"
+            filled
+            required
+          ></v-text-field>
+          <v-text-field
+            class="text-input"
+            label="Enter your email"
+            v-model="email"
+            filled
+            :rules="passwordReenterRule"
+          ></v-text-field>
+          <v-text-field
+            class="text-input"
+            label="Enter your company name"
+            v-model="company"
+            filled
+            :rules="passwordReenterRule"
+          ></v-text-field>
+          <v-layout class="pt-10">
+            <v-btn @click="submit" class="login-button">Save</v-btn>
+          </v-layout>
+        </v-form>
       </v-col>
     </v-row>
   </v-container>

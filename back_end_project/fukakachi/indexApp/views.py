@@ -11,18 +11,18 @@ from django.db.models import Avg, Count, Q, Sum
 import json
 # Process List operations
 class GetProcessList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         try:
             dataReq = request.data
             _plantID = 0
             if "plant_id" in dataReq:
                 _plantID = dataReq["plant_id"]
-                listData = process_list.objects.raw(f""" SELECT *,b.name as 工場  FROM abnormal_django.indexApp_process_list a
-                                                        left join abnormal_django.indexApp_production_plant_list b on  a.plant_id = b.id where a.plant_id = {_plantID}""")
+                listData = process_list.objects.raw(f""" SELECT *,b.name as 工場  FROM django_abnormal.indexApp_process_list a
+                                                        left join django_abnormal.indexApp_production_plant_list b on  a.plant_id = b.id where a.plant_id = {_plantID}""")
             else:
-                listData = process_list.objects.raw(""" SELECT *,b.name as 工場  FROM abnormal_django.indexApp_process_list a
-                                                        left join abnormal_django.indexApp_production_plant_list b on  a.plant_id = b.id""")
+                listData = process_list.objects.raw(""" SELECT *,b.name as 工場  FROM django_abnormal.indexApp_process_list a
+                                                        left join django_abnormal.indexApp_production_plant_list b on  a.plant_id = b.id""")
             serializer  = ProcessListSerializer(listData, many= True)
             return Response(serializer.data)
         except Exception:
@@ -30,7 +30,7 @@ class GetProcessList(APIView):
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
        
 class AddProcessList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
        # Add data example
         try:
@@ -49,7 +49,7 @@ class AddProcessList(APIView):
             response = "Server error please contact admin"
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 class DeleteProcessList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
        # delete data example
         try:
@@ -61,7 +61,7 @@ class DeleteProcessList(APIView):
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class UpdateProcessList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
        # update data example
         try:
@@ -75,7 +75,7 @@ class UpdateProcessList(APIView):
 
 # Process List operations
 class GetSubProcessList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
         try:
             dataReq = request.data
@@ -92,7 +92,7 @@ class GetSubProcessList(APIView):
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 class AddSubProcessList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
        # Add data example
         try:
@@ -115,7 +115,7 @@ class AddSubProcessList(APIView):
             response = "Server error please contact admin"
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 class DeleteSubProcessList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
        # delete data example
         try:
@@ -132,7 +132,7 @@ class DeleteSubProcessList(APIView):
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class UpdateSubProcessList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes = (IsAuthenticated)
     def post(self, request):
        # update data example
         try:
@@ -156,7 +156,7 @@ class UpdateSubProcessList(APIView):
 
 # Get plant list
 class GetPlantList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes = (IsAuthenticated)
       #   get cost list
     def post(self, request):
         # GET data example
@@ -170,7 +170,7 @@ class GetPlantList(APIView):
         return Response(serializer.data)
 
 class AddPlantList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes = (IsAuthenticated)
     # add cost list
     def post(self, request):
         # Update data example
@@ -191,7 +191,7 @@ class AddPlantList(APIView):
         return Response(serializer.data)
 
 class DeletePlantList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes =  [IsAuthenticated]
     def post(self, request):
        # delete data example
         try:
@@ -203,9 +203,9 @@ class DeletePlantList(APIView):
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class UpdatePlantList(APIView):
-    permission_classes = (IsAuthenticated,  IsAdminUser)
+    permission_classes = (IsAuthenticated)
     def post(self, request):
-       # update data example
+       # update data example CustomerAccessPermission
         try:
             dataReq = request.data
             production_plant_list.objects.filter(id = dataReq['id']).update(name=dataReq['name'])

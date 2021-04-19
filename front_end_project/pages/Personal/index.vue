@@ -1,37 +1,14 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col  :cols="mini?'6':'3'">
-        <custom-combo-box
-         
-        >
-        </custom-combo-box>
-      </v-col>
-       <v-col  :cols="mini?'6':'3'">
-        <custom-combo-box
-         
-        >
-        </custom-combo-box>
-      </v-col>
-        <v-col  :cols="mini?'6':'3'">
-        <custom-date-field label="開始時間">
-
-        </custom-date-field>
-      </v-col>
-       <v-col  :cols="mini?'6':'3'">
-        <custom-date-field label="終了時間">
-
-        </custom-date-field>
-      </v-col>
-      <v-col cols="12">
-        <custom-button
-          v-on:click="clickButton"
-          label="Search"
-        >
-        </custom-button>
-      </v-col>
-      <v-col :cols="mini?'12':'6'"><canvas id="my-chart"></canvas></v-col>
-      <v-col :cols="mini?'12':'6'"><canvas id="my-chart-pie"></canvas></v-col>
+      <v-col  :cols="mini?'12':'6'">
+          <custom-combo-box
+            label="Choose my analyzed data"
+          >
+          </custom-combo-box>
+          
+        </v-col>
+        <v-col :cols="mini?'12':'6'"><canvas id="my-chart"></canvas></v-col>
     </v-row>
 
   </v-container>
@@ -238,30 +215,7 @@ export default {
           ]
         }
       });
-      new Chart(document.getElementById('my-chart-pie'), {
-        plugins: [ChartAnnotation],
-        options: {
-            
-        },
-        type: 'pie',
-        data: {
-            labels: [
-              'Red',
-              'Blue',
-              'Yellow'
-            ],
-            datasets: [{
-              label: 'My First Dataset',
-              data: [300, 50, 100],
-              backgroundColor: [
-                'rgb(255, 99, 132)',
-                'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)'
-              ],
-              hoverOffset: 4
-          }],
-        }
-      });
+      
     },
   }
 };

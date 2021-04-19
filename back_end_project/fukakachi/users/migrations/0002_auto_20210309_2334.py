@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='newuser',
-            name='is_staff',
+            name='is_dev',
             field=models.BooleanField(default=False),
         ),
     ]

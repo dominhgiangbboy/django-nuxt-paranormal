@@ -1,3 +1,4 @@
+
 import Vue from "vue";
 const base_url = "http://127.0.0.1:8000/api/";
 Vue.mixin({
@@ -133,8 +134,33 @@ Vue.mixin({
     
       return promise;
     },
-
-
+    // Login function to get token
+    async signup(user_name, password, is_dev,email, company) {
+      var me = this;
+      await me.$axios.post(base_url + 'user/create-user/',{
+          user_name: user_name,
+          password : password,
+          is_dev: is_dev,
+          email: email,
+          company: company,
+        })
+        .then(async resp => {
+          me.swAlert(
+            "Success",
+            "Successfully created user", 
+            "success", ()=>{
+            me.$nuxt.$router.push('/login')
+          })
+          
+        })
+        .catch(error => {
+          me.sweetsAlert(
+            "Sign up failed",
+            error,
+            "error"
+          );
+        });
+    },
     // Login function to get token
     async login(user_name, password) {
       var me = this;
@@ -147,7 +173,7 @@ Vue.mixin({
           await me.$auth.strategy.refreshToken.set(resp.data.refresh);
           this.$store.commit('USER_ROLE', resp.data.is_staff)
           if(me.$auth.strategy.token.status().valid()){
-             me.$nuxt.$router.push('/')
+            me.$nuxt.$router.push('/')
           }
         })
         .catch(error => {
@@ -156,7 +182,7 @@ Vue.mixin({
           } else {
             me.sweetsAlert(
               "Login failed",
-              "Please check your credential again",
+              error,
               "error"
             );
           }
