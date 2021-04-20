@@ -42,6 +42,7 @@ export default {
     "@nuxtjs/auth-next",
     "nuxt-i18n",
     'cookie-universal-nuxt',
+    'bootstrap-vue/nuxt',
     '@plugins/axios',
   ],
   i18n: {

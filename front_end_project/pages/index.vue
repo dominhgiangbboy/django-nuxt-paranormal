@@ -107,6 +107,7 @@
 <script>
 
 export default {
+  layout: 'homePageLayout',
   data() {
     return {
       addDialog: false,
