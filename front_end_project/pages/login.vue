@@ -147,7 +147,7 @@ export default {
   width: 50%;
 }
 .welcome-section-mb {
-  background:  rgba(51, 45, 253, 1) 78%;
+  background:  #8ecae6;
   width: 100%;
   height: 50%;
   display: none;
@@ -155,11 +155,7 @@ export default {
 .login-section {
   background: rgb(34, 145, 195);
   width: 50%;
-  background: linear-gradient(
-    0deg,
-    rgba(34, 145, 195, 1) 0%,
-    rgba(51, 45, 253, 1) 78%
-  );
+  background: #003049;
 }
 .login-section-mb {
   background: rgb(34, 145, 195);

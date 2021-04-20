@@ -216,11 +216,7 @@ export default {
 .login-section {
   background: rgb(34, 145, 195);
   width: 50%;
-  background: linear-gradient(
-    0deg,
-    rgba(34, 145, 195, 1) 0%,
-    rgba(51, 45, 253, 1) 78%
-  );
+  background: #003049;
 }
 .login-section-mb {
   background: rgb(34, 145, 195);

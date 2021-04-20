@@ -24,7 +24,7 @@ class CreateUser(APIView):
             if temp is None:
                 response = "User existed"
             else:
-                response = "User Created"
+                response = "User Created 🙂" 
             return Response(response)
         except:
             response = "Server error please contact admin"
