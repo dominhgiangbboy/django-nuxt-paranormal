@@ -124,7 +124,7 @@ export default {
       }
     },
     isAdmin() {
-      return this.$store.state.isAdmin;
+      return true;
     },
     mini() {
         switch (this.$vuetify.breakpoint.name) {

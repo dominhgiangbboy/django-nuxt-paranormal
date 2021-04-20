@@ -227,7 +227,7 @@ export default {
       status: false,
       //API link 
       get_plant_api :"index/get-plant-list/",
-      get_plant_process_api :"index/get-process-list/",
+      get_data_set_api :"data-set-get/",
       add_plant_item:"index/add-plant-list/",
       update_plant_item:"index/update-plant-list/",
       delete_plant_item: "index/delete-plant-list/",
@@ -244,13 +244,12 @@ export default {
     init(){
       this.refreshToken();
     },
-    async getPlantProcessItems(){
+    async getDataSetItems(){
       var me = this;
       var dataReq =
       {
-          "plant_id": me.currentPlantID
       };
-      me.postToServer(dataReq,me.get_plant_process_api).then((res)=>{  
+      me.postToServer(dataReq,me.get_data_set_api).then((res)=>{  
         me.tableItemsPlantProcess = res
       })
     },

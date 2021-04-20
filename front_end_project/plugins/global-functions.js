@@ -171,10 +171,7 @@ Vue.mixin({
         .then(async resp => {
           await me.$auth.strategy.token.set( "Bearer " + resp.data.access);
           await me.$auth.strategy.refreshToken.set(resp.data.refresh);
-          this.$store.commit('USER_ROLE', resp.data.is_staff)
-          if(me.$auth.strategy.token.status().valid()){
-            me.$nuxt.$router.push('/')
-          }
+          me.$nuxt.$router.push('/')
         })
         .catch(error => {
           if (this.$axios.isCancel(error)) {

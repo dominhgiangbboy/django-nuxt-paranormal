@@ -90,9 +90,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'django_abnormal',
-        'USER': 'vhec_dev',
-        'PASSWORD': 'Vhec@123456',
-        'HOST': '10.32.4.140',   # Or an IP Address that your DB is hosted on
+        'USER': 'root',
+        'PASSWORD': 'giang6111996',
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }

@@ -118,6 +118,7 @@ export default {
       infoField: '',
       deleteDialog: false,
       tempItemsEdit:{},
+      tableHeaders:[],
     };
   },
   computed: {
@@ -162,10 +163,6 @@ export default {
       this.$nuxt.$on('insertClick', () => {
         //this.insertClick();
       })
-      me.refreshToken();
-      me.dataTableGet();
-      me.configButton('update',true, true)
-      me.configButton('delete', true, true)
     },
     async clickButton () {
       

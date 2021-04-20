@@ -10,11 +10,6 @@
         ></navdrawer>
       </div>
       <div :class="mini?hideDrawerFlag?'body-mb-full':'body-mb-full':'body flex-grow-1 flex-shrink-0'">
-        <top-banner 
-        :title="title" 
-        v-on:hide-drawer="hideDrawer"
-        >
-        </top-banner>
         <!-- <div v-if="$auth.loggedIn">loggedIn</div> -->
         <v-row>
          <v-breadcrumbs 
