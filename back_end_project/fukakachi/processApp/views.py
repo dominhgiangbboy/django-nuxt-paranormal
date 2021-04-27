@@ -9,14 +9,15 @@ class DataSetView(APIView):
     permission_classes = []
    
     def post(self, request):
-        # try:
+        try:
             dataReq = request.data  
             temp = data_set.objects.all()
             response = temp
+            temp2 = 0
             if len(temp) > 0:
-                response = DataSetSerializer(temp).data
-            
+                temp2 = DataSetSerializer(temp, many = True)
+            response = temp2.data
             return Response(response)
-        # except:
-        #     response = "Server error please contact admin"
-        #     return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except:
+            response = "Server error please contact admin"
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

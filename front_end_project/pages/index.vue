@@ -73,7 +73,7 @@
           >
           </custom-button>
         </v-col>
-
+        
         <v-col cols="4">
           <custom-button
             v-on:click="addItem"
@@ -118,6 +118,7 @@ export default {
       infoField: '',
       deleteDialog: false,
       tempItemsEdit:{},
+      
       tableHeaders:[],
     };
   },
@@ -223,6 +224,7 @@ export default {
 
       }
     },
+    
     editItem(item){
       this.editDialog = true
       this.tempItemsEdit = item.item
@@ -235,7 +237,7 @@ export default {
           dataReq = {
           }
       }
-      me.postToServer(dataReq,me.get_projects_api).then((res)=>{
+      me.postToServer(dataReq,me.get_data_set).then((res)=>{
         me.tableItems = res
       })
     },

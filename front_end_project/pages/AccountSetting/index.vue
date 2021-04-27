@@ -2,7 +2,8 @@
   <v-container class="container" fluid>
     <!-- add Plant dialog -->
     <v-row>
-      <v-col align-self="center" :cols="mini?'12':'6'">
+      <v-col cols="3"></v-col>
+      <v-col align-self="center" :cols="mini?'12':'3'">
         <v-avatar size="128" class="align-center">
           <img
             src="https://cdn.vuetifyjs.com/images/john.jpg"

@@ -1,14 +1,12 @@
 from django.urls import path
-# from .views import GetPlantList, AddPlantList,GetProcessList, DeletePlantList,AddProcessList, DeleteProcessList,UpdatePlantList, UpdateProcessList ,GetSubProcessList,UpdateSubProcessList,DeleteSubProcessList,AddSubProcessList
+from .views import CategoryView, FileDownloadDemo,FileUploadDemo
 
 app_name = 'mainApp'
 
 urlpatterns = [
     # Process list
-    # path('get-process-list/', GetProcessList.as_view(), name="get_list_process"),
-    # path('update-process-list/', UpdateProcessList.as_view(), name="update_list_process"),
-    # path('delete-process-list/', DeleteProcessList.as_view(), name="delete_list_process"),
-    # path('add-process-list/', AddProcessList.as_view(), name="add_list_process"),
-
-
+    path('category-list-get/', CategoryView.as_view(), name="category-list-get"),
+    path('download-pdf/', FileDownloadDemo.as_view(), name="download-pdf"),
+    path('upload-file/', FileUploadDemo.as_view(), name="upload-file"),
+    
 ]

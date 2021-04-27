@@ -161,6 +161,38 @@ Vue.mixin({
           );
         });
     },
+    async downloadFile(url,data){
+      var me = this;
+      me.$axios({
+        url: base_url + url,
+        method: 'POST',
+        responseType: 'blob', // important
+        data: data,
+      }).then((response) => {
+         const url = window.URL.createObjectURL(new Blob([response.data]));
+         const link = document.createElement('a');
+         link.href = url;
+         link.setAttribute('download', 'zipFile.zip'); //or any other extension
+         document.body.appendChild(link);
+         link.click();
+      });
+    },
+    async uploadFile(url,data){
+      var me = this;
+      me.$axios({
+        url: base_url + url,
+        method: 'POST',
+        responseType: 'blob', // important
+        data: data,
+      }).then((response) => {
+         const url = window.URL.createObjectURL(new Blob([response.data]));
+         const link = document.createElement('a');
+         link.href = url;
+         link.setAttribute('download', 'zipFile.zip'); //or any other extension
+         document.body.appendChild(link);
+         link.click();
+      });
+    },
     // Login function to get token
     async login(user_name, password) {
       var me = this;
