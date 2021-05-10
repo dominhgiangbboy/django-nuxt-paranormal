@@ -1,9 +1,7 @@
 <template>
   <v-data-table
     :headers="headerItems"
-    :items="dataTableItems"
-    :items-per-page="!isShowAll? dataTableItems.length :defaultPageSize"
-    :hide-default-footer="!isShowAll"  
+    :items="dataTableItems"  
     sort-by="calories"
     class="elevation-1"
     :loading = "isLoading"
@@ -14,7 +12,6 @@
     :single-select="true"
     :no-data-text="noDataText"
     :height="height"
-    disable-pagination
     fixed-header
     
   >
@@ -23,6 +20,7 @@
         flat
         dark
         class="toolbar"
+        v-if="!disableAddButton"
       >
         <div class="title">{{toobarTitle}}</div>
         <v-spacer></v-spacer>
@@ -80,13 +78,21 @@
        <!-- eslint-enable -->
        <v-row align-content="center" class="mt-1 mb-1">
           <v-col>
-            <v-btn block class="table-action-btn" v-on:click="emitEvent(item,1)" dark>
+            <v-btn 
+              block 
+              class="table-action-btn" 
+              rounded
+              v-on:click="emitEvent(item,1)"
+              dark>
               Download
             </v-btn>
           </v-col> 
           <v-col>
-            <v-btn block class="table-action-btn" v-on:click="emitEvent(item,2)" dark>
-              Feature
+            <v-btn 
+              block 
+              class="table-action-btn2" 
+              rounded v-on:click="emitEvent(item,2)" dark>
+              Detailed
             </v-btn>
           </v-col> 
        </v-row>
@@ -103,6 +109,10 @@
   }
   .table-action-btn{
     background-color: $main-theme !important;
+  }
+  .table-action-btn2{
+    background-color: $button-color !important;
+    color: $call-to-action !important;
   }
   .table-delete-btn{
     background-color: $delete-button-color !important;
@@ -257,7 +267,7 @@ export default {
           switch(idEvent)
           {
             case 1:
-              me.$emit('openlink', item.item ,idEvent)
+              me.$emit('download', item.item ,idEvent)
               break
             case 2:
               me.$emit('openlink', item.item ,idEvent)

@@ -2,14 +2,13 @@
       <v-navigation-drawer
         v-model="drawerFlag"
         class="overflow-hidden nav-bar"
-        :width="mini?'40%':''"
+        :width="mini?'20%':''"
         dark
         hide-overlay
         dense
         v-bind:temporary="mini?true:false"
         v-bind:permanent="mini?false:true"
         v-bind:absolute ="mini?true:false"
-        v-bind:expand-on-hover ="mini?false:true"
         v-click-outside="hideDrawer"
     >
       <!-- <div class="title-icon">Fukakachi</div>-->

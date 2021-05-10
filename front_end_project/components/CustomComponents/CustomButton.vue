@@ -3,6 +3,7 @@
         class="custom-btn"
         v-on:click="clicked"
         light
+        rounded
         :disabled="disabled"
         :to="link"
         :link="isLink"
@@ -13,8 +14,10 @@
 </template>
 <style lang="scss" scoped>
   .custom-btn{
-    font-weight: bold;
+    font-weight: bolder !important;
+    padding: 1.5rem !important;
     background-color: $call-to-action !important;
+    color: $button-color;
   }
 </style>
 <script>

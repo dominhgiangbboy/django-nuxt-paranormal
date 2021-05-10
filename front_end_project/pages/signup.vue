@@ -1,9 +1,6 @@
 <template>
   <v-app>
     <v-container fluid fill-height class="loginOverlay">
-      <v-layout flex align-center :class="mobile?'welcome-section-mb':'welcome-section'">
-        <div class="welcome-text">Welcome to Hust system</div>
-      </v-layout>
       <v-layout flex :column="mobile" align-center="mobile" justify-center="mobile"  :class="mobile?'login-section-mb':'login-section'">
         <v-flex  xs12 sm8 elevation-6 style="box-shadow:none !important" class="pt-10">
           <v-card class="login-form">

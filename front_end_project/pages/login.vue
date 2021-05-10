@@ -1,8 +1,24 @@
 <template>
   <v-app>
     <v-container fluid fill-height class="loginOverlay">
-      <v-layout flex align-center :class="mobile?'welcome-section-mb':'welcome-section'">
-        <div class="welcome-text">Welcome to HUST's abnormal dataset system</div>
+      <v-layout :class="mobile?'welcome-section-mb':'welcome-section'">
+        <v-row>
+          <v-col cols="12">
+            <v-row>
+              <v-col align="center">
+                <img src="~/assets/img/logo-main2.png" class="img">  
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col class="ml-5">
+                <div class="welcome-text"><span>Welcome to HUST's abnormal dataset system</span></div>  
+                <span class="introduction">
+
+                </span>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
       </v-layout>
       <v-layout flex  :column="mobile" align-center="mobile" justify-center="mobile"  :class="mobile?'login-section-mb':'login-section'">
         <div v-if="mobile" class="welcome-text-mb">Welcome to HUST's abnormal dataset system</div>
@@ -29,7 +45,7 @@
                     min="8"
                     filled
                     :append-icon="
-                      passwordVisibility ? 'mdi-eye' : 'mdi-eye-off'
+                    passwordVisibility ? 'mdi-eye' : 'mdi-eye-off'
                     "
                     @click:append="iconClick"
                     :type="passwordVisibility ? 'password' : 'text'"
@@ -102,6 +118,10 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+.img{
+  max-width: 100%;
+  margin: 1rem;
+}
 .login-header {
   text-align: center;
   padding-top: 1rem;
@@ -119,7 +139,7 @@ export default {
 }
 .welcome-text {
   padding-left: 2rem;
-  font-size: 6rem;
+  font-size: 1rem;
   line-height: 1.2em;
   font-weight: bold;
   color: $main-theme;

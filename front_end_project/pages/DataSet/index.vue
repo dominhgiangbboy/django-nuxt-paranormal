@@ -79,6 +79,14 @@
           </custom-combo-box>
         </v-col>
         <v-col  :cols="mini?'6':'3'">
+          <custom-combo-box
+            label="Choose type"
+            :comboBoxItems="comboItemType"
+            v-on:change="chooseType"
+          >
+          </custom-combo-box>
+        </v-col>
+        <v-col  :cols="mini?'6':'3'">
           <custom-button
             v-on:click="getDataSetItems"
             label="Search"
@@ -99,9 +107,11 @@
                 dense
                 :isShowAll="false"
                 :isBanner="true"
+                v-on:download="downloadFileAction"
+                v-on:openLink="openLink"
                 v-on:add="createNewDataset"
                 toobarTitle="Data set list"
-                :disableAddButton="false"
+                :disableAddButton="true"
                 height="500"
             >
           </custom-table>
@@ -175,17 +185,10 @@ export default {
           edditable: true,
         },
         {
-          text: "Feature",
-          align: 'start',
-          sortable: false,
-          value: 'feature',
-          edditable: true,
-        },
-        {
           text: '',
           align: 'start',
           sortable: false,
-          width: 400,
+          width: 200,
           value: 'actions',
         },
       ],
@@ -201,9 +204,21 @@ export default {
       currentPlantID : 0,
       isLoadingPlant: false,
       tempAddItems: {},
+      comboItemType: [
+        {
+          "name":"Published data",
+          "id": 1,
+        },
+        {
+          "name":"Crawled data from the internet",
+          "id": 2,
+        },
+      ],
       categoryList: [],
       file: '',
       uploadPercentage: 0,
+      currentCategoryID: 0,
+      currentTypeID: 0,
       isLoadingProcess: false,
       // SUb process
       tableItemsSubProcess : [],
@@ -236,6 +251,8 @@ export default {
       var me = this;
       var dataReq =
       {
+        "categoryID": me.currentCategoryID,
+        "typeID": me.currentTypeID
       };
       me.postToServer(dataReq,me.get_data_set_api).then((res)=>{  
         me.tableItems = res
@@ -313,11 +330,24 @@ export default {
         me.tableItemsProcess = res
       })
     },
+    openLink(){
+
+    },
+    downloadFileAction(item){
+      var me = this;
+      console.log(item.linkFolder)
+      var dataReq = item
+      me.downloadFile(dataReq)
+    },
+
     createNewDataset(){
       this.addDialog = true
     },
-    chooseCategory(){
-      
+    chooseCategory(id){
+      this.currentCategoryID = id
+    },
+    chooseType(id){
+      this.currentTypeID = id
     },
     submit() {      
         return "";

@@ -1,15 +1,16 @@
 <template>
-      <v-combobox
+      <v-select
           v-model="item"
           :items="itemsData"
           :label="label"
           :value ="itemValue"
           :rules="rules"
           outlined 
+          rounded
           dense
           v-on:change="change_data"
           :disabled="disabled"
-        ></v-combobox>
+        ></v-select>
 </template>
 <style lang="scss" scoped>
 
@@ -94,7 +95,7 @@ export default {
     },
     methods: {
       change_data(){
-        this.$emit('change', this.item.value)
+        this.$emit('change', this.item)
       }
     },  
   }

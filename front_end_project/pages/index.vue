@@ -1,91 +1,89 @@
 <template>
   <v-container fluid>
-    <!-- add dialog -->
-    <v-dialog
-      v-model="addDialog"
-      max-width="900px"
-    >
-      <v-card class="pa-2">
-        <v-card-title class="headline mb-5">
-          <span>Add Project</span>
-        </v-card-title>
-        <v-card-text>
-            <v-row v-for="(headerItem,index) in tableHeaders" :key="index"  >
-              <v-col cols="2" v-if="headerItem.edditable"  class="mt-1"> 
-                  <div>
-                      {{headerItem.text}}
-                  </div>
-              </v-col> 
-              <v-col  v-if="headerItem.edditable"> 
-                  <v-text-field
-                      v-model="tempItems[headerItem.value]" 
-                      type="String"
-                      outlined
-                      dense
-                  >
-                  </v-text-field>
-              </v-col> 
-            </v-row>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="darken-1"
-            text
-            @click="addDialog = false"
-          >
-            Cancel
-          </v-btn>
-          <custom-button
-            v-on:click="addItem"
-            label="Add"
-          >
-          </custom-button>
-        </v-card-actions>
-      </v-card>
-      
-    </v-dialog>
     <v-row>
-        <v-col cols="4">
-          <custom-button
-            v-on:click="addItem"
-            label="My analyzed data"
-            :isBlock="true"
-          >
-          </custom-button>
-        </v-col >
-          
-        <v-col cols="4">
-          <custom-button
-            v-on:click="addItem"
-            label="Upload new analyzed data"
-            :isBlock="true"
-          >
-          </custom-button>
+        <v-col cols="6">
+          <div class="text-padding">
+            <span > 
+              With our system you can get Data Set from many sources like crawled data or default processed data.
+            </span>
+          </div>
+          <v-col cols="12" align="center">
+            <custom-button
+              v-on:click="addItem"
+              label="Get data set"
+            >
+            </custom-button>
+          </v-col>
         </v-col>
-          
-        <v-col cols="4">
-          <custom-button
-            v-on:click="addItem"
-            label="Get data set"
-            :isBlock="true"
-          >
-          </custom-button>
+        <v-col align="center" cols="6">
+          <div class="img-section">
+            <img src="../assets/img/computerData.jpeg" class="img" alt="">
+          </div>
+        </v-col>
+        <v-col align="center" cols="6">
+          <div class="img-section">
+            <img src="../assets/img/sciencetist.jpeg" class="img" alt="">
+          </div>
+        </v-col>
+        <v-col cols="6">
+          <div class="text-padding">
+            <span> 
+            If you are a developer or a sciencetist you can see your analyzed data here.
+            </span>
+          </div>
+          <v-col cols="12" align="center">
+            <custom-button
+              v-on:click="addItem"
+              label="My analyzed data"
+
+            >
+            </custom-button>
+          </v-col >
         </v-col>
         
-        <v-col cols="4">
-          <custom-button
-            v-on:click="addItem"
-            label="Pre-processed data"
-            :isBlock="true"
-          >
-          </custom-button>
+        <v-col cols="6">
+          <div class="text-padding">
+            <span class="text-padding"> 
+            You can also check out our collected pre-process data here.
+            </span>
+          </div>
+          <v-col cols="12" align="center">
+              <custom-button
+                v-on:click="addItem"
+                label="Pre-processed data"
+              >
+              </custom-button>
+          </v-col >
         </v-col>
+        <v-col align="center" cols="6">
+          <div class="img-section">
+            <img src="../assets/img/collect-data.jpeg" class="img" alt="">
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col align="center">
+          <div class="title">
+            Our data example
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col align="center">
+          <iframe width="880" height="495" src="https://www.youtube.com/embed/NckU4v4dyxE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+          </iframe>
+        </v-col>
+        
       </v-row>
   </v-container>
 </template>
 <style lang="scss" scoped>
+  .img {
+    max-width: 80%;
+  }
+  .action-button{
+    margin-left: 2rem;
+  }
   .delete-button{
     color: $text-color;
     font-weight: bold;
@@ -102,6 +100,14 @@
   .combobox-header-left{
       text-align: left;
       font-weight: bold;
+  }
+  .text-padding{
+    padding:20px
+  }
+  .title{
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 2rem;
   }
 </style>
 <script>
@@ -175,18 +181,7 @@ export default {
     async addItem(){
       var me = this;
       var dataReq = me.tempItems
-      me.postToServer(dataReq,me.add_projects_api).then((res)=>{
-        me.addDialog = false;
-        me.dataTableGet()
-        me.tempItems = {
-          "name": "",
-          "年間必要固定費額": "",
-          "月間必要固定費額": "",
-          "一日当り必要固定費額": "",
-          "一日当り付加価値額収支": "",
-          "総付加価値額": ""
-        }
-      })
+      me.downloadFile('download-file/',{})
     },
 
     async editItemAction(){

@@ -89,7 +89,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      title: "資材G所轄　材料補助材料費＆形鋼・鋼板外注一次加工費",
+      title: "",
       dialog: false,
       search: "",
       date: new Date().toISOString().substr(0, 10),

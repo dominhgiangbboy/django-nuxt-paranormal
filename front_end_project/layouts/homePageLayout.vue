@@ -1,6 +1,6 @@
 <template>
   <div class="home-page">
-      <nav class="navbar navbar-expand-lg fixed-top navbar-light">
+      <nav class="navbar navbar-expand-lg fixed-top navbar-light background">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav mr-auto mt-2 ml-4 mt-lg-0">
             <li class="nav-item ml-5" v-for="(item,index) in itemLink" :key="index">
-              <nuxt-link class="nav-link" to="/DataSet">{{item.name}}</nuxt-link>
+              <nuxt-link class="nav-link" :to="item.link">{{item.name}}</nuxt-link>
             </li>            
           </ul>
         </div>
@@ -24,7 +24,9 @@
   .home-page{
     width: 100vw;
   }
-
+  .background{
+    background-color: #fff;
+  }
 </style>
 <script>
 export default {
@@ -38,7 +40,7 @@ export default {
             name: "Published datasets", link: "/DataSet"
           },
           {
-            name: "My datasets", link: "/DataSet"
+            name: "My datasets", link: "/Personal"
           },
           {
             name: "My Account", link: "/AccountSetting"
