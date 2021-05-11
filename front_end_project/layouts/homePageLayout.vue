@@ -7,12 +7,19 @@
         <nuxt-link class="nav-link pr-10 mr-4 " to="/">Home</nuxt-link>
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-          <ul class="navbar-nav mr-auto mt-2 ml-4 mt-lg-0">
+          <ul class="navbar-nav mt-2 ml-4 mt-lg-0">
             <li class="nav-item ml-5" v-for="(item,index) in itemLink" :key="index">
               <nuxt-link class="nav-link" :to="item.link">{{item.name}}</nuxt-link>
             </li>            
           </ul>
         </div>
+
+        <v-btn v-on:click="logout" rounded dark>
+          <v-icon left>
+            mdi-logout
+          </v-icon>
+          LOGOUT
+        </v-btn>
       </nav>
       <div class="mt-10" style="margin-top: 200px">
          <nuxt/>
@@ -34,13 +41,10 @@ export default {
     return {
         itemLink: [
           {
-            name: "User's datasets", link: "/DataSet"
+            name: "Datasets", link: "/DataSet"
           },
           {
-            name: "Published datasets", link: "/DataSet"
-          },
-          {
-            name: "My datasets", link: "/Personal"
+            name: "My analyzed data", link: "/Personal"
           },
           {
             name: "My Account", link: "/AccountSetting"

@@ -37,7 +37,7 @@ Vue.mixin({
         cancelButtonText: 'cancel'
       }).then(function(){
         if (alertType == "error"){
-          me.logout();
+          me.logoutAction();
         }
       });;
     },
@@ -75,7 +75,6 @@ Vue.mixin({
           })
           .catch(error => {
             if (this.$axios.isCancel(error)) {
-           
             } else {
               me.sweetsAlert("Api called fail", "Please contact admin", "error");
             }
@@ -84,7 +83,15 @@ Vue.mixin({
       
     },
     //logout function
-    async logout(){
+    logout(){
+      var me = this
+      me.swAlert(
+        "LOGOUT", 
+        "Are you sure you want to log out?", 
+        "question",
+        me.logoutAction)
+    },
+    async logoutAction(){
       var me = this;
       await me.$auth.logout()
       me.$nuxt.$router.push('/login');
@@ -161,7 +168,7 @@ Vue.mixin({
           );
         });
     },
-    async downloadFile(data){
+    async downloadFile(data, fileName){
       var me = this;
       var url = 'index/download-file/';
       me.$axios({
@@ -170,11 +177,11 @@ Vue.mixin({
         responseType: 'blob', // important
         data: data,
       }).then((response) => {
-          debugger
+         debugger
          const url = window.URL.createObjectURL(new Blob([response.data]));
          const link = document.createElement('a');
          link.href = url;
-         link.setAttribute('download', ""); //or any other extension
+         link.setAttribute('download', fileName + ".zip"); //or any other extension
          document.body.appendChild(link);
          link.click();
       });
@@ -190,7 +197,7 @@ Vue.mixin({
          const url = window.URL.createObjectURL(new Blob([response.data]));
          const link = document.createElement('a');
          link.href = url;
-         link.setAttribute('download', 'zipFile.zip'); //or any other extension
+         link.setAttribute('download', '.zip'); //or any other extension
          document.body.appendChild(link);
          link.click();
       });

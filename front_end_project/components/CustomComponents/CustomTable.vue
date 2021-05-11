@@ -270,7 +270,7 @@ export default {
               me.$emit('download', item.item ,idEvent)
               break
             case 2:
-              me.$emit('openlink', item.item ,idEvent)
+              me.$emit('openLink', item.item ,idEvent)
               break
             case 3:
               me.$emit('openlink', item.item , idEvent)

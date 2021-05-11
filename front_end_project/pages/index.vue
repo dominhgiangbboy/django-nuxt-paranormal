@@ -9,7 +9,7 @@
           </div>
           <v-col cols="12" align="center">
             <custom-button
-              v-on:click="addItem"
+              v-on:click="goToPage(1)"
               label="Get data set"
             >
             </custom-button>
@@ -33,7 +33,7 @@
           </div>
           <v-col cols="12" align="center">
             <custom-button
-              v-on:click="addItem"
+              v-on:click="goToPage(2)"
               label="My analyzed data"
 
             >
@@ -49,7 +49,7 @@
           </div>
           <v-col cols="12" align="center">
               <custom-button
-                v-on:click="addItem"
+                v-on:click="goToPage(3)"
                 label="Pre-processed data"
               >
               </custom-button>
@@ -219,7 +219,23 @@ export default {
 
       }
     },
-    
+    goToPage(flag){
+      var me = this;
+      switch(flag){
+        case 1:
+          me.$nuxt.$router.push({ path: '/DataSet', query: { dataSetID: item.id } })
+          break
+        case 2:
+          me.$nuxt.$router.push({ path: '/Personal', query: { dataSetID: item.id } })
+          break
+        case 1:
+          me.$nuxt.$router.push({ path: '/AccountSetting', query: { dataSetID: item.id } })
+          break
+        default:
+          break
+      }
+      
+    },
     editItem(item){
       this.editDialog = true
       this.tempItemsEdit = item.item

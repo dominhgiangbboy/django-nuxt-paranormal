@@ -194,11 +194,7 @@ export default {
       ],
      
       tableItems: [
-        {
-          name: "Running data set",
-          author: "BK's students",
-          information: "Created with crawled data from the internet"
-        }
+        
       ],  
       addDialog: false,
       currentPlantID : 0,
@@ -335,11 +331,13 @@ export default {
     },
     downloadFileAction(item){
       var me = this;
-      console.log(item.linkFolder)
       var dataReq = item
-      me.downloadFile(dataReq)
+      me.downloadFile(dataReq, item.name)
     },
-
+    openLink(item){
+      var me = this;
+      me.$nuxt.$router.push({ path: '/DetailedPage', query: { dataSetID: item.id } })
+    },
     createNewDataset(){
       this.addDialog = true
     },
@@ -350,7 +348,7 @@ export default {
       this.currentTypeID = id
     },
     submit() {      
-        return "";
+      return "";
     },
     buttonclick1(){ 
       

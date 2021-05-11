@@ -14,18 +14,17 @@ class CategoryView(APIView):
     permission_classes = []
    
     def post(self, request):
-        # try:
+        try:
             dataReq = request.data  
-            temp = data_category.objects.all()
-            print(temp)
+            temp = data_category.objects.all()  
             if len(temp) > 0:
                 temp2 = CategorySerializer(temp, many = True)
                 response = temp2.data
                 return Response(response)
             return Response('No data')
-        # except:
-        #     response = "Server error please contact admin"
-        #     return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except:
+            response = "Server error please contact admin"
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 class FileDownloadDemo(APIView):
     permission_classes = []
     
@@ -52,7 +51,7 @@ class FileDownloadDemo(APIView):
         try: 
             if os.path.isfile(dir_name+'.zip'):
                 zip = open(dir_name+'.zip','rb')    
-                return FileResponse(zip)
+                return FileResponse(zip, filename="ab.zip")
             else:
                 filePaths = retrieve_file_paths(dir_name)
                     # printing the list of all files to be zipped
@@ -67,7 +66,7 @@ class FileDownloadDemo(APIView):
                     for file in filePaths:
                         zip_file.write(file)
                 zip = open(dir_name+'.zip','rb')    
-                return FileResponse(zip)
+                return FileResponse(zip,  filename="ab.zip")
         
         except:
             response = "Error downloading file"

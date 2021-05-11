@@ -1,20 +1,86 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col  :cols="mini?'12':'6'">
+      <v-col  :cols="mini?'12':'3'">
           <custom-combo-box
             label="Choose my analyzed data"
           >
           </custom-combo-box>
-          
-        </v-col>
-        <v-col :cols="mini?'12':'6'"><canvas id="my-chart"></canvas></v-col>
-    </v-row>
+      </v-col>
+      <v-col :cols="mini?'12':'3'">
+        <custom-button label="search">
 
+        </custom-button>
+      </v-col>
+    </v-row>
+    <v-row>
+        <v-col :cols="mini?'12':'6'">
+          <custom-table
+                :defaultPageSize="10"
+                :headerItems="tableHeaders"
+                :isLoading="isLoading"
+                :dataTableItems="tableItems"
+                :singleSelect="true"
+                dense
+                :isShowAll="false"
+                :isBanner="true"
+                v-on:edit="editItem"
+                toobarTitle="My dataset list"
+                :disableAddButton="TRUE"
+                height="500"
+            >
+          </custom-table>
+        </v-col>
+        <v-col :cols="mini?'12':'6'">
+          <v-row>
+            <div class="text-header">
+              Preview data
+            </div>
+          </v-row>
+          <v-row>
+            <div class="json-field">
+              <pre>{{ jsonstr | pretty }}</pre>
+            </div>
+          </v-row>
+          <v-row>
+            <v-text-field
+              class="mr-5 mt-5"
+              label="Choose published data to compare"
+              rounded
+              dense
+              outlined
+            >
+            </v-text-field>
+            <custom-button 
+              class="mr-5  mt-5"
+              label="Search"
+              >
+
+            </custom-button>
+          </v-row>
+          
+          <v-row>
+            <canvas id="my-chart"></canvas>  
+          </v-row>
+        </v-col>
+    </v-row>
   </v-container>
 </template>
 <style lang="scss" scoped>
-  
+  .text-header{
+    margin: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: $main-theme;
+  }
+  .json-field{
+    background-color: #dee2e6;
+    width: 100%;
+    max-height: 50vh;
+    padding: 1rem;
+    margin-right: 1rem;
+    overflow: auto;
+  }
 </style>
 <script>
 import Chart from 'chart.js';
@@ -25,9 +91,51 @@ export default {
     return {
       showUpdate:false,
       comboBoxItems: [],
+      tableItems: [
+        {
+
+        }
+      ],
+      jsonstr: '{"id":1,"name":"A green door","price":12.50,"tags":["home","green"]}',
+      tableHeaders: [
+        {
+          text: "My Dataset",
+          align: 'start',
+          sortable: false,
+          value: 'name',
+          edditable: true,
+        },
+        {
+          text: "Dataset type",
+          align: 'start',
+          sortable: false,
+          value: 'author',
+          edditable: true,
+        },
+        {
+          text: "Information",
+          align: 'start',
+          sortable: false,
+          value: 'information',
+          edditable: true,
+        },
+        {
+          text: '',
+          align: 'start',
+          sortable: false,
+          width: 100,
+          value: 'inputDelete',
+        },
+      ],
       infoField: '',
     };
   },
+  filters: {
+    pretty: function(value) {
+      return JSON.stringify(JSON.parse(value), null, 2);
+    }
+  },
+
   computed: {
     mini() {
       switch (this.$vuetify.breakpoint.name) {
@@ -73,6 +181,9 @@ export default {
   methods: {
    async clickButton () {
     
+   },
+   async editItem(item){
+     var me = this
    },
    insertClick(){
    },
