@@ -63,7 +63,8 @@ export default {
       itemsData(){
         var me = this;
         var itemsTemp = [];
-        this.comboBoxItems.forEach(comboBoxItem => {  
+        if (me.comboBoxItems.length == 0){ return}
+        me.comboBoxItems.forEach(comboBoxItem => {  
             var itemTemp = {text: '', value: 0};
                 itemTemp.text = comboBoxItem.name;
                 itemTemp.value = comboBoxItem.id;

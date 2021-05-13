@@ -22,23 +22,16 @@
               </div>
             </v-col>
             <v-col>
-              <div v-if="!userNameEdit" class="text-data text-header">
-                <span>
-                  {{userName}} 
-                </span>
-              </div>
-              <v-text-field v-if="userNameEdit"
+              <v-text-field
                 class="text-input"
-                label="Enter your username"
-                v-model="userName"
+                label="Username"
+                v-model="temp.user_name"
                 filled
                 rounded
                 required
               ></v-text-field>
+              
             </v-col>
-            <v-icon @click="userNameEdit = !userNameEdit" class="icon mt-2" >
-              mdi-account-edit
-            </v-icon>
           </v-row>
           <v-row>
             <v-col cols="2">
@@ -51,9 +44,9 @@
             <v-col>
               <v-text-field
                 class="text-input"
-                label="Enter your email"
+                label="Email"
                 rounded
-                v-model="email"
+                v-model="temp.email"
                 filled
               ></v-text-field>
             </v-col>
@@ -69,8 +62,8 @@
             <v-col>
               <v-text-field
                 class="text-input"
-                label="Enter your company name"
-                v-model="company"
+                label="Company name"
+                v-model="temp.company"
                 rounded
                 filled
               ></v-text-field>
@@ -187,7 +180,7 @@ export default {
   },
   data() {
     return {
-      
+      temp: {},
       userNameEdit: false,
       isLoading: false,
       valid: false,
@@ -195,8 +188,12 @@ export default {
       dataTempProject: {},
       company: '',
       email: '',
+      get_user_data: 'get-user-data/',
       userName: '',
     };
+  },
+  created(){
+    this.userID = this.getCookie("userID")
   },
   mounted(){
     this.init()
@@ -205,6 +202,16 @@ export default {
     init(){
       var me = this
       me.refreshToken();
+      me.getUserData();
+    },
+
+    // Process actions
+    async getUserData(){
+      var me = this;
+      var dataReq = {"userID" : parseInt(this.userID)};
+      me.postToServer(dataReq,me.get_user_data).then((res)=>{  
+        me.temp = res[0]
+      })
     },
     // Get combo box items
     async submit(){

@@ -10,6 +10,7 @@ class CustomAccountManager(BaseUserManager):
     
     def create_user(self, user_name, password, **other_fields):
         temp = NewUser.objects.filter(user_name = user_name)
+        
         if len(temp) == 0 :
             user = NewUser.objects.create(user_name = user_name, **other_fields)
             user.set_password(password)

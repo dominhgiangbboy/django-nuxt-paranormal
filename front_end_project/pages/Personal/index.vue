@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <!-- <v-row>
       <v-col  :cols="mini?'12':'3'">
           <custom-combo-box
             label="Choose my analyzed data"
@@ -12,7 +12,7 @@
 
         </custom-button>
       </v-col>
-    </v-row>
+    </v-row> -->
     <v-row>
         <v-col :cols="mini?'12':'6'">
           <custom-table
@@ -22,11 +22,13 @@
                 :dataTableItems="tableItems"
                 :singleSelect="true"
                 dense
+                :showSelect="true"
+                v-on:selected="selectItem"
                 :isShowAll="false"
                 :isBanner="true"
                 v-on:edit="editItem"
                 toobarTitle="My dataset list"
-                :disableAddButton="TRUE"
+                :disableAddButton="true"
                 height="500"
             >
           </custom-table>
@@ -42,27 +44,31 @@
               <pre>{{ jsonstr | pretty }}</pre>
             </div>
           </v-row>
-          <v-row>
-            <v-text-field
-              class="mr-5 mt-5"
-              label="Choose published data to compare"
-              rounded
-              dense
-              outlined
-            >
-            </v-text-field>
-            <custom-button 
-              class="mr-5  mt-5"
-              label="Search"
-              >
-
-            </custom-button>
-          </v-row>
           
-          <v-row>
-            <canvas id="my-chart"></canvas>  
-          </v-row>
         </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="6">
+        <v-text-field
+          class="mr-5 mt-5"
+          label="Choose published data to compare"
+          rounded
+          dense
+          outlined
+        >
+        </v-text-field>
+        <custom-button 
+          class="mr-5  mt-5"
+          label="Search"
+          >
+
+        </custom-button>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="6">
+        <canvas id="my-chart"></canvas>  
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -89,27 +95,19 @@ import * as ChartAnnotation from 'chartjs-plugin-annotation';
 export default {
   data() {
     return {
+      get_data_set_api: "data-analysis-get-user/",
       showUpdate:false,
+      isLoading:false,
       comboBoxItems: [],
       tableItems: [
-        {
-
-        }
       ],
-      jsonstr: '{"id":1,"name":"A green door","price":12.50,"tags":["home","green"]}',
+      jsonstr: '',
       tableHeaders: [
         {
           text: "My Dataset",
           align: 'start',
           sortable: false,
           value: 'name',
-          edditable: true,
-        },
-        {
-          text: "Dataset type",
-          align: 'start',
-          sortable: false,
-          value: 'author',
           edditable: true,
         },
         {
@@ -128,11 +126,12 @@ export default {
         },
       ],
       infoField: '',
+      userID: 0,
     };
   },
   filters: {
     pretty: function(value) {
-      return JSON.stringify(JSON.parse(value), null, 2);
+      return value==''? '' :JSON.stringify(value, null, 4);
     }
   },
 
@@ -171,14 +170,28 @@ export default {
     me.refreshToken();
     me.comboBoxGet();
     me.createdChart();
-    
+    me.init()
   },
   created () {
+    this.userID = this.getCookie("userID")
     this.$nuxt.$on('insertClick', () => {
       this.insertClick();
     })
   },
   methods: {
+    async init (){
+      this.getDataSetDetail();
+    },
+    async getDataSetDetail(){
+      var me = this;  
+      var dataReq =
+      {
+        "userID": me.userID,
+      };
+      me.postToServer(dataReq,me.get_data_set_api).then((res)=>{  
+        me.tableItems = res
+      })
+    },
    async clickButton () {
     
    },
@@ -203,6 +216,10 @@ export default {
     },
     clear() {
       this.$refs.form.reset();
+    },
+    //
+    selectItem(item){
+      this.jsonstr = item.item.json
     },
     // Created chart function
     createdChart(){

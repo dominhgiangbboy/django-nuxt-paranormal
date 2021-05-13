@@ -18,7 +18,11 @@ class data (models.Model):
     download = models.TextField(default='')
 # analyzed
 class analyzed_data (models.Model):
-    id = models.IntegerField(primary_key=True, auto_created = True)
+    id = models.AutoField(primary_key=True, auto_created = True)
     name = models.CharField(max_length=1000, default='')
+    description = models.TextField(default='')
+    dataSetID = models.IntegerField(default=1)
+    userID = models.IntegerField(default=1)
+    typeID = models.IntegerField(default=1)
     json = models.JSONField(encoder=None)
     csv_link = models.TextField(default='')

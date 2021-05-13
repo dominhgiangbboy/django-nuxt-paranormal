@@ -21,7 +21,7 @@ class CategoryView(APIView):
                 temp2 = CategorySerializer(temp, many = True)
                 response = temp2.data
                 return Response(response)
-            return Response('No data')
+            return Response([])
         except:
             response = "Server error please contact admin"
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
