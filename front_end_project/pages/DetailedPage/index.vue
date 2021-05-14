@@ -10,7 +10,56 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text class="mt-5">
+          <v-row>
+            <v-text-field
+              outlined
+              rounded
+              dense
+              label="Input your data's name"
+              v-model="temp.name"
+            >
+              
+            </v-text-field>
+          </v-row>
+          <v-row>
+            <v-text-field
+              outlined
+              rounded
+              dense
+              label="Input your data's description"
+              v-model="temp.description"
+            >
+              
+            </v-text-field>
+          </v-row>
+          <v-row>
+            <v-textarea
+              outlined
+              label="Insert your json data here"
+              v-model="temp.json"
+            >
+
+            </v-textarea>
+          </v-row>
           
+          <v-row>
+            <form enctype="multipart/form-data" novalidate>
+              <v-container class="container" fluid>
+              <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+                  <div class="dropbox">
+                    <input type="file" multiple :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
+                      accept="*" class="input-file">
+                      <p v-if="isInitial">
+                        Drag your file here
+                      </p>
+                      <p v-if="isSaving">
+                        {{ fileCount }} selected
+                      </p>
+                  </div>
+                </form>
+              </v-container>
+            </form>
+          </v-row>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions class="mt-2 mb-2">
@@ -22,7 +71,7 @@
           >
             Close
           </v-btn>
-          <custom-button label="Update" v-on:click="dialog= false">
+          <custom-button label="Add" v-on:click="saveData">
           </custom-button>
         </v-card-actions>
       </v-card>
@@ -33,14 +82,14 @@
                 <v-row>
                     <div class="data-name">
                         <span>
-                            {{data.name}}
+                            {{detailItems.name}}
                         </span>
                     </div>
                 </v-row>
                 <v-row>
                     <div class="data-type">
                         <span>
-                            {{data.type}}
+                            {{detailItems.typeID == 1? 'Published Data': 'Crawled Data'}}
                         </span>
                     </div>
                 </v-row>
@@ -51,7 +100,7 @@
         <v-tabs v-model="tabModel">
             <v-tab>Data</v-tab>
             <v-tab>User analysis</v-tab>
-            <v-tabs-items v-model="tabModel">
+            <v-tabs-items class="card"  v-model="tabModel">
                 <v-tab-item>
                     <v-row>
                         <v-col cols="10" class="ml-5 mt-5 mb-5">
@@ -64,7 +113,7 @@
                                     <v-row>
                                         <v-col>
                                             <div>
-                                                {{data.description}}
+                                                {{detailItems.description}}
                                             </div>
                                         </v-col>
                                     </v-row>
@@ -76,6 +125,7 @@
                 <v-tab-item>
                     <v-row class="mt-5">
                         <v-col :cols="mini?'12':'6'">
+                            
                             <custom-table
                                     :defaultPageSize="10"
                                     :headerItems="tableHeaders"
@@ -86,12 +136,19 @@
                                     :showSelect="true"
                                     :isShowAll="false"
                                     :isBanner="true"
-                                    v-on:edit="editItem"
+                                    v-on:selected="selectItem"
                                     toobarTitle="My dataset list"
-                                    :disableAddButton="TRUE"
+                                    :disableAddButton="true"
                                     height="400"
                                 >
-                            </custom-table>
+                              </custom-table>
+                              <custom-button
+                                label="Add my dataset"
+                                class="mt-5"
+                                v-on:click="addDataSet"
+                              >
+
+                              </custom-button>
                             </v-col>
                             <v-col :cols="mini?'12':'6'">
                             <v-row>
@@ -114,6 +171,9 @@
   </v-container>
 </template>
 <style lang="scss" scoped>
+  .card{
+    padding: 1rem;
+  }
   .text-header{
     margin: 1rem;
     font-size: 1.5rem;
@@ -138,6 +198,25 @@
   .data-type{
     margin: 1rem;  
   }
+  .dropbox {
+    outline: 2px dashed grey; /* the dash box */
+    outline-offset: -10px;
+    background: lightcyan;
+    color: dimgray;
+    padding: 10px 10px;
+    min-height: 200px; /* minimum height */
+    position: relative;
+    cursor: pointer;
+  }
+  .dropbox:hover {
+    background: lightblue; /* when mouse over to the drop zone, change color */
+  }
+
+  .dropbox p {
+    font-size: 1.2em;
+    text-align: center;
+    padding: 50px 0;
+  }
   .title-banner{
     background-color: #dee2e6;
     width: 100%;
@@ -148,13 +227,20 @@
   }
 </style>
 <script>
+const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
 export default {
   data() {
     return {
       dialog: false,
       tabModel: 0,
+      dataSetID: 0,
+      userID: 0,
       showUpdate:false,
+      isLoading:false,
       comboBoxItems: [],
+      temp: {},
+      get_data_set_api: "data-analysis-get/",
+      get_data_add_api: "data-analysis-add/",
       datatype: "Crawled data",
       dataName: "Data's Name is",
       data: {
@@ -167,7 +253,8 @@ export default {
 
         }
       ],
-      jsonstr: '{"id":1,"name":"A green door","price":12.50,"tags":["home","green"]}',
+      detailItems: {},
+      jsonstr: '',
       tableHeaders: [
         {
           text: "My Dataset",
@@ -196,7 +283,7 @@ export default {
   },
   filters: {
     pretty: function(value) {
-      return JSON.stringify(JSON.parse(value), null, 2);
+      return value==''? '' :JSON.stringify(value, null, 4);
     }
   },
 
@@ -214,6 +301,18 @@ export default {
         case "xl":
           return false;
       }
+    },
+    isInitial() {
+        return this.currentStatus === STATUS_INITIAL;
+    },
+    isSaving() {
+      return this.currentStatus === STATUS_SAVING;
+    },
+    isSuccess() {
+      return this.currentStatus === STATUS_SUCCESS;
+    },
+    isFailed() {
+      return this.currentStatus === STATUS_FAILED;
     },
     phone() {
       switch (this.$vuetify.breakpoint.name) {
@@ -233,14 +332,96 @@ export default {
   mounted() {
     var me = this;
     me.refreshToken();    
+    me.init()
   },
   created () {
-    this.$nuxt.$on('insertClick', () => {
-      this.insertClick();
-    })
+    this.userID = this.getCookie("userID")
   },
   methods: {
-   
+    async init (){
+      var params = this.$nuxt.$route.query
+      this.dataSetID = params.dataSetID;
+      this.getDataSetDetail();
+    },
+
+    //
+    selectItem(item){
+      this.jsonstr = item.item.json
+    },
+    //
+    addDataSet(){
+      this.dialog = true
+    },
+
+    // Getting data set's detailed data
+    async getDataSetDetail(){
+      var me = this;
+      var dataReq =
+      {
+        "dataSetID": me.dataSetID,
+      };
+      me.postToServer(dataReq,me.get_data_set_api).then((res)=>{  
+        me.tableItems = res["analyzed"]
+        me.detailItems = res["detail"][0]  
+      })
+    },
+    async saveData(){
+      var me = this
+      var dataReq = me.temp
+      dataReq.userID = me.userID
+      dataReq.dataSetID = me.dataSetID
+      dataReq.json = JSON.parse(me.temp.json);
+      if(me.temp.name == ''){
+        me.swAlert("INPUT","Please enter your data's name", "error", ()=>{return})
+        return;
+      }
+      else if(me.temp.description == ''){
+        me.swAlert("INPUT","Please enter your data's description", "error", ()=>{return})
+        return;
+      }
+      else if(me.temp.json == ''){
+        me.swAlert("INPUT","Please enter your data", "error", ()=>{return})
+        return;
+      }
+      else{
+        me.postToServer(dataReq,me.get_data_add_api).then((res)=>{  
+          me.dialog= false
+          me.getDataSetDetail()
+        })
+      }
+    },
+    save(formData) {
+      // upload data to the server
+      var me = this;
+      this.currentStatus = STATUS_SAVING;
+
+      me.upload(formData).then(() => {
+        me.uploadedFiles = [];
+        me.currentStatus = STATUS_SUCCESS;       
+        this.swAlert(this.$t("追加"),this.$t("CSVを追加"),"success", ()=>{ me.addCsvDialog = false; me.getTableData })
+        
+      })
+      .catch(err => {
+        me.uploadError = err.response;
+        me.currentStatus = STATUS_FAILED;
+      });
+    },
+    filesChange(fieldName, fileList) {
+      // handle file changes
+      const formData = new FormData();
+
+      if (!fileList.length) return;
+
+      // append the files to FormData
+      Array
+        .from(Array(fileList.length).keys())
+        .map(x => {
+          formData.append('file', fileList[x], fileList[x].name);
+        });
+      formData.append('sub_process_id', this.currentSubProcessID);
+      // save it
+      this.save(formData);
+    },
   }
 };
 </script>

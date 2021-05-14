@@ -3,6 +3,28 @@ import Vue from "vue";
 const base_url = "http://127.0.0.1:8000/api/";
 Vue.mixin({
   methods: {
+    setCookie(name,value,days) {
+      var expires = "";
+      if (days) {
+          var date = new Date();
+          date.setTime(date.getTime() + (days*24*60*60*1000));
+          expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    },
+    getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    },
+    eraseCookie(name) {   
+        document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    },
     configButton(buttonType,enable,hide){
       switch (buttonType){
         case 'update':
@@ -211,7 +233,12 @@ Vue.mixin({
         })
         .then(async resp => {
           await me.$auth.strategy.token.set( "Bearer " + resp.data.access);
-          await me.$auth.strategy.refreshToken.set(resp.data.refresh);
+          await me.$auth.strategy.refreshToken.set(resp.data.refresh); 
+          me.setCookie('isDev', resp.data.isDev.toString(), 1)
+          me.setCookie('userID', resp.data.id.toString(), 1)
+          me.setCookie('userName', resp.data.userName.toString(), 1)
+          me.setCookie('company', resp.data.company.toString(), 1)
+          me.setCookie('email', resp.data.email.toString(), 1)
           me.$nuxt.$router.push('/')
         })
         .catch(error => {

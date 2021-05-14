@@ -19,8 +19,14 @@ class CreateUser(APIView):
    
     def post(self, request):
         try:
-            dataReq = request.data  
-            temp = CustomAccountManager().create_user(dataReq["user_name"], dataReq["password"],is_dev = dataReq["is_dev"] == "true")
+            dataReq = request.data 
+            temp = CustomAccountManager().create_user(
+                dataReq["user_name"]
+                , dataReq["password"]
+                , is_dev = dataReq["is_dev"]
+                , email = dataReq["email"]
+                , company = dataReq["company"]
+                )
             if temp is None:
                 response = "User existed"
             else:

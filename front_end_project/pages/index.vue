@@ -70,7 +70,7 @@
       </v-row>
       <v-row>
         <v-col align="center">
-          <iframe width="880" height="495" src="https://www.youtube.com/embed/NckU4v4dyxE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+          <iframe width="1280" height="720" src="https://www.youtube.com/embed/iObWOL4oFyU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
           </iframe>
         </v-col>
         
@@ -223,13 +223,13 @@ export default {
       var me = this;
       switch(flag){
         case 1:
-          me.$nuxt.$router.push({ path: '/DataSet', query: { dataSetID: item.id } })
+          me.$nuxt.$router.push({ path: '/DataSet' })
           break
         case 2:
-          me.$nuxt.$router.push({ path: '/Personal', query: { dataSetID: item.id } })
+          me.$nuxt.$router.push({ path: '/Personal'})
           break
         case 1:
-          me.$nuxt.$router.push({ path: '/AccountSetting', query: { dataSetID: item.id } })
+          me.$nuxt.$router.push({ path: '/AccountSetting' })
           break
         default:
           break

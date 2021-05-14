@@ -171,17 +171,10 @@ export default {
           edditable: true,
         },
         {
-          text: "Author",
-          align: 'start',
-          sortable: false,
-          value: 'author',
-          edditable: true,
-        },
-        {
           text: "Information",
           align: 'start',
           sortable: false,
-          value: 'information',
+          value: 'description',
           edditable: true,
         },
         {
