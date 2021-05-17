@@ -1,6 +1,6 @@
 
 import Vue from "vue";
-const base_url = "http://127.0.0.1:8000/api/";
+const base_url = "http://localhost:8090/api/";
 Vue.mixin({
   methods: {
     setCookie(name,value,days) {

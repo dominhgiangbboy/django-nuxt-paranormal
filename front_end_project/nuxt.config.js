@@ -1,6 +1,12 @@
 import colors from "vuetify/es5/util/colors";
 
 export default {
+  target: 'static',
+
+  server:{
+    host: '0.0.0.0',
+    port: 3005,
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: "%s System",
@@ -31,7 +37,7 @@ export default {
   axios: {
     proxy: true,
     credentials: false,
-    baseURL: "http://127.0.0.1:8000/api"
+    baseURL: "http://localhost:8090/api"
   },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -64,7 +70,7 @@ export default {
     }
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'http://127.0.0.1:8000/api/'
+    baseUrl: process.env.BASE_URL || 'http://localhost:8090/api/'
   },
   auth: {
     localStorage: false,
