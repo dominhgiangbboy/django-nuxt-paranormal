@@ -91,9 +91,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'django_abnormal',
         'USER': 'root',
-        'PASSWORD': 'Vhec@123456',
+        'PASSWORD': 'giang6111996',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '8096',
+        'PORT': '3096',
     }
 }
 REST_FRAMEWORK = {

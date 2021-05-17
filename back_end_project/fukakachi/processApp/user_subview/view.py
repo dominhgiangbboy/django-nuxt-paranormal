@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework import status
-from processApp.models import data, data_set , analyzed_data
+from processApp.models import  data_set , analyzed_data
 from users.models import  NewUser
 from processApp.serializer import UserSerializer 
 # Get data set list
