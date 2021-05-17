@@ -89,9 +89,9 @@ AUTHENTICATION_BACKENDS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'student1',
-        'USER': 'student1',
-        'PASSWORD': '12345654321',
+        'NAME':'paranormal',
+        'USER': 'paranormal',
+        'PASSWORD': 'bk20202',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3096',
     }
