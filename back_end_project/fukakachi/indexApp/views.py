@@ -4,11 +4,17 @@ from rest_framework.views import APIView
 from rest_framework import status
 from django.http import FileResponse, response
 from .models import data_category
+from processApp.models import data_set
 from .serializer import CategorySerializer
 from django.core.files.storage import FileSystemStorage
 from shutil import make_archive
 import os
 import zipfile
+from os import path
+import environ
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 # create user
 class CategoryView(APIView):
     permission_classes = []
@@ -76,9 +82,29 @@ class FileUploadDemo(APIView):
     permission_classes = []
     def post(self, request):
         try:
+            dataReq = request.POST
+            dataName = dataReq['name']
+            link = dataReq['link']
+            type = dataReq['type']
+            category = dataReq['category']
+            description = dataReq['description']
             myfile = request.FILES['file']
-            fs = FileSystemStorage(location='/Users/giang/Documents/GitHub/django-nuxt-paranormal/back_end_project/fukakachi/assets') #defaults to   MEDIA_ROOT  
-            filename = fs.save(myfile.name, myfile)
+            file_location = os.path.join(env("FOLDER_LINK"), link)
+            if not path.exists(file_location):
+                os.mkdir(file_location)
+            ## Save file
+            fs = FileSystemStorage(location=file_location) #defaults to   MEDIA_ROOT  
+            fs.save(myfile.name, myfile)
+            
+
+            filelink = os.path.join(file_location, myfile.name)
+            data_set.objects.create(
+                type_id = type
+                , category_id = category
+                , name = dataName
+                , description = description
+                , linkFolder = filelink
+            )
             return Response('Success')
         except:
             response = "Error downloading file"

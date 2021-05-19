@@ -189,6 +189,7 @@ export default {
       company: '',
       email: '',
       get_user_data: 'get-user-data/',
+      update_user_data: 'update-user-data/',
       userName: '',
     };
   },
@@ -213,9 +214,18 @@ export default {
         me.temp = res[0]
       })
     },
+
     // Get combo box items
     async submit(){
-
+      var me = this;
+      var dataReq = me.temp;
+        me.postToServer(dataReq,me.update_user_data).then((res)=>{  
+        me.swAlert(
+                  'Update'
+                  , 'User info updated'
+                  , 'success', ()=>{me.getUserData()})
+        me.getUserData()
+      })
     }
   },
 };

@@ -1,6 +1,6 @@
 
 import Vue from "vue";
-const base_url = "http://localhost:8090/api/";
+const base_url = process.env.BASE_URL
 Vue.mixin({
   methods: {
     setCookie(name,value,days) {
@@ -69,7 +69,7 @@ Vue.mixin({
         title: message,
         text: subMessage,
         icon: alertType,
-        showCancelButton: true,
+        showCancelButton: alertType == 'question'?true:false,
         cancelButtonText: 'cancel'
       }).then(function(result){
         if(result.isConfirmed){
@@ -80,7 +80,7 @@ Vue.mixin({
     // Refresh new token
     async refreshToken() {
       let me = this;
-     
+       
       if (this.$auth.strategy.refreshToken.status().expired()){
         me.sweetsAlert("Session expired", "Please loggin again", "error");
       }
@@ -123,6 +123,7 @@ Vue.mixin({
     //  common methods POST data
     async postToServer(data,api) {
       let me = this;
+       
       var config = {
         method: 'post',
         url: base_url + api,
@@ -165,6 +166,7 @@ Vue.mixin({
     },
     // Login function to get token
     async signup(user_name, password, is_dev,email, company) {
+       
       var me = this;
       await me.$axios.post(base_url + 'user/create-user/',{
           user_name: user_name,
@@ -191,6 +193,7 @@ Vue.mixin({
         });
     },
     async downloadFile(data, fileName){
+       
       var me = this;
       var url = 'index/download-file/';
       me.$axios({
@@ -209,6 +212,7 @@ Vue.mixin({
       });
     },
     async uploadFile(url,data){
+       
       var me = this;
       me.$axios({
         url: base_url + url,
@@ -226,10 +230,11 @@ Vue.mixin({
     },
     // Login function to get token
     async login(user_name, password) {
+       
       var me = this;
        await me.$axios.post(base_url + 'user/login/',{
-        user_name:user_name,
-        password :password,
+          user_name:user_name,
+          password :password,
         })
         .then(async resp => {
           await me.$auth.strategy.token.set( "Bearer " + resp.data.access);

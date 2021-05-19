@@ -358,19 +358,28 @@ export default {
       var me = this;
       var dataReq =
       {
-        "dataSetID": me.dataSetID,
+        "data_set_id": me.dataSetID,
       };
       me.postToServer(dataReq,me.get_data_set_api).then((res)=>{  
         me.tableItems = res["analyzed"]
         me.detailItems = res["detail"][0]  
+        debugger
       })
     },
     async saveData(){
       var me = this
       var dataReq = me.temp
-      dataReq.userID = me.userID
-      dataReq.dataSetID = me.dataSetID
-      dataReq.json = JSON.parse(me.temp.json);
+      dataReq.user_id = me.userID
+      dataReq.data_set_id = me.dataSetID
+      
+        
+      try {
+        dataReq.json = JSON.parse(me.temp.json);
+      }
+      catch(err) {
+        me.swAlert("INPUT","Please enter your data in Json format", "error", ()=>{me.jsonstr=""; return;})
+        return;
+      } 
       if(me.temp.name == ''){
         me.swAlert("INPUT","Please enter your data's name", "error", ()=>{return})
         return;

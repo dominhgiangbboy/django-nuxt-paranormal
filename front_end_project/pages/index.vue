@@ -70,7 +70,7 @@
       </v-row>
       <v-row>
         <v-col align="center">
-          <iframe width="1280" height="720" src="https://www.youtube.com/embed/iObWOL4oFyU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+          <iframe width="1280" height="720" src="https://www.youtube.com/embed/ES2dIsUedAw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
           </iframe>
         </v-col>
         

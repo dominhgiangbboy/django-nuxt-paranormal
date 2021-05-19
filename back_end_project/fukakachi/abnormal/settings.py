@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-
+import environ
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -89,11 +92,11 @@ AUTHENTICATION_BACKENDS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'paranormal',
-        'USER': 'paranormal',
-        'PASSWORD': 'bk20202',
+        'NAME':'django_abnormal',
+        'USER': 'root',
+        'PASSWORD': 'Vhec@123456',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3096',
+        'PORT': '8096',
     }
 }
 REST_FRAMEWORK = {
@@ -105,10 +108,6 @@ REST_FRAMEWORK = {
 }
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = (
-    # TODO - set this properly for production
-    'https://localhost:3000',
-)
 MIDDLEWARE_CLASSES = (
   'corsheaders.middleware.CorsMiddleware',
 )

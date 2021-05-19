@@ -26,6 +26,41 @@
                 </v-text-field>
             </v-col>
           </v-row>
+          
+          <v-row>
+            <v-col cols="2" class="mt-1"> 
+                <div>
+                    Data's link in server
+                </div>
+            </v-col> 
+            <v-col> 
+                <v-text-field
+                    v-model="tempAddItems['link']" 
+                    type="String"
+                    outlined
+                    dense
+                >
+                </v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="2" class="mt-1"> 
+                <div>
+                    Description
+                </div>
+            </v-col> 
+            <v-col> 
+                <v-textarea
+                    v-model="tempAddItems['description']" 
+                    type="String"
+                    outlined
+                    dense
+                    auto-grow
+                >
+                </v-textarea>
+            </v-col>
+          </v-row>
           <v-row>
             <v-col cols="2" class="mt-1"> 
                 <div>
@@ -36,7 +71,24 @@
               <custom-combo-box
                 label="Choose category"
                 :comboBoxItems="categoryList"
+                :itemValue="currentCategoryID"
                 v-on:change="chooseCategory"
+              >
+              </custom-combo-box>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="2" class="mt-1"> 
+                <div>
+                    Choose type
+                </div>
+            </v-col> 
+            <v-col  :cols="mini?'6':'6'">
+              <custom-combo-box
+                label="Choose type"
+                :itemValue="currentTypeID"
+                :comboBoxItems="comboItemType"
+                v-on:change="chooseType"
               >
               </custom-combo-box>
             </v-col>
@@ -44,7 +96,7 @@
           <v-row>
             <v-col>
               <label>File
-                <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                <input type="file" id="file" ref="file"/>
               </label>
               <br>
               <progress max="100" :value.prop="uploadPercentage"></progress>
@@ -74,6 +126,7 @@
           <custom-combo-box
             label="Choose category"
             :comboBoxItems="categoryList"
+            :itemValue="currentCategoryID"
             v-on:change="chooseCategory"
           >
           </custom-combo-box>
@@ -82,14 +135,22 @@
           <custom-combo-box
             label="Choose type"
             :comboBoxItems="comboItemType"
+            :itemValue="currentTypeID"
             v-on:change="chooseType"
           >
           </custom-combo-box>
         </v-col>
-        <v-col  :cols="mini?'6':'3'">
+        <v-col cols="1">
           <custom-button
             v-on:click="getDataSetItems"
             label="Search"
+          >
+          </custom-button>
+        </v-col>
+        <v-col cols="1">
+          <custom-button
+            v-on:click="openAddDialog"
+            label="Add"
           >
           </custom-button>
         </v-col>
@@ -234,21 +295,24 @@ export default {
       this.refreshToken();
       this.getCategory();
       this.getDataSetItems();
-      this.currentURL = process.env.baseUrl
+      this.currentURL = process.env.BASE_URL
+    },
+    openAddDialog(){
+      this.addDialog = true
     },
     async getDataSetItems(){
       var me = this;
       var dataReq =
       {
-        "categoryID": me.currentCategoryID,
-        "typeID": me.currentTypeID
+        "category_id": me.currentCategoryID,
+        "type_id": me.currentTypeID
       };
       me.postToServer(dataReq,me.get_data_set_api).then((res)=>{  
         me.tableItems = res
       })
     },
     async uploadData(){
-      this.submit()
+      this.handleFileUpload()
     },
     /*
     Handles a change on the file upload
@@ -268,10 +332,20 @@ export default {
       /*
         Add the form data we need to submit
       */
+      var dummyPost = {
+        user: 'Giang'
+      }
       formData.append('file', me.file);
+      formData.append('name', me.tempAddItems['name']);
+      formData.append('link', me.tempAddItems['link']);
+      formData.append('category', me.currentCategoryID);
+      formData.append('type', me.currentTypeID);
+      formData.append('description', me.tempAddItems['description']);
+      console.log(formData);
       /*
         Make the request to the POST /single-file URL
       */
+     
       me.$axios.post( me.currentURL + 'index/upload-file/',
       formData,
       {
@@ -283,10 +357,23 @@ export default {
         }.bind(me)
       }
       ).then(function(){
-        console.log('SUCCESS!!');
+        me.swAlert(
+          "Success",
+          "Successfully Uploaded", 
+          "success", ()=>{
+            me.getDataSetItems()
+          }
+        )
+        me.addDialog = false
       })
-      .catch(function(){
-        console.log('FAILURE!!');
+      .catch(function(e){
+        me.swAlert(
+          "Failed",
+          e, 
+          "error", ()=>{
+          me.getDataSetItems()
+        })
+        me.addDialog = false
       });
     },
     // plant actions
@@ -329,6 +416,7 @@ export default {
     },
     openLink(item){
       var me = this;
+      debugger
       me.$nuxt.$router.push({ path: '/DetailedPage', query: { dataSetID: item.id } })
     },
     createNewDataset(){

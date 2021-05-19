@@ -1,5 +1,5 @@
 import colors from "vuetify/es5/util/colors";
-
+require('dotenv').config()
 export default {
   target: 'static',
 
@@ -37,7 +37,7 @@ export default {
   axios: {
     proxy: true,
     credentials: false,
-    baseURL: "http://localhost:8090/api"
+    baseURL:  process.env.BASE_URL || 'http://127.0.0.1:8080/api/'
   },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -50,6 +50,7 @@ export default {
     'cookie-universal-nuxt',
     'bootstrap-vue/nuxt',
     '@plugins/axios',
+    '@nuxtjs/dotenv',
   ],
   i18n: {
     locales: ["en", "fr", "ja"],
@@ -70,7 +71,7 @@ export default {
     }
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:8090/api/'
+    baseUrl: process.env.BASE_URL
   },
   auth: {
     localStorage: false,

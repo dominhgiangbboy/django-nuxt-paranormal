@@ -27,6 +27,7 @@
                 :isShowAll="false"
                 :isBanner="true"
                 v-on:edit="editItem"
+                v-on:delete="deleteItem"
                 toobarTitle="My dataset list"
                 :disableAddButton="true"
                 height="500"
@@ -64,8 +65,12 @@
 
         </custom-button>
       </v-col>
+      
     </v-row>
     <v-row>
+      <v-col cols="6">
+
+      </v-col>
       <v-col cols="6">
         <canvas id="my-chart"></canvas>  
       </v-col>
@@ -96,6 +101,7 @@ export default {
   data() {
     return {
       get_data_set_api: "data-analysis-get-user/",
+      delete_data_api: "data-analysis-delete/",
       showUpdate:false,
       isLoading:false,
       comboBoxItems: [],
@@ -122,7 +128,7 @@ export default {
           align: 'start',
           sortable: false,
           width: 100,
-          value: 'inputDelete',
+          value: 'input',
         },
       ],
       infoField: '',
@@ -174,9 +180,6 @@ export default {
   },
   created () {
     this.userID = this.getCookie("userID")
-    this.$nuxt.$on('insertClick', () => {
-      this.insertClick();
-    })
   },
   methods: {
     async init (){
@@ -186,7 +189,7 @@ export default {
       var me = this;  
       var dataReq =
       {
-        "userID": me.userID,
+        "user_id": me.userID,
       };
       me.postToServer(dataReq,me.get_data_set_api).then((res)=>{  
         me.tableItems = res
@@ -194,6 +197,28 @@ export default {
     },
    async clickButton () {
     
+   },
+   deleteItem(item){
+     var me = this
+     me.swAlert(
+       'Delete'
+       , 'Are you sure you want to delete this row?'
+       , 'question', ()=>{me.deleteAction(item.item.id)})
+   },
+   deleteAction(id){
+    var me = this;  
+    var dataReq =
+    {
+      "id": id,
+    };
+    me.postToServer(dataReq,me.delete_data_api).then((res)=>{  
+      me.swAlert(
+       'Delete'
+       , 'Delete row successfuly'
+       , 'success', ()=>{
+         return;
+       })
+    })
    },
    async editItem(item){
      var me = this

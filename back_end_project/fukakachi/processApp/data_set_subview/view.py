@@ -12,34 +12,37 @@ class DataSetView(APIView):
     permission_classes = [IsAuthenticated]
    
     def post(self, request):
-        try:
+        # try:
             dataReq = request.data
             response = ''
-            if(dataReq["categoryID"]!=0 and dataReq["typeID"]!=0):      
-                temp = data_set.objects.filter(**dataReq)
+            if(dataReq["category_id"]!=0 and dataReq["type_id"]!=0):      
+                temp = data_set.objects.filter(
+                    type_id = dataReq["type_id"]
+                    , category_id = dataReq["category_id"]
+                )
                 response = temp
                 temp2 = 0
                 if len(temp) > 0:
                     temp2 = DataSetSerializer(temp, many = True)
                     response = temp2.data
                 return Response(response)
-            if(dataReq["categoryID"]==0 and dataReq["typeID"]!=0):      
-                temp = data_set.objects.filter(typeID = dataReq["typeID"])
+            if(dataReq["category_id"]==0 and dataReq["type_id"]!=0):      
+                temp = data_set.objects.filter(type_id = dataReq["type_id"])
                 response = temp
                 temp2 = 0
                 if len(temp) > 0:
                     temp2 = DataSetSerializer(temp, many = True)
                     response = temp2.data
                 return Response(response)
-            if(dataReq["categoryID"]!=0 and dataReq["typeID"]==0):      
-                temp = data_set.objects.filter(typeID = dataReq["categoryID"])
+            if(dataReq["category_id"]!=0 and dataReq["type_id"]==0):      
+                temp = data_set.objects.filter(category_id = dataReq["category_id"])
                 response = temp
                 temp2 = 0
                 if len(temp) > 0:
                     temp2 = DataSetSerializer(temp, many = True)
                     response = temp2.data
                 return Response(response)
-            if(dataReq["categoryID"]==0 and dataReq["typeID"]==0):      
+            if(dataReq["category_id"]==0 and dataReq["type_id"]==0):      
                 temp = data_set.objects.all()
                 response = temp
                 temp2 = 0
@@ -47,35 +50,40 @@ class DataSetView(APIView):
                     temp2 = DataSetSerializer(temp, many = True)
                     response = temp2.data
                 return Response(response)
-        except:
-            response = "Server error please contact admin"
-            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # except:
+        #     response = "Server error please contact admin"
+        #     return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # Get data set detailed data
 class GetAnalysisData(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):
-        # try:
+        try:
             dataReq = request.data
             response = {"detail": '', "analyzed": ""}
-            if(dataReq["dataSetID"]!=0):   
+            if(dataReq["data_set_id"]!=0):   
                 # Getting dataset information
-                idData = dataReq["dataSetID"]   
+                idData = dataReq["data_set_id"]   
                 temp = data_set.objects.filter(id = idData)
                 if len(temp) > 0:
                     temp2 = DataSetSerializer(temp, many = True)
                     responseDetail = temp2.data
-                temp3 = analyzed_data.objects.filter(dataSetID = idData)
+                print(responseDetail)
+                temp3 = analyzed_data.objects.filter(data_set_id = idData)
+               
+                responseAnalyzed = []
+               
                 if len(temp3) > 0:
                     dataAnalyzed = AnalyzedSerializer(temp3, many = True)
                     responseAnalyzed = dataAnalyzed.data
+    
                     i = 0
                     while i < len(responseAnalyzed) :
-                        temp = NewUser.objects.filter(id = responseAnalyzed[i]["userID"])
-                        userName = ''
-                        if len(temp) > 0:
-                            userName = temp[0].user_name
-                        responseAnalyzed[i]['author'] = userName
+                        user_id = responseAnalyzed[i]['user']
+                        user_temp = NewUser.objects.filter(id = user_id)
+                        responseAnalyzed[i]['author'] = user_temp[0].user_name
+                        data_set_id = responseAnalyzed[i]['data_set']
+                        responseAnalyzed[i]['data_set_id'] = data_set_id
                         i += 1
 
                 response['detail'] = responseDetail
@@ -84,18 +92,19 @@ class GetAnalysisData(APIView):
             else:      
                 response = "This is not a valid data set"
                 return Response(response)
-        # except:
-        #     response = "Server error please contact admin"
-        #     return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except:
+            response = "Server error please contact admin"
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 # Get data analyzed data
 class GetAnalysisDataUser(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):
-        # try:
+        try:
             dataReq = request.data
-            if dataReq['userID'] != 0:
+            responseAnalyzed = []
+            if dataReq['user_id'] != 0:
                 response = ''
-                temp3 = analyzed_data.objects.filter(userID = dataReq['userID'])
+                temp3 = analyzed_data.objects.filter(user_id = dataReq['user_id'])
                 if len(temp3) > 0:
                     dataAnalyzed = AnalyzedSerializer(temp3, many = True)
                     responseAnalyzed = dataAnalyzed.data
@@ -104,16 +113,16 @@ class GetAnalysisDataUser(APIView):
             else:      
                 response = "This is not a valid data set"
                 return Response(response)
-        # except:
-        #     response = "Server error please contact admin"
-        #     return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except:
+            response = "Server error please contact admin"
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class AddAnalysisData(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request):
-        # try:
+        try:
             dataReq = request.data
-            if(dataReq["userID"]!=0):   
+            if(dataReq["user_id"]!=0):   
                 # Getting dataset information
                 temp3 = analyzed_data.objects.create(
                     **dataReq
@@ -121,8 +130,25 @@ class AddAnalysisData(APIView):
                 response = ''
                 return Response(response)
             else:      
-                response = "This is not a valid data set"
+                response = "This is not a valid data"
                 return Response(response)
-        # except:
-        #     response = "Server error please contact admin"
-        #     return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except:
+            response = "Server error please contact admin"
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class DeleteAnalyticData(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        try:
+            dataReq = request.data
+            id = dataReq["id"]
+            if(id!=0):   
+                # Getting dataset information
+                temp3 = analyzed_data.objects.filter(id = id).delete()
+                response = ''
+                return Response(response)
+            else:      
+                response = "This is not a valid data"
+                return Response(response)
+        except:
+            response = "Delete error please contact admin"
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

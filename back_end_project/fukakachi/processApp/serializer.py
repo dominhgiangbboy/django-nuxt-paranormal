@@ -11,13 +11,7 @@ class DataSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = data_set
         fields = '__all__'
-# API Example: Project serializer
-class AnalyzedSerializer(serializers.ModelSerializer):
-    # product_name = serializers.CharField()
-    # plant_name = serializers.CharField()
-    class Meta:
-        model = analyzed_data
-        fields = '__all__'
+
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,4 +22,20 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 # API Example: Project serializer
 
-    
+# API Example: Project serializer
+class AnalyzedSerializer(serializers.ModelSerializer):
+    # product_name = serializers.CharField()
+    # plant_name = serializers.CharField()
+    user = UserSerializer
+    data_set = DataSetSerializer
+    class Meta:
+        model = analyzed_data
+        fields = (
+            'user',
+            'id',
+            'name',
+            'description',
+            'json',
+            'csv_link',
+            'data_set',
+        )
