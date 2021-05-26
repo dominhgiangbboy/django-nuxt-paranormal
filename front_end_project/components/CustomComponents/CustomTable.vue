@@ -84,7 +84,7 @@
               rounded
               v-on:click="emitEvent(item,1)"
               dark>
-              Download
+              {{$t('Download')}}
             </v-btn>
           </v-col> 
           <v-col>
@@ -92,7 +92,7 @@
               block 
               class="table-action-btn2" 
               rounded v-on:click="emitEvent(item,2)" dark>
-              Detailed
+              {{$t('Detailed')}}
             </v-btn>
           </v-col> 
        </v-row>

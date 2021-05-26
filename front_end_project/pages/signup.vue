@@ -4,13 +4,13 @@
       <v-layout flex :column="mobile" align-center="mobile" justify-center="mobile"  :class="mobile?'login-section-mb':'login-section'">
         <v-flex  xs12 sm8 elevation-6 style="box-shadow:none !important" class="pt-10">
           <v-card class="login-form">
-            <div class="login-header">Sign up</div>
+            <div class="login-header">{{$t("Sign up")}}</div>
             <v-card-text class="pt-4">
               <div>
                 <v-form v-model="valid" ref="form">
                   <v-text-field
                     class="text-input"
-                    label="Enter your username"
+                    :label="$t('Enter your username')"
                     v-model="userName"
                     :rules="userRules"
                     filled
@@ -18,7 +18,7 @@
                   ></v-text-field>
                   <v-text-field
                     class="text-input"
-                    label="Enter your password"
+                    :label="$t('Enter your password')"
                     v-model="password"
                     min="8"
                     filled
@@ -32,7 +32,7 @@
                   ></v-text-field>
                   <v-text-field
                     class="text-input"
-                    label="Re-Enter your password"
+                    :label="$t('Re-Enter your password')"
                     v-model="passwordReenter"
                     min="8"
                     filled
@@ -44,30 +44,30 @@
                   ></v-text-field>
                   <v-text-field
                     class="text-input"
-                    label="Enter your email"
+                    :label="$t('Enter your email')"
                     v-model="email"
                     filled
                     :rules="passwordReenterRule"
                   ></v-text-field>
                   <v-text-field
                     class="text-input"
-                    label="Enter your company name"
+                    :label="$t('Enter your company name')"
                     v-model="company"
                     filled
                     :rules="passwordReenterRule"
                   ></v-text-field>
                   <custom-combo-box
-                    label="Select your role"
+                    :label="$t('Select your role')"
                     :comboBoxItems="roleCombo"
                     :itemValue="defaultComboValue"
                     v-on:change="selectCombobox"
                   >
                   </custom-combo-box>
                   <v-layout class="pt-10">
-                    <v-btn @click="submit" class="login-button">Sign Up</v-btn>
+                    <v-btn @click="submit" class="login-button">{{$t("Sign up")}}</v-btn>
                   </v-layout>
                   <div class="mt-5" style="text-align: center">
-                    <NuxtLink to="/login">Have an acount? please login</NuxtLink>
+                    <NuxtLink :to="localePath('/login')">{{$t("Have an acount? please login")}}</NuxtLink>
                   </div>
                 </v-form>
               </div>
@@ -131,7 +131,7 @@ export default {
     async submit() {
       var me = this;
       if(me.passwordReenter != me.password){
-        me.swAlert("Error", "Password not match please check your password again","error", ()=>{return}) 
+        me.swAlert("Error", "Passwords do not match please check your password again","error", ()=>{return}) 
       }
       else if (me.password.length < 8)
       {

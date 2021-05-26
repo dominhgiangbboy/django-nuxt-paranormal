@@ -16,10 +16,10 @@
           <v-list-item class="ml-10">
             <v-list-item-content>
               <v-list-item-title class="title-icon"  v-on:click="openLink">
-                  Abnormal
+                  {{$t("Abnormal")}}
               </v-list-item-title>
               <v-list-item-subtitle>
-                  HUST 's System
+                  {{$t("HUST 's System")}}
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-btn 
@@ -52,7 +52,7 @@
             <v-icon>mdi-logout-variant</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>Log out</v-list-item-title>
+            <v-list-item-title>{{$t('LOGOUT')}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -85,18 +85,21 @@
 export default {
   created(){
       this.drawerFlag = false
-      if(this.isAdmin){
+      let isDev = this.getCookie("isDev")
+      
+      if(isDev == 'true'){
           this.items= [
-          ['mdi-home', 'Home','/'],
-          ['mdi-folder', 'Data Set','/DataSet'],
-          ['mdi-account-circle', 'Personal page','/Personal'],
-          ['mdi-cog', 'Account Setting','/AccountSetting'],
-        ];
+            ['mdi-home', this.$t('Home'),this.localePath('/')],
+            ['mdi-folder', this.$t('Datasets'),this.localePath('/DataSet')],
+            ['mdi-account-circle', this.$t('Personal page'),this.localePath('/Personal')],
+            ['mdi-cog', this.$t('Account Setting'),this.localePath('/AccountSetting')],
+          ];
       }
       else{
         this.items= [
-          ['mdi-home', 'Home','/'],
-          ['mdi-clipboard-edit', 'Master','/DataSet'],
+          ['mdi-home', this.$t('Home'),this.localePath('/')],
+          ['mdi-folder', this.$t('Data Set'),this.localePath('/DataSet')],
+          ['mdi-cog', this.$t('Account Setting'),this.localePath('/AccountSetting')],
         ];
       }
   },
@@ -147,7 +150,7 @@ export default {
       },
       openLink(){
         var me = this;
-        me.$nuxt.$router.push({ path: '/'})
+        me.$nuxt.$router.push({ path: this.localePath('/')})
       },
       resetDrawer(){
           this.$emit('reset-drawer')

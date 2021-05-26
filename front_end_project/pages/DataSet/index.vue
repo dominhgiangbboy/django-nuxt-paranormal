@@ -7,7 +7,7 @@
     >
       <v-card class="pa-2">
         <v-card-title class="headline mb-5">
-          <span>Choose data to upload </span>
+          <span>{{$t('Choose data to upload')}} </span>
         </v-card-title>
         <v-card-text>
           <v-row>
@@ -124,7 +124,7 @@
       <v-row>
         <v-col  :cols="mini?'6':'3'">
           <custom-combo-box
-            label="Choose category"
+            :label="$t('Choose category')"
             :comboBoxItems="categoryList"
             :itemValue="currentCategoryID"
             v-on:change="chooseCategory"
@@ -133,7 +133,7 @@
         </v-col>
         <v-col  :cols="mini?'6':'3'">
           <custom-combo-box
-            label="Choose type"
+            :label="$t('Choose type')"
             :comboBoxItems="comboItemType"
             :itemValue="currentTypeID"
             v-on:change="chooseType"
@@ -143,14 +143,15 @@
         <v-col cols="1">
           <custom-button
             v-on:click="getDataSetItems"
-            label="Search"
+            :label="$t('Search')"
           >
           </custom-button>
         </v-col>
         <v-col cols="1">
           <custom-button
             v-on:click="openAddDialog"
-            label="Add"
+            v-if="isAdmin"
+            :label="$t('Add')"
           >
           </custom-button>
         </v-col>
@@ -171,7 +172,7 @@
                 v-on:download="downloadFileAction"
                 v-on:openLink="openLink"
                 v-on:add="createNewDataset"
-                toobarTitle="Data set list"
+                :toobarTitle="$t('Data set list')"
                 :disableAddButton="true"
                 height="500"
             >
@@ -220,19 +221,24 @@ export default {
     // get default value
     this.init();
   },
-  data() {
-    return {
-      // Plant data
-      tableHeaders: [
-        {
-          text: "Dataset's name",
+  created(){
+    let tempIsAdmin = this.getCookie("isAdmin")
+    if (tempIsAdmin == 'true'){
+      this.isAdmin = true
+    } 
+    else{
+      this.isAdmin = false
+    }
+    this.tableHeaders = [
+      {
+          text: this.$t("Dataset's name"),
           align: 'start',
           sortable: false,
           value: 'name',
           edditable: true,
         },
         {
-          text: "Information",
+          text: this.$t("Information"),
           align: 'start',
           sortable: false,
           value: 'description',
@@ -245,12 +251,20 @@ export default {
           width: 200,
           value: 'actions',
         },
+    ]
+  },
+  data() {
+    return {
+      // Plant data
+      tableHeaders: [
+        
       ],
      
       tableItems: [
         
       ],  
       addDialog: false,
+      isAdmin: false,
       currentPlantID : 0,
       isLoadingPlant: false,
       tempAddItems: {},
@@ -416,8 +430,8 @@ export default {
     },
     openLink(item){
       var me = this;
-      debugger
-      me.$nuxt.$router.push({ path: '/DetailedPage', query: { dataSetID: item.id } })
+       
+      me.$nuxt.$router.push({ path: me.localePath('/DetailedPage'), query: { dataSetID: item.id } })
     },
     createNewDataset(){
       this.addDialog = true

@@ -11,7 +11,7 @@
             </v-row>
             <v-row>
               <v-col class="ml-5">
-                <div class="welcome-text"><span>Welcome to HUST's abnormal dataset system</span></div>  
+                <div class="welcome-text"><span>{{$t("Welcome to HUST's abnormal dataset system")}}</span></div>  
                 <span class="introduction">
 
                 </span>
@@ -21,16 +21,16 @@
         </v-row>
       </v-layout>
       <v-layout flex  :column="mobile" align-center="mobile" justify-center="mobile"  :class="mobile?'login-section-mb':'login-section'">
-        <div v-if="mobile" class="welcome-text-mb">Welcome to HUST's abnormal dataset system</div>
+        <div v-if="mobile" class="welcome-text-mb">{{$t("Welcome to HUST's abnormal dataset system")}}</div>
         <v-flex xs12 sm8 elevation-6 style="box-shadow:none !important" class="pt-10">
           <v-card class="login-form">
-            <div class="login-header">LOGIN</div>
+            <div class="login-header">{{$t("LOGIN")}}</div>
             <v-card-text class="pt-4">
               <div>
                 <v-form v-model="valid" ref="form">
                   <v-text-field
                     class="text-input"
-                    label="Enter your username"
+                    :label="$t('Enter your username')"
                     v-model="userName"
                     :rules="userRules"
                     filled
@@ -39,7 +39,7 @@
                   ></v-text-field>
                   <v-text-field
                     class="text-input"
-                    label="Enter your password"
+                    :label="$t('Enter your password')"
                     background-color="#E8E8E8"
                     v-model="password"
                     min="8"
@@ -53,11 +53,37 @@
                     required
                   ></v-text-field>
                   <v-layout class="pt-10">
-                    <v-btn @click="submit" class="login-button">Login</v-btn>
+                    <v-btn @click="submit" class="login-button">{{$t("LOGIN")}}</v-btn>
                   </v-layout>
                   <div class="mt-5" style="text-align: center">
-                    <NuxtLink to="/signup">New to HUST's abnormal system? Sign up</NuxtLink>
+                    <NuxtLink locale="vi" :to="localePath('/signup')">{{$t("New to HUST's abnormal system? Sign up")}}</NuxtLink>
                   </div>
+                  <v-row class="mt-5 ml-5">
+                    <v-col  align="center">
+                      <v-row>
+                        <v-checkbox
+                          v-model="en"
+                          :disabled="en"
+                          :value="en"
+                          v-on:change="changeLocaleEn"
+                        >
+                        </v-checkbox>
+                        <country-flag class="flag mt-3" country='gb'/>
+                      </v-row> 
+                    </v-col>
+                    <v-col  align="center">
+                     <v-row>
+                        <v-checkbox
+                           v-model="vi"
+                          :disabled="vi"
+                          :value="vi"
+                          v-on:change="changeLocaleVi"
+                        >
+                        </v-checkbox>
+                        <country-flag class="flag mt-3"  country='vn'/>
+                      </v-row> 
+                    </v-col>
+                  </v-row>
                 </v-form>
               </div>
             </v-card-text>
@@ -87,6 +113,9 @@ export default {
   data() {
     return {
       valid: true,
+      vi: false,
+      en: true,
+      currentLocale: '',
       passwordVisibility: true,
       password: "",
       passwordRules: [v => !!v || "Password is required"],
@@ -97,6 +126,26 @@ export default {
     };
   },
   methods: {
+    changeLocaleVi(flag){
+      if(flag){
+        this.en = false
+        if(this.vi){
+          this.$i18n.setLocale('vi')
+        }
+      }
+    },
+    changeLocaleEn(flag){
+      if(flag == true){
+        this.vi = false
+        if(this.en){
+          this.$i18n.setLocale('en')
+        }
+      }
+    },
+    // changeLocale(id){
+    //   this.$i18n.setLocale(id)
+    //   this.currentLocale = id
+    // },
     iconClick() {
       this.passwordVisibility = !this.passwordVisibility;
     },
@@ -118,6 +167,9 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+.flag{
+  cursor: pointer;
+}
 .img{
   max-width: 100%;
   margin: 1rem;

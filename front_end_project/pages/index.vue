@@ -4,13 +4,13 @@
         <v-col cols="6">
           <div class="text-padding">
             <span > 
-              With our system you can get Data Set from many sources like crawled data or default processed data.
+              {{$t('With our system you can get Data Set from many sources like crawled data or default processed data.')}}
             </span>
           </div>
           <v-col cols="12" align="center">
             <custom-button
               v-on:click="goToPage(1)"
-              label="Get data set"
+              :label="$t('Get data set')"
             >
             </custom-button>
           </v-col>
@@ -28,13 +28,13 @@
         <v-col cols="6">
           <div class="text-padding">
             <span> 
-            If you are a developer or a sciencetist you can see your analyzed data here.
+              {{$t('If you are a developer or a sciencetist you can see your analyzed data here.')}}
             </span>
           </div>
           <v-col cols="12" align="center">
             <custom-button
               v-on:click="goToPage(2)"
-              label="My analyzed data"
+              :label="$t('My analyzed data')"
 
             >
             </custom-button>
@@ -44,13 +44,13 @@
         <v-col cols="6">
           <div class="text-padding">
             <span class="text-padding"> 
-            You can also check out our collected pre-process data here.
+              {{$t('You can also check out our collected pre-process data here.')}}
             </span>
           </div>
           <v-col cols="12" align="center">
               <custom-button
                 v-on:click="goToPage(3)"
-                label="Pre-processed data"
+                :label="$t('Pre-processed data')"
               >
               </custom-button>
           </v-col >
@@ -64,7 +64,7 @@
       <v-row>
         <v-col align="center">
           <div class="title">
-            Our data example
+            {{$t('Our data example')}}
           </div>
         </v-col>
       </v-row>

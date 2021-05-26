@@ -66,10 +66,10 @@ Vue.mixin({
     swAlert(message, subMessage, alertType, callFunction) {
       var me = this;
       me.$swal({
-        title: message,
-        text: subMessage,
+        title: me.$t(message),
+        text: me.$t(subMessage),
         icon: alertType,
-        showCancelButton: alertType == 'question'?true:false,
+        showCancelButton: alertType == 'question'? true :false,
         cancelButtonText: 'cancel'
       }).then(function(result){
         if(result.isConfirmed){
@@ -82,7 +82,10 @@ Vue.mixin({
       let me = this;
        
       if (this.$auth.strategy.refreshToken.status().expired()){
-        me.sweetsAlert("Session expired", "Please loggin again", "error");
+        me.sweetsAlert(
+          "Session expired"
+          , "Please loggin again"
+          , "error");
       }
       else{
         var refreshToken = this.$auth.strategy.refreshToken.get();
@@ -98,7 +101,10 @@ Vue.mixin({
           .catch(error => {
             if (this.$axios.isCancel(error)) {
             } else {
-              me.sweetsAlert("Api called fail", "Please contact admin", "error");
+              me.sweetsAlert(
+                "Api called fail"
+              , "Please contact admin"
+              , "error");
             }
           });
       }
@@ -116,7 +122,7 @@ Vue.mixin({
     async logoutAction(){
       var me = this;
       await me.$auth.logout()
-      me.$nuxt.$router.push('/login');
+      me.$nuxt.$router.push(me.localePath('/login'));
       me.$auth.strategy.refreshToken.reset();
       me.$auth.strategy.token.reset();
     },
@@ -137,7 +143,10 @@ Vue.mixin({
           })
           .catch(error => {
             if(!error.response){
-              me.sweetsAlert("Can't connect to server", "Please contact admin", "error");
+              me.sweetsAlert(
+                "Can't connect to server"
+                , "Please contact admin"
+                , "error");
             }
             else{
               if( error.response.status == 401){
@@ -147,14 +156,20 @@ Vue.mixin({
                   resolve(res.data);
                 })
                 .catch(error => {
-                  me.sweetsAlert("Authentication failed", "Please login again", "error")
+                  me.sweetsAlert(
+                    "Authentication failed"
+                    , "Please login again"
+                    , "error")
                 });
             }
             else{
               if (this.$axios.isCancel(error)) {  
                 
               } else {
-                me.sweetsAlert("Api called fail", "Please contact admin", "error");
+                me.sweetsAlert(
+                  "Api called fail"
+                  , "Please contact admin"
+                  , "error");
               }
             }
             }
@@ -180,7 +195,7 @@ Vue.mixin({
             "Success",
             "Successfully created user", 
             "success", ()=>{
-            me.$nuxt.$router.push('/login')
+            me.$nuxt.$router.push(me.localePath('/login'))
           })
           
         })
@@ -202,7 +217,7 @@ Vue.mixin({
         responseType: 'blob', // important
         data: data,
       }).then((response) => {
-         debugger
+         me.refreshToken()
          const url = window.URL.createObjectURL(new Blob([response.data]));
          const link = document.createElement('a');
          link.href = url;
@@ -220,6 +235,7 @@ Vue.mixin({
         responseType: 'blob', // important
         data: data,
       }).then((response) => {
+         me.refreshToken()
          const url = window.URL.createObjectURL(new Blob([response.data]));
          const link = document.createElement('a');
          link.href = url;
@@ -243,8 +259,9 @@ Vue.mixin({
           me.setCookie('userID', resp.data.id.toString(), 1)
           me.setCookie('userName', resp.data.userName.toString(), 1)
           me.setCookie('company', resp.data.company.toString(), 1)
-          me.setCookie('email', resp.data.email.toString(), 1)
-          me.$nuxt.$router.push('/')
+          me.setCookie('email', resp.data.email.toString(), 1),
+          me.setCookie('isAdmin', resp.data.email.toString(), 1),
+          me.$nuxt.$router.push(me.localePath('/'))
         })
         .catch(error => {
           if (this.$axios.isCancel(error)) {

@@ -1,4 +1,5 @@
 import colors from "vuetify/es5/util/colors";
+import i18n from './config/i18n'
 require('dotenv').config()
 export default {
   target: 'static',
@@ -53,22 +54,10 @@ export default {
     '@nuxtjs/dotenv',
   ],
   i18n: {
-    locales: ["en", "fr", "ja"],
+    vueI18nLoader: true,
+    locales: ["en", "vi"],
     defaultLocale: "en",
-    vueI18n: {
-      fallbackLocale: "en",
-      messages: {
-        en: {
-          welcome: "Welcome"
-        },
-        fr: {
-          welcome: "Bienvenue"
-        },
-        ja: {
-          welcome: "ようこそ"
-        }
-      }
-    }
+    vueI18n: i18n
   },
   env: {
     baseUrl: process.env.BASE_URL

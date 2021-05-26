@@ -17,14 +17,15 @@
             <v-col cols="2">
               <div class="text-header">
                 <span>
-                  User's name: 
+                   {{$t('User name:')}}
                 </span>
               </div>
             </v-col>
             <v-col>
               <v-text-field
+                :disabled="true"
                 class="text-input"
-                label="Username"
+                :label="$t('Username')"
                 v-model="temp.user_name"
                 filled
                 rounded
@@ -55,7 +56,7 @@
             <v-col cols="2">
               <div class="text-header">
                 <span>
-                  Company: 
+                   {{$t('Company:')}}
                 </span>
               </div>
             </v-col>
@@ -71,7 +72,7 @@
           </v-row>
           <custom-button
             v-on:click="submit"
-            label="Save Data"
+            :label="$t('Save Data')"
           >
           </custom-button>
         </v-form>
@@ -209,7 +210,8 @@ export default {
     // Process actions
     async getUserData(){
       var me = this;
-      var dataReq = {"userID" : parseInt(this.userID)};
+      var dataReq = {
+        "userID" : parseInt(this.userID)};
       me.postToServer(dataReq,me.get_user_data).then((res)=>{  
         me.temp = res[0]
       })
@@ -221,7 +223,7 @@ export default {
       var dataReq = me.temp;
         me.postToServer(dataReq,me.update_user_data).then((res)=>{  
         me.swAlert(
-                  'Update'
+                  'Success'
                   , 'User info updated'
                   , 'success', ()=>{me.getUserData()})
         me.getUserData()

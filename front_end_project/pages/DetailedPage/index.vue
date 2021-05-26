@@ -6,7 +6,7 @@
     >
       <v-card class="pa-2">
         <v-card-title class="mb-5 dialog-header-text" >
-          Contribute my analysis data
+          {{$t('Contribute my analysis data')}}
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text class="mt-5">
@@ -15,7 +15,7 @@
               outlined
               rounded
               dense
-              label="Input your data's name"
+              :label="$t('Input your data name')"
               v-model="temp.name"
             >
               
@@ -26,7 +26,7 @@
               outlined
               rounded
               dense
-              label="Input your data's description"
+              :label="$t('Input your data description')"
               v-model="temp.description"
             >
               
@@ -35,7 +35,7 @@
           <v-row>
             <v-textarea
               outlined
-              label="Insert your json data here"
+              :label="$t('Insert your json data here')"
               v-model="temp.json"
             >
 
@@ -50,10 +50,10 @@
                     <input type="file" multiple :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
                       accept="*" class="input-file">
                       <p v-if="isInitial">
-                        Drag your file here
+                        {{$t('Drag your file here')}}
                       </p>
                       <p v-if="isSaving">
-                        {{ fileCount }} selected
+                        {{ fileCount }} {{$t('selected')}}
                       </p>
                   </div>
                 </form>
@@ -69,9 +69,9 @@
             text
             @click="dialog = false"
           >
-            Close
+            {{$t('Close')}}
           </v-btn>
-          <custom-button label="Add" v-on:click="saveData">
+          <custom-button :label="$t('ADD')" v-on:click="saveData">
           </custom-button>
         </v-card-actions>
       </v-card>
@@ -98,8 +98,8 @@
     </v-row>
     <v-card outlined>
         <v-tabs v-model="tabModel">
-            <v-tab>Data</v-tab>
-            <v-tab>User analysis</v-tab>
+            <v-tab>{{$t('Data info')}}</v-tab>
+            <v-tab>{{$t('User analysis')}}</v-tab>
             <v-tabs-items class="card"  v-model="tabModel">
                 <v-tab-item>
                     <v-row>
@@ -108,7 +108,7 @@
                                 elevation="2"
                                 outlined
                             >
-                                <v-card-title>Description</v-card-title>
+                                <v-card-title>{{$t('Description')}}</v-card-title>
                                 <v-card-text>
                                     <v-row>
                                         <v-col>
@@ -143,7 +143,7 @@
                                 >
                               </custom-table>
                               <custom-button
-                                label="Add my dataset"
+                                :label="$t('Add my analysis data')"
                                 class="mt-5"
                                 v-on:click="addDataSet"
                               >
@@ -153,7 +153,7 @@
                             <v-col :cols="mini?'12':'6'">
                             <v-row>
                                 <div class="text-header">
-                                Preview data
+                                  {{$t('Preview data')}}
                                 </div>
                             </v-row>
                             <v-row>
@@ -256,27 +256,7 @@ export default {
       detailItems: {},
       jsonstr: '',
       tableHeaders: [
-        {
-          text: "My Dataset",
-          align: 'start',
-          sortable: false,
-          value: 'name',
-          edditable: true,
-        },
-        {
-          text: "Author",
-          align: 'start',
-          sortable: false,
-          value: 'author',
-          edditable: true,
-        },
-        {
-          text: "Information",
-          align: 'start',
-          sortable: false,
-          value: 'information',
-          edditable: true,
-        },
+        
       ],
       infoField: '',
     };
@@ -335,6 +315,29 @@ export default {
     me.init()
   },
   created () {
+    this.tableHeaders = [
+      {
+          text: this.$t("User analysis") ,
+          align: 'start',
+          sortable: false,
+          value: 'name',
+          edditable: true,
+        },
+        {
+          text: this.$t("Author") ,
+          align: 'start',
+          sortable: false,
+          value: 'author',
+          edditable: true,
+        },
+        {
+          text: this.$t("Information"),
+          align: 'start',
+          sortable: false,
+          value: 'information',
+          edditable: true,
+        },
+    ]
     this.userID = this.getCookie("userID")
   },
   methods: {
@@ -363,7 +366,7 @@ export default {
       me.postToServer(dataReq,me.get_data_set_api).then((res)=>{  
         me.tableItems = res["analyzed"]
         me.detailItems = res["detail"][0]  
-        debugger
+         
       })
     },
     async saveData(){

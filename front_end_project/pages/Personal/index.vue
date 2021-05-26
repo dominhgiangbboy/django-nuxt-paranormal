@@ -28,7 +28,7 @@
                 :isBanner="true"
                 v-on:edit="editItem"
                 v-on:delete="deleteItem"
-                toobarTitle="My dataset list"
+                :toobarTitle="$t('My dataset list')"
                 :disableAddButton="true"
                 height="500"
             >
@@ -37,7 +37,7 @@
         <v-col :cols="mini?'12':'6'">
           <v-row>
             <div class="text-header">
-              Preview data
+              {{$t('Preview data')}}
             </div>
           </v-row>
           <v-row>
@@ -48,7 +48,7 @@
           
         </v-col>
     </v-row>
-    <v-row>
+    <!-- <v-row>
       <v-col cols="6">
         <v-text-field
           class="mr-5 mt-5"
@@ -74,7 +74,7 @@
       <v-col cols="6">
         <canvas id="my-chart"></canvas>  
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>
 <style lang="scss" scoped>
@@ -109,27 +109,7 @@ export default {
       ],
       jsonstr: '',
       tableHeaders: [
-        {
-          text: "My Dataset",
-          align: 'start',
-          sortable: false,
-          value: 'name',
-          edditable: true,
-        },
-        {
-          text: "Information",
-          align: 'start',
-          sortable: false,
-          value: 'information',
-          edditable: true,
-        },
-        {
-          text: '',
-          align: 'start',
-          sortable: false,
-          width: 100,
-          value: 'input',
-        },
+        
       ],
       infoField: '',
       userID: 0,
@@ -175,10 +155,33 @@ export default {
     var me = this;
     me.refreshToken();
     me.comboBoxGet();
-    me.createdChart();
+    // me.createdChart();
     me.init()
   },
   created () {
+    this.tableHeaders = [
+      {
+        text: this.$t("User analysis"),
+        align: 'start',
+        sortable: false,
+        value: 'name',
+        edditable: true,
+      },
+      {
+        text: this.$t("Information"),
+        align: 'start',
+        sortable: false,
+        value: 'information',
+        edditable: true,
+      },
+      {
+        text: '',
+        align: 'start',
+        sortable: false,
+        width: 100,
+        value: 'input',
+      },
+    ]
     this.userID = this.getCookie("userID")
   },
   methods: {
@@ -237,7 +240,7 @@ export default {
     },
     changeRoute(){
       var me =this;
-      me.$nuxt.$router.push('/master')
+      me.$nuxt.$router.push(me.localePath('/master'))
     },
     clear() {
       this.$refs.form.reset();
@@ -247,129 +250,129 @@ export default {
       this.jsonstr = item.item.json
     },
     // Created chart function
-    createdChart(){
-      new Chart(document.getElementById('my-chart'), {
-        plugins: [ChartAnnotation],
-        options: {
-            annotation: {
-              annotations: [
-                {
-                  drawTime: "afterDatasetsDraw",
-                  id: "anno-1",
-                  type: "line",
-                  mode: "horizontal",
-                  scaleID: "y-axis-0",
-                  value: 1000,
-                  borderColor: "#FFA259",
-                  borderWidth: 2,
-                  label: {
-                    backgroundColor: "#FFA259",
-                    content: "Line 1",
-                    enabled: true
-                  }
-                },
-                {
-                  drawTime: "afterDatasetsDraw",
-                  id: "anno-2",
-                  type: "line",
-                  mode: "horizontal",
-                  scaleID: "y-axis-0",
-                  value: 1200,
-                  borderColor: "#00af91",
-                  borderWidth: 2,
-                  label: {
-                    backgroundColor: "#00af91",
-                    content: "Line 2",
-                    enabled: true
-                  }
-                },
-              ]
-            },
-            scales: {
-                xAxes: [{
+    // createdChart(){
+    //   new Chart(document.getElementById('my-chart'), {
+    //     plugins: [ChartAnnotation],
+    //     options: {
+    //         annotation: {
+    //           annotations: [
+    //             {
+    //               drawTime: "afterDatasetsDraw",
+    //               id: "anno-1",
+    //               type: "line",
+    //               mode: "horizontal",
+    //               scaleID: "y-axis-0",
+    //               value: 1000,
+    //               borderColor: "#FFA259",
+    //               borderWidth: 2,
+    //               label: {
+    //                 backgroundColor: "#FFA259",
+    //                 content: "Line 1",
+    //                 enabled: true
+    //               }
+    //             },
+    //             {
+    //               drawTime: "afterDatasetsDraw",
+    //               id: "anno-2",
+    //               type: "line",
+    //               mode: "horizontal",
+    //               scaleID: "y-axis-0",
+    //               value: 1200,
+    //               borderColor: "#00af91",
+    //               borderWidth: 2,
+    //               label: {
+    //                 backgroundColor: "#00af91",
+    //                 content: "Line 2",
+    //                 enabled: true
+    //               }
+    //             },
+    //           ]
+    //         },
+    //         scales: {
+    //             xAxes: [{
                     
-                    stacked: true,
-                    gridLines: {
-                        display:false
-                    }
-                }],
-                yAxes: [{
-                    ticks: {
-                            // Include a dollar sign in the ticks
-                            callback: function(value, index, values) {
-                                return '¥' + value  ;
-                            }
-                    },
-                    stacked: true,
+    //                 stacked: true,
+    //                 gridLines: {
+    //                     display:false
+    //                 }
+    //             }],
+    //             yAxes: [{
+    //                 ticks: {
+    //                         // Include a dollar sign in the ticks
+    //                         callback: function(value, index, values) {
+    //                             return '¥' + value  ;
+    //                         }
+    //                 },
+    //                 stacked: true,
                     
-                }]
-            }
-        },
-        type: 'bar',
-        data: {
-          labels: ['1月', '2月', '3月', '4月', '5月','6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-          datasets: [
-            {
-              label: '1',
-              backgroundColor: '#2C73D2',
-              options: {
-                  scales: {
-                      xAxes: [{
-                          stacked: true
-                      }],
-                      yAxes: [{
-                          stacked: true
-                      }]
-                  }
-              },
-              data: [
-                { x: 1, y: 300 },
-                { x: 1, y: 700 },
-                { x: 1, y: 450 },
-                { x: 3, y: 750 },
-                { x: 4, y: 450 },
-                { x: 1, y: 300 },
-                { x: 1, y: 700 },
-                { x: 1, y: 450 },
-                { x: 3, y: 750 },
-                { x: 4, y: 450 },
-                { x: 3, y: 750 },
-                { x: 4, y: 450 },
-                ]
-            },
-            {
-              label: '2',
-              backgroundColor: '#e45826',
-              options: {
-                  scales: {
-                      xAxes: [{
-                          stacked: true
-                      }],
-                      yAxes: [{
-                          stacked: true
-                      }]
-                  }
-              },
-              data: [
-                { x: 1, y: 300 },
-                { x: 1, y: 700 },
-                { x: 1, y: 450 },
-                { x: 3, y: 750 },
-                { x: 4, y: 450 },
-                { x: 1, y: 300 },
-                { x: 1, y: 700 },
-                { x: 1, y: 450 },
-                { x: 3, y: 750 },
-                { x: 4, y: 450 },
-                { x: 3, y: 750 },
-                { x: 4, y: 450 },
-              ]
-            }
-          ]
-        }
-      });
+    //             }]
+    //         }
+    //     },
+    //     type: 'bar',
+    //     data: {
+    //       labels: ['1月', '2月', '3月', '4月', '5月','6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    //       datasets: [
+    //         {
+    //           label: '1',
+    //           backgroundColor: '#2C73D2',
+    //           options: {
+    //               scales: {
+    //                   xAxes: [{
+    //                       stacked: true
+    //                   }],
+    //                   yAxes: [{
+    //                       stacked: true
+    //                   }]
+    //               }
+    //           },
+    //           data: [
+    //             { x: 1, y: 300 },
+    //             { x: 1, y: 700 },
+    //             { x: 1, y: 450 },
+    //             { x: 3, y: 750 },
+    //             { x: 4, y: 450 },
+    //             { x: 1, y: 300 },
+    //             { x: 1, y: 700 },
+    //             { x: 1, y: 450 },
+    //             { x: 3, y: 750 },
+    //             { x: 4, y: 450 },
+    //             { x: 3, y: 750 },
+    //             { x: 4, y: 450 },
+    //             ]
+    //         },
+    //         {
+    //           label: '2',
+    //           backgroundColor: '#e45826',
+    //           options: {
+    //               scales: {
+    //                   xAxes: [{
+    //                       stacked: true
+    //                   }],
+    //                   yAxes: [{
+    //                       stacked: true
+    //                   }]
+    //               }
+    //           },
+    //           data: [
+    //             { x: 1, y: 300 },
+    //             { x: 1, y: 700 },
+    //             { x: 1, y: 450 },
+    //             { x: 3, y: 750 },
+    //             { x: 4, y: 450 },
+    //             { x: 1, y: 300 },
+    //             { x: 1, y: 700 },
+    //             { x: 1, y: 450 },
+    //             { x: 3, y: 750 },
+    //             { x: 4, y: 450 },
+    //             { x: 3, y: 750 },
+    //             { x: 4, y: 450 },
+    //           ]
+    //         }
+    //       ]
+    //     }
+    //   });
       
-    },
+    // },
   }
 };
 </script>

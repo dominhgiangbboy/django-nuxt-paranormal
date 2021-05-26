@@ -4,7 +4,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <nuxt-link class="nav-link pr-10 mr-4 " to="/">Home</nuxt-link>
+        <nuxt-link class="nav-link pr-10 mr-4 " to="/">{{$t('Home')}}</nuxt-link>
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav mt-2 ml-4 mt-lg-0">
@@ -18,7 +18,7 @@
           <v-icon left>
             mdi-logout
           </v-icon>
-          LOGOUT
+          {{$t('LOGOUT')}}
         </v-btn>
       </nav>
       <div class="mt-10" style="margin-top: 200px">
@@ -53,5 +53,32 @@ export default {
       }
 
   },
+  created(){
+    let isDev = this.getCookie("isDev")
+    if (isDev == 'true'){
+      this.itemLink = [
+        {
+          name: this.$t("Datasets"), link: this.localePath("/DataSet")
+        },
+        {
+          name: this.$t("My analyzed data"), link: this.localePath("/Personal")
+        },
+        {
+          name: this.$t("My Account"), link: this.localePath("/AccountSetting")
+        },
+      ]
+    } 
+    else{
+      this.itemLink = [
+        {
+          name: this.$t("Datasets"), link: this.localePath("/DataSet")
+        },
+        {
+          name: this.$t("My Account"), link: this.localePath("/AccountSetting")
+        },
+      ]
+    }
+    
+  }
 }
 </script>
