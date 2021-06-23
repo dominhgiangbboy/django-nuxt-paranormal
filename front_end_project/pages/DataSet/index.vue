@@ -1,73 +1,70 @@
 <template>
   <v-container class="container" fluid>
     <!-- add Plant dialog -->
-    <v-dialog
-      v-model="addDialog"
-      max-width="900px"
-    >
+    <v-dialog v-model="addDialog" max-width="900px">
       <v-card class="pa-2">
         <v-card-title class="headline mb-5">
-          <span>{{$t('Choose data to upload')}} </span>
+          <span>{{ $t("Choose data to upload") }} </span>
         </v-card-title>
         <v-card-text>
           <v-row>
-            <v-col cols="2" class="mt-1"> 
-                <div>
-                    Insert your dataset's name
-                </div>
-            </v-col> 
-            <v-col> 
-                <v-text-field
-                    v-model="tempAddItems['name']" 
-                    type="String"
-                    outlined
-                    dense
-                >
-                </v-text-field>
+            <v-col cols="2" class="mt-1">
+              <div>
+                Insert your dataset's name
+              </div>
             </v-col>
-          </v-row>
-          
-          <v-row>
-            <v-col cols="2" class="mt-1"> 
-                <div>
-                    Data's link in server
-                </div>
-            </v-col> 
-            <v-col> 
-                <v-text-field
-                    v-model="tempAddItems['link']" 
-                    type="String"
-                    outlined
-                    dense
-                >
-                </v-text-field>
+            <v-col>
+              <v-text-field
+                v-model="tempAddItems['name']"
+                type="String"
+                outlined
+                dense
+              >
+              </v-text-field>
             </v-col>
           </v-row>
 
           <v-row>
-            <v-col cols="2" class="mt-1"> 
-                <div>
-                    Description
-                </div>
-            </v-col> 
-            <v-col> 
-                <v-textarea
-                    v-model="tempAddItems['description']" 
-                    type="String"
-                    outlined
-                    dense
-                    auto-grow
-                >
-                </v-textarea>
+            <v-col cols="2" class="mt-1">
+              <div>
+                Data's link in server
+              </div>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="tempAddItems['link']"
+                type="String"
+                outlined
+                dense
+              >
+              </v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="2" class="mt-1">
+              <div>
+                Description
+              </div>
+            </v-col>
+            <v-col>
+              <v-textarea
+                v-model="tempAddItems['description']"
+                type="String"
+                outlined
+                dense
+                auto-grow
+              >
+              </v-textarea>
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="2" class="mt-1"> 
-                <div>
-                    Choose category
-                </div>
-            </v-col> 
-            <v-col  :cols="mini?'6':'6'">
+            <v-col cols="2" class="mt-1">
+              <div>
+                Choose category
+              </div>
+            </v-col>
+            <v-col :cols="mini ? '6' : '6'">
               <custom-combo-box
                 label="Choose category"
                 :comboBoxItems="categoryList"
@@ -78,12 +75,12 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="2" class="mt-1"> 
-                <div>
-                    Choose type
-                </div>
-            </v-col> 
-            <v-col  :cols="mini?'6':'6'">
+            <v-col cols="2" class="mt-1">
+              <div>
+                Choose type
+              </div>
+            </v-col>
+            <v-col :cols="mini ? '6' : '6'">
               <custom-combo-box
                 label="Choose type"
                 :itemValue="currentTypeID"
@@ -95,10 +92,11 @@
           </v-row>
           <v-row>
             <v-col>
-              <label>File
-                <input type="file" id="file" ref="file"/>
+              <label
+                >File
+                <input type="file" id="file" ref="file" />
               </label>
-              <br>
+              <br />
               <progress max="100" :value.prop="uploadPercentage"></progress>
             </v-col>
           </v-row>
@@ -106,97 +104,85 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            color="darken-1"
-            text
-            @click="addDialog = false"
-          >
+          <v-btn color="darken-1" text @click="addDialog = false">
             Cancel
           </v-btn>
-          <custom-button
-            v-on:click="uploadData"
-            label="Upload dataset"
-          >
+          <custom-button v-on:click="uploadData" label="Upload dataset">
           </custom-button>
         </v-card-actions>
       </v-card>
     </v-dialog>
-      <v-row>
-        <v-col  :cols="mini?'6':'3'">
-          <custom-combo-box
-            :label="$t('Choose category')"
-            :comboBoxItems="categoryList"
-            :itemValue="currentCategoryID"
-            v-on:change="chooseCategory"
-          >
-          </custom-combo-box>
-        </v-col>
-        <v-col  :cols="mini?'6':'3'">
-          <custom-combo-box
-            :label="$t('Choose type')"
-            :comboBoxItems="comboItemType"
-            :itemValue="currentTypeID"
-            v-on:change="chooseType"
-          >
-          </custom-combo-box>
-        </v-col>
-        <v-col cols="1">
-          <custom-button
-            v-on:click="getDataSetItems"
-            :label="$t('Search')"
-          >
-          </custom-button>
-        </v-col>
-        <v-col cols="1">
-          <custom-button
-            v-on:click="openAddDialog"
-            v-if="isAdmin"
-            :label="$t('Add')"
-          >
-          </custom-button>
-        </v-col>
-      </v-row>
-  
-    
-      <v-row>
-        <v-col>
-          <custom-table
-                :defaultPageSize="10"
-                :headerItems="tableHeaders"
-                :isLoading="isLoading"
-                :dataTableItems="tableItems"
-                :singleSelect="true"
-                dense
-                :isShowAll="false"
-                :isBanner="true"
-                v-on:download="downloadFileAction"
-                v-on:openLink="openLink"
-                v-on:add="createNewDataset"
-                :toobarTitle="$t('Data set list')"
-                :disableAddButton="true"
-                height="500"
-            >
-          </custom-table>
-        </v-col>        
+    <v-row>
+      <v-col :cols="mini ? '6' : '3'">
+        <custom-combo-box
+          :label="$t('Choose category')"
+          :comboBoxItems="categoryList"
+          :itemValue="currentCategoryID"
+          v-on:change="chooseCategory"
+        >
+        </custom-combo-box>
+      </v-col>
+      <v-col :cols="mini ? '6' : '3'">
+        <custom-combo-box
+          :label="$t('Choose type')"
+          :comboBoxItems="comboItemType"
+          :itemValue="currentTypeID"
+          v-on:change="chooseType"
+        >
+        </custom-combo-box>
+      </v-col>
+      <v-col cols="1">
+        <custom-button v-on:click="getDataSetItems" :label="$t('Search')">
+        </custom-button>
+      </v-col>
+      <v-col cols="1">
+        <custom-button
+          v-on:click="openAddDialog"
+          v-if="isAdmin"
+          :label="$t('Add')"
+        >
+        </custom-button>
+      </v-col>
     </v-row>
 
+    <v-row>
+      <v-col>
+        <custom-table
+          :defaultPageSize="10"
+          :headerItems="tableHeaders"
+          :isLoading="isLoading"
+          :dataTableItems="tableItems"
+          :singleSelect="true"
+          dense
+          :isShowAll="false"
+          :isBanner="true"
+          v-on:download="downloadFileAction"
+          v-on:openLink="openLink"
+          v-on:add="createNewDataset"
+          :toobarTitle="$t('Data set list')"
+          :disableAddButton="true"
+          height="500"
+        >
+        </custom-table>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <style lang="scss" scoped>
-    .mb-20{
-      margin-bottom: 4rem;   
-    }
-    .tab-item{
-      padding: 1rem;
-    }
-    .combobox-header{
-        text-align: right;
-        font-weight: bold;
-    }
-    .combobox-header-left{
-        text-align: left;
-        font-weight: bold;
-    }
+.mb-20 {
+  margin-bottom: 4rem;
+}
+.tab-item {
+  padding: 1rem;
+}
+.combobox-header {
+  text-align: right;
+  font-weight: bold;
+}
+.combobox-header-left {
+  text-align: left;
+  font-weight: bold;
+}
 </style>
 <script>
 export default {
@@ -215,80 +201,76 @@ export default {
         case "xl":
           return false;
       }
-    },
+    }
   },
-  mounted(){
+  mounted() {
     // get default value
     this.init();
   },
-  created(){
-    let tempIsAdmin = this.getCookie("isAdmin")
-    if (tempIsAdmin == 'true'){
-      this.isAdmin = true
-    } 
-    else{
-      this.isAdmin = false
+  created() {
+    let tempIsAdmin = this.getCookie("isAdmin");
+    debugger;
+    if (tempIsAdmin == "true") {
+      this.isAdmin = true;
+    } else {
+      this.isAdmin = false;
     }
     this.tableHeaders = [
       {
-          text: this.$t("Dataset's name"),
-          align: 'start',
-          sortable: false,
-          value: 'name',
-          edditable: true,
-        },
-        {
-          text: this.$t("Information"),
-          align: 'start',
-          sortable: false,
-          value: 'description',
-          edditable: true,
-        },
-        {
-          text: '',
-          align: 'start',
-          sortable: false,
-          width: 200,
-          value: 'actions',
-        },
-    ]
+        text: this.$t("Dataset's name"),
+        align: "start",
+        sortable: false,
+        value: "name",
+        edditable: true
+      },
+      {
+        text: this.$t("Information"),
+        align: "start",
+        sortable: false,
+        value: "description",
+        edditable: true
+      },
+      {
+        text: "",
+        align: "start",
+        sortable: false,
+        width: 200,
+        value: "actions"
+      }
+    ];
   },
   data() {
     return {
       // Plant data
-      tableHeaders: [
-        
-      ],
-     
-      tableItems: [
-        
-      ],  
+      tableHeaders: [],
+
+      tableItems: [],
       addDialog: false,
       isAdmin: false,
-      currentPlantID : 0,
+      currentPlantID: 0,
       isLoadingPlant: false,
       tempAddItems: {},
       comboItemType: [
         {
-          "name":"Published data",
-          "id": 1,
+          name: "Published data",
+          id: 1
         },
         {
-          "name":"Crawled data from the internet",
-          "id": 2,
-        },
+          name: "Crawled data from the internet",
+          id: 2
+        }
       ],
       categoryList: [],
-      file: '',
+      file: "",
       uploadPercentage: 0,
       currentCategoryID: 0,
       currentTypeID: 0,
       isLoadingProcess: false,
       // SUb process
-      tableItemsSubProcess : [],
+      tableItemsSubProcess: [],
       //
       action: 0,
-      currentItem:0,
+      currentItem: 0,
       tab: null,
       isLoading: false,
       dialog: false,
@@ -297,46 +279,45 @@ export default {
       menu: false,
       modal: false,
       menu2: false,
-      tempHeaderItems:{},
+      tempHeaderItems: {},
       status: false,
-      //API link 
-      get_category_api :"index/category-list-get/",
-      get_data_set_api :"data-set-get/",
+      //API link
+      get_category_api: "index/category-list-get/",
+      get_data_set_api: "data-set-get/"
     };
   },
   methods: {
-    async init(){
+    async init() {
       this.refreshToken();
       this.getCategory();
       this.getDataSetItems();
-      this.currentURL = process.env.BASE_URL
+      this.currentURL = process.env.BASE_URL;
     },
-    openAddDialog(){
-      this.addDialog = true
+    openAddDialog() {
+      this.addDialog = true;
     },
-    async getDataSetItems(){
+    async getDataSetItems() {
       var me = this;
-      var dataReq =
-      {
-        "category_id": me.currentCategoryID,
-        "type_id": me.currentTypeID
+      var dataReq = {
+        category_id: me.currentCategoryID,
+        type_id: me.currentTypeID
       };
-      me.postToServer(dataReq,me.get_data_set_api).then((res)=>{  
-        me.tableItems = res
-      })
+      me.postToServer(dataReq, me.get_data_set_api).then(res => {
+        me.tableItems = res;
+      });
     },
-    async uploadData(){
-      this.handleFileUpload()
+    async uploadData() {
+      this.handleFileUpload();
     },
     /*
     Handles a change on the file upload
     */
-    handleFileUpload(){
+    handleFileUpload() {
       this.file = this.$refs.file.files[0];
-      
-      this.submitFile()
+
+      this.submitFile();
     },
-    submitFile(){
+    submitFile() {
       /*
         Initialize the form data
       */
@@ -347,110 +328,102 @@ export default {
         Add the form data we need to submit
       */
       var dummyPost = {
-        user: 'Giang'
-      }
-      formData.append('file', me.file);
-      formData.append('name', me.tempAddItems['name']);
-      formData.append('link', me.tempAddItems['link']);
-      formData.append('category', me.currentCategoryID);
-      formData.append('type', me.currentTypeID);
-      formData.append('description', me.tempAddItems['description']);
+        user: "Giang"
+      };
+      formData.append("file", me.file);
+      formData.append("name", me.tempAddItems["name"]);
+      formData.append("link", me.tempAddItems["link"]);
+      formData.append("category", me.currentCategoryID);
+      formData.append("type", me.currentTypeID);
+      formData.append("description", me.tempAddItems["description"]);
       console.log(formData);
       /*
         Make the request to the POST /single-file URL
       */
-     
-      me.$axios.post( me.currentURL + 'index/upload-file/',
-      formData,
-      {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        },
-        onUploadProgress: function( progressEvent ) {
-          me.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ));
-        }.bind(me)
-      }
-      ).then(function(){
-        me.swAlert(
-          "Success",
-          "Successfully Uploaded", 
-          "success", ()=>{
-            me.getDataSetItems()
-          }
-        )
-        me.addDialog = false
-      })
-      .catch(function(e){
-        me.swAlert(
-          "Failed",
-          e, 
-          "error", ()=>{
-          me.getDataSetItems()
+
+      me.$axios
+        .post(me.currentURL + "index/upload-file/", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          },
+          onUploadProgress: function(progressEvent) {
+            me.uploadPercentage = parseInt(
+              Math.round((progressEvent.loaded / progressEvent.total) * 100)
+            );
+          }.bind(me)
         })
-        me.addDialog = false
-      });
+        .then(function() {
+          me.swAlert("Success", "Successfully Uploaded", "success", () => {
+            me.getDataSetItems();
+          });
+          me.addDialog = false;
+        })
+        .catch(function(e) {
+          me.swAlert("Failed", e, "error", () => {
+            me.getDataSetItems();
+          });
+          me.addDialog = false;
+        });
     },
     // plant actions
-    async getCategory(){
+    async getCategory() {
       var me = this;
       var dataReq;
-      me.postToServer(dataReq,me.get_category_api).then((res)=>{  
-        me.categoryList = res
-      })
+      me.postToServer(dataReq, me.get_category_api).then(res => {
+        me.categoryList = res;
+      });
     },
-    selectItemsPlant(item){
-        var me = this;    
-        if(item.value){
-            var plantID =  item.item.id
-            me.currentPlantID = item.item.id
-            me.getPlantProcessItems()
+    selectItemsPlant(item) {
+      var me = this;
+      if (item.value) {
+        var plantID = item.item.id;
+        me.currentPlantID = item.item.id;
+        me.getPlantProcessItems();
+      } else if (!item.value) {
+        if (item.item.id == me.currentPlantID) {
+          me.currentPlantID = 0;
+          me.process_items = [];
         }
-        else if (!item.value){
-            if(item.item.id == me.currentPlantID){
-                me.currentPlantID = 0;
-                me.process_items = [];
-            }
-        }
+      }
     },
     // Process actions
-    async getCategoryList(){
+    async getCategoryList() {
       var me = this;
       var dataReq;
-      me.postToServer(dataReq,me.get_plant_process_api).then((res)=>{  
-        me.tableItemsProcess = res
-      })
+      me.postToServer(dataReq, me.get_plant_process_api).then(res => {
+        me.tableItemsProcess = res;
+      });
     },
-    openLink(){
+    openLink() {},
+    downloadFileAction(item) {
+      var me = this;
+      var dataReq = item;
+      me.downloadFile(dataReq, item.name);
+    },
+    openLink(item) {
+      var me = this;
 
+      me.$nuxt.$router.push({
+        path: me.localePath("/DetailedPage"),
+        query: { dataSetID: item.id }
+      });
     },
-    downloadFileAction(item){
-      var me = this;
-      var dataReq = item
-      me.downloadFile(dataReq, item.name)
+    createNewDataset() {
+      this.addDialog = true;
     },
-    openLink(item){
-      var me = this;
-       
-      me.$nuxt.$router.push({ path: me.localePath('/DetailedPage'), query: { dataSetID: item.id } })
+    chooseCategory(id) {
+      this.currentCategoryID = id;
     },
-    createNewDataset(){
-      this.addDialog = true
+    chooseType(id) {
+      this.currentTypeID = id;
     },
-    chooseCategory(id){
-      this.currentCategoryID = id
-    },
-    chooseType(id){
-      this.currentTypeID = id
-    },
-    submit() {      
+    submit() {
       return "";
     },
-    buttonclick1(){ 
-      
-    },
+    buttonclick1() {},
     clear() {
       this.$refs.form.reset();
-    },
-  },
+    }
+  }
 };
 </script>
