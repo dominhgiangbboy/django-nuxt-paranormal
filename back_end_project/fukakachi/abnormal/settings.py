@@ -1,3 +1,4 @@
+
 """
 Django settings for abnormal project.
 
@@ -28,7 +29,7 @@ SECRET_KEY = 'a)26h2%*vu9ioo@mbgvqe)-cf%qup^e=siiwwvko*r5=*59&0x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['172.16.77.162']
 
 
 # Application definition
@@ -92,9 +93,9 @@ AUTHENTICATION_BACKENDS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'django_abnormal',
-        'USER': 'root',
-        'PASSWORD': 'Vhec@123456',
+        'NAME':'paranormal',
+        'USER': 'paranormal',
+        'PASSWORD': 'bk20202',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '8096',
     }
