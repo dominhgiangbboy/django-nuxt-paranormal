@@ -72,23 +72,24 @@ class FileDownloadDemo(APIView):
             if os.path.isfile(dir_name+'.zip'):
                 zip = open(dir_name+'.zip','rb')  
                 response = FileResponse(zip, filename="ab.zip")
-            
-                # os.remove(dir_name+'.zip')
                 return response
             else:
-                filePaths = retrieve_file_paths(dir_name)
+                # filePaths = retrieve_file_paths(dir_name)
                 
                 # printing the list of all files to be zipped
-                for fileName in filePaths:
-                    print(fileName)
-                    
-                # writing files to a zipfile
-                zip_file = zipfile.ZipFile(dir_name+'.zip', 'w')
-                with zip_file:
-                    # writing each file one by one
-                    for file in filePaths:
-                        zip_file.write(file)
-                zip = open(dir_name+'.zip','rb')    
+                # for fileName in filePaths:
+                #     print(fileName)
+                # file_location2 = env("FOLDER_LINK")
+                # # writing files to a zipfile
+                # if not file_location2.exists('dataset'):
+                #     os.mkdir('dataset')
+                zip_file = make_archive('Dataset', 'zip', dir_name)
+                # zip_file = zipfile.ZipFile(dir_name+'.zip', 'w', zipfile.ZIP_DEFLATED)
+                # with zip_file:
+                #     # writing each file one by one
+                #     for file in filePaths:
+                #         zip_file.write(file)
+                zip = open(zip_file,'rb')    
                 return FileResponse(zip,  filename="ab.zip")
         
         except:
