@@ -120,13 +120,16 @@ class FileUploadDemo(APIView):
                 
                 fs = FileSystemStorage(location=file_location) #defaults to   MEDIA_ROOT  
                 fs.save(myfile.name, myfile)
-            data_set.objects.create(
-                type_id = type
-                , category_id = category
-                , name = dataName
-                , description = description
-                , linkFolder = file_location
-            )
+            tmp = data_set.objects.filter(linkFolder= file_location)
+            tmp2 = data_set.objects.filter(name= dataName)
+            if len(tmp) == 0 and len(tmp2) == 0:
+                data_set.objects.create(
+                    type_id = type
+                    , category_id = category
+                    , name = dataName
+                    , description = description
+                    , linkFolder = file_location
+                )
             return Response('Success')
         except:
             response = "Error uploading file"

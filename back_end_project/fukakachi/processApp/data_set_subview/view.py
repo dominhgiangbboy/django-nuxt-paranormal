@@ -1,4 +1,5 @@
 
+import os
 from django.db.models import manager
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -57,10 +58,30 @@ class DataSetView(APIView):
 # Get data set detailed data
 class GetAnalysisData(APIView):
     permission_classes = [IsAuthenticated]
+    
     def post(self, request):
+        def retrieve_file_paths(dirName):
+    
+        # setup file paths variable
+            filePaths = []
+            
+            # Read all directory, subdirectories and file lists
+            for root, directories, files in os.walk(dirName):
+                for filename in files:
+                    filePath = os.path.join(root, filename)
+                    filePaths.append(
+                        {
+                            'name': filename,
+                            'file': 'video',
+                            'path': filePath,
+                        },
+                    )
+                    
+            # return all paths
+            return filePaths
         try:
             dataReq = request.data
-            response = {"detail": '', "analyzed": ""}
+            response = {"detail": '', "analyzed": "", "data_tree": ""}
             if(dataReq["data_set_id"]!=0):   
                 # Getting dataset information
                 idData = dataReq["data_set_id"]   
@@ -68,15 +89,14 @@ class GetAnalysisData(APIView):
                 if len(temp) > 0:
                     temp2 = DataSetSerializer(temp, many = True)
                     responseDetail = temp2.data
-                print(responseDetail)
                 temp3 = analyzed_data.objects.filter(data_set_id = idData)
-               
+                temp_link = retrieve_file_paths(temp[0].linkFolder)
                 responseAnalyzed = []
                
                 if len(temp3) > 0:
                     dataAnalyzed = AnalyzedSerializer(temp3, many = True)
                     responseAnalyzed = dataAnalyzed.data
-    
+                    
                     i = 0
                     while i < len(responseAnalyzed) :
                         user_id = responseAnalyzed[i]['user']
@@ -88,6 +108,7 @@ class GetAnalysisData(APIView):
 
                 response['detail'] = responseDetail
                 response['analyzed'] = responseAnalyzed
+                response['data_tree'] = temp_link
                 return Response(response)
             else:      
                 response = "This is not a valid data set"
