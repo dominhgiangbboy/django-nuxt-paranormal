@@ -60,7 +60,6 @@ class FileDownloadDemo(APIView):
             # Read all directory, subdirectories and file lists
             for root, directories, files in os.walk(dirName):
                 for filename in files:
-                    # Create the full filepath by using os module.
                     filePath = os.path.join(root, filename)
                     filePaths.append(filePath)
                     
@@ -68,16 +67,18 @@ class FileDownloadDemo(APIView):
             return filePaths
         dataReq = request.data
         dir_name = dataReq["linkFolder"]
-        print(dir_name)
         # Call the function to retrieve all files and folders of the assigned directory
         try: 
             if os.path.isfile(dir_name+'.zip'):
-                zip = open(dir_name+'.zip','rb')    
-                return FileResponse(zip, filename="ab.zip")
+                zip = open(dir_name+'.zip','rb')  
+                response = FileResponse(zip, filename="ab.zip")
+            
+                # os.remove(dir_name+'.zip')
+                return response
             else:
                 filePaths = retrieve_file_paths(dir_name)
-                    # printing the list of all files to be zipped
-                print('The following list of files will be zipped:')
+                
+                # printing the list of all files to be zipped
                 for fileName in filePaths:
                     print(fileName)
                     
@@ -97,31 +98,35 @@ class FileDownloadDemo(APIView):
 class FileUploadDemo(APIView):
     permission_classes = []
     def post(self, request):
-        # try:
+        try:
             dataReq = request.POST
+            
             dataName = dataReq['name']
             link = dataReq['link']
             type = dataReq['type']
             category = dataReq['category']
             description = dataReq['description']
-            myfile = request.FILES['file']
-            file_location = os.path.join(env("FOLDER_LINK"), link)
+            userID = dataReq['user_id']
+            myfiles = request.FILES.getlist('files')
+            file_location2 = os.path.join(env("FOLDER_LINK"),userID)
+            if not path.exists(file_location2):
+                os.mkdir(file_location2)
+            file_location = os.path.join(file_location2, link)
             if not path.exists(file_location):
                 os.mkdir(file_location)
             ## Save file
-            fs = FileSystemStorage(location=file_location) #defaults to   MEDIA_ROOT  
-            fs.save(myfile.name, myfile)
-            
-
-            filelink = os.path.join(file_location, myfile.name)
+            for myfile in myfiles:
+                
+                fs = FileSystemStorage(location=file_location) #defaults to   MEDIA_ROOT  
+                fs.save(myfile.name, myfile)
             data_set.objects.create(
                 type_id = type
                 , category_id = category
                 , name = dataName
                 , description = description
-                , linkFolder = filelink
+                , linkFolder = file_location
             )
             return Response('Success')
-        # except:
-        #     response = "Error uploading file"
-        #     return Response(response , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except:
+            response = "Error uploading file"
+            return Response(response , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
