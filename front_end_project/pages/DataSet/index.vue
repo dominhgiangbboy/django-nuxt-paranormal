@@ -105,6 +105,41 @@
               <br />
               <progress max="100" :value.prop="uploadPercentage"></progress>
             </v-col>
+            <v-col v-show="currentTypeID == 1">
+              <v-row>
+                <v-col>
+                  <div class="title-link">
+                    <span>
+                      {{ $t("Insert published links") }}
+                    </span>
+                  </div>
+                </v-col>
+              </v-row>
+              <v-row
+                style="height:60px"
+                v-for="(el, index) in links"
+                :key="index"
+              >
+                <v-col
+                  ><v-text-field
+                    v-model="links[index]"
+                    dense
+                    outlined
+                    :placeholder="$t('Please insert published link')"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-icon
+                  class="ml-2"
+                  style="cursor:pointer"
+                  v-on:click="addLink"
+                  size="40"
+                >
+                  mdi-plus-box
+                </v-icon>
+              </v-row>
+            </v-col>
           </v-row>
         </v-card-text>
 
@@ -137,18 +172,14 @@
         >
         </custom-combo-box>
       </v-col>
-      <v-col cols="1">
-        <custom-button v-on:click="getDataSetItems" :label="$t('Search')">
-        </custom-button>
-      </v-col>
-      <v-col cols="1">
-        <custom-button
-          v-on:click="openAddDialog"
-          v-if="isAdmin"
-          :label="$t('Add')"
-        >
-        </custom-button>
-      </v-col>
+      <custom-button
+        class="mt-3"
+        v-on:click="getDataSetItems"
+        :label="$t('Search')"
+      >
+      </custom-button>
+      <custom-button class="ma-3" v-on:click="openAddDialog" :label="$t('Add')">
+      </custom-button>
     </v-row>
 
     <v-row>
@@ -251,6 +282,7 @@ export default {
       tableHeaders: [],
       userID: "",
       tableItems: [],
+      links: [""],
       addDialog: false,
       isAdmin: false,
       currentPlantID: 0,
@@ -301,6 +333,9 @@ export default {
     },
     openAddDialog() {
       this.addDialog = true;
+    },
+    addLink(index) {
+      this.links.push("");
     },
     async getDataSetItems() {
       var me = this;
