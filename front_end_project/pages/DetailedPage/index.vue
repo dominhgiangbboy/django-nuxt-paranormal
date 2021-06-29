@@ -129,7 +129,29 @@
                     <v-card outlined elevation="2" class="mt-5">
                       <v-card-title>{{ $t("FolderTree") }}</v-card-title>
                       <v-card-text>
-                        <v-treeview
+                        <v-list dense>
+                          <v-subheader>Files</v-subheader>
+                          <v-list-item-group
+                            v-model="selectedItem"
+                            color="primary"
+                          >
+                            <v-list-item
+                              v-on:click="openTree(item.path)"
+                              v-for="(item, i) in items"
+                              :key="i"
+                            >
+                              <v-list-item-icon>
+                                <v-icon> {{ files[item.file] }}</v-icon>
+                              </v-list-item-icon>
+                              <v-list-item-content>
+                                <v-list-item-title
+                                  v-text="item.name"
+                                ></v-list-item-title>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </v-list-item-group>
+                        </v-list>
+                        <!-- <v-treeview
                           v-model="tree"
                           :open="initiallyOpen"
                           :items="items"
@@ -141,11 +163,11 @@
                             <v-icon v-if="!item.file">
                               {{ open ? "mdi-folder-open" : "mdi-folder" }}
                             </v-icon>
-                            <v-icon v-else>
+                            <v-icon v-else v-on:click="openTree(item.path)">
                               {{ files[item.file] }}
                             </v-icon>
                           </template>
-                        </v-treeview>
+                        </v-treeview> -->
                       </v-card-text>
                     </v-card>
                   </v-col>
@@ -154,7 +176,15 @@
                       <v-card-title>{{ $t("Preview") }}</v-card-title>
                       <v-card-text>
                         <div>
-                          <video-player :options="videoOptions" />
+                          <!-- <video controls :key="key">
+                            <source
+                              :src="videoOptions.sources[0].src"
+                              type="video/webm"
+                            />
+
+                            Sorry, your browser doesn't support embedded videos.
+                          </video> -->
+                          <video-player :key="key" :options="videoOptions" />
                         </div>
                       </v-card-text>
                     </v-card>
@@ -278,11 +308,11 @@ export default {
         loop: false,
         sources: [
           {
-            src: "http://10.32.4.7:8090/a.mp4",
-            type: "video/mp4"
+            src: ""
           }
         ]
       },
+      key: 0,
       initiallyOpen: ["public"],
       files: {
         html: "mdi-language-html5",
@@ -412,7 +442,10 @@ export default {
       this.dataSetID = params.dataSetID;
       this.getDataSetDetail();
     },
-
+    openTree(item) {
+      this.videoOptions.sources[0].src = item;
+      this.key += 1;
+    },
     //
     selectItem(item) {
       this.jsonstr = item.item.json;

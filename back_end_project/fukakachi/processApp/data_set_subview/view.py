@@ -8,6 +8,10 @@ from rest_framework import status
 from processApp.models import data_set , analyzed_data
 from users.models import  NewUser
 from processApp.serializer import DataSetSerializer , AnalyzedSerializer
+import environ
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 # Get data set list
 class DataSetView(APIView):
     permission_classes = [IsAuthenticated]
@@ -68,7 +72,14 @@ class GetAnalysisData(APIView):
             # Read all directory, subdirectories and file lists
             for root, directories, files in os.walk(dirName):
                 for filename in files:
-                    filePath = os.path.join(root, filename)
+                    tmp_root = root
+                    env_root =env("FOLDER_LINK")
+                    env_publish = env("PUBLISH_LINK")
+
+                    tmp_root = tmp_root.replace(env_root,env_publish)
+                    tmp_root = tmp_root.replace('\\', '/')
+                    filePath = tmp_root + '/'+ filename
+                    print(filePath)
                     filePaths.append(
                         {
                             'name': filename,
@@ -79,43 +90,43 @@ class GetAnalysisData(APIView):
                     
             # return all paths
             return filePaths
-        try:
-            dataReq = request.data
-            response = {"detail": '', "analyzed": "", "data_tree": ""}
-            if(dataReq["data_set_id"]!=0):   
-                # Getting dataset information
-                idData = dataReq["data_set_id"]   
-                temp = data_set.objects.filter(id = idData)
-                if len(temp) > 0:
-                    temp2 = DataSetSerializer(temp, many = True)
-                    responseDetail = temp2.data
-                temp3 = analyzed_data.objects.filter(data_set_id = idData)
-                temp_link = retrieve_file_paths(temp[0].linkFolder)
-                responseAnalyzed = []
-               
-                if len(temp3) > 0:
-                    dataAnalyzed = AnalyzedSerializer(temp3, many = True)
-                    responseAnalyzed = dataAnalyzed.data
-                    
-                    i = 0
-                    while i < len(responseAnalyzed) :
-                        user_id = responseAnalyzed[i]['user']
-                        user_temp = NewUser.objects.filter(id = user_id)
-                        responseAnalyzed[i]['author'] = user_temp[0].user_name
-                        data_set_id = responseAnalyzed[i]['data_set']
-                        responseAnalyzed[i]['data_set_id'] = data_set_id
-                        i += 1
+        # try:
+        dataReq = request.data
+        response = {"detail": '', "analyzed": "", "data_tree": ""}
+        if(dataReq["data_set_id"]!=0):   
+            # Getting dataset information
+            idData = dataReq["data_set_id"]   
+            temp = data_set.objects.filter(id = idData)
+            if len(temp) > 0:
+                temp2 = DataSetSerializer(temp, many = True)
+                responseDetail = temp2.data
+            temp3 = analyzed_data.objects.filter(data_set_id = idData)
+            temp_link = retrieve_file_paths(temp[0].linkFolder)
+            responseAnalyzed = []
+            
+            if len(temp3) > 0:
+                dataAnalyzed = AnalyzedSerializer(temp3, many = True)
+                responseAnalyzed = dataAnalyzed.data
+                
+                i = 0
+                while i < len(responseAnalyzed) :
+                    user_id = responseAnalyzed[i]['user']
+                    user_temp = NewUser.objects.filter(id = user_id)
+                    responseAnalyzed[i]['author'] = user_temp[0].user_name
+                    data_set_id = responseAnalyzed[i]['data_set']
+                    responseAnalyzed[i]['data_set_id'] = data_set_id
+                    i += 1
 
-                response['detail'] = responseDetail
-                response['analyzed'] = responseAnalyzed
-                response['data_tree'] = temp_link
-                return Response(response)
-            else:      
-                response = "This is not a valid data set"
-                return Response(response)
-        except:
-            response = "Server error please contact admin"
-            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            response['detail'] = responseDetail
+            response['analyzed'] = responseAnalyzed
+            response['data_tree'] = temp_link
+            return Response(response)
+        else:      
+            response = "This is not a valid data set"
+            return Response(response)
+        # except:
+        #     response = "Server error please contact admin"
+        #     return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 # Get data analyzed data
 class GetAnalysisDataUser(APIView):
     permission_classes = [IsAuthenticated]
