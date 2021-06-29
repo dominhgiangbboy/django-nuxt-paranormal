@@ -16,6 +16,22 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 # create user
+class AddCategoryView(APIView):
+    permission_classes = []
+   
+    def post(self, request):
+        try:
+            dataReq = request.data  
+            dataReq["name"]
+            temp = data_category.objects.create(name = "name", id = 1)  
+            if len(temp) > 0:
+                temp2 = CategorySerializer(temp, many = True)
+                response = temp2.data
+                return Response(response)
+            return Response([])
+        except:
+            response = "Server error please contact admin"
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 class CategoryView(APIView):
     permission_classes = []
    
@@ -81,7 +97,7 @@ class FileDownloadDemo(APIView):
 class FileUploadDemo(APIView):
     permission_classes = []
     def post(self, request):
-        try:
+        # try:
             dataReq = request.POST
             dataName = dataReq['name']
             link = dataReq['link']
@@ -106,6 +122,6 @@ class FileUploadDemo(APIView):
                 , linkFolder = filelink
             )
             return Response('Success')
-        except:
-            response = "Error downloading file"
-            return Response(response , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # except:
+        #     response = "Error uploading file"
+        #     return Response(response , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
