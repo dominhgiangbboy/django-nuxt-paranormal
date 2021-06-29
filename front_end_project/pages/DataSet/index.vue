@@ -94,7 +94,13 @@
             <v-col>
               <label
                 >File
-                <input type="file" id="file" ref="file" />
+                <input
+                  type="file"
+                  id="file"
+                  ref="file"
+                  multiple="multiple"
+                  v-on:change="handleFileUploads"
+                />
               </label>
               <br />
               <progress max="100" :value.prop="uploadPercentage"></progress>
@@ -107,7 +113,7 @@
           <v-btn color="darken-1" text @click="addDialog = false">
             Cancel
           </v-btn>
-          <custom-button v-on:click="uploadData" label="Upload dataset">
+          <custom-button v-on:click="submitFile" label="Upload dataset">
           </custom-button>
         </v-card-actions>
       </v-card>
@@ -208,8 +214,8 @@ export default {
     this.init();
   },
   created() {
+    this.userID = this.getCookie("userID");
     let tempIsAdmin = this.getCookie("isAdmin");
-    debugger;
     if (tempIsAdmin == "true") {
       this.isAdmin = true;
     } else {
@@ -243,7 +249,7 @@ export default {
     return {
       // Plant data
       tableHeaders: [],
-
+      userID: "",
       tableItems: [],
       addDialog: false,
       isAdmin: false,
@@ -261,7 +267,7 @@ export default {
         }
       ],
       categoryList: [],
-      file: "",
+      file: [],
       uploadPercentage: 0,
       currentCategoryID: 0,
       currentTypeID: 0,
@@ -312,10 +318,8 @@ export default {
     /*
     Handles a change on the file upload
     */
-    handleFileUpload() {
-      this.file = this.$refs.file.files[0];
-
-      this.submitFile();
+    handleFileUploads() {
+      this.file = this.$refs.file.files;
     },
     submitFile() {
       /*
@@ -330,13 +334,16 @@ export default {
       var dummyPost = {
         user: "Giang"
       };
-      formData.append("file", me.file);
+      for (var i = 0; i < me.file.length; i++) {
+        let file = me.file[i];
+        formData.append("files", file);
+      }
       formData.append("name", me.tempAddItems["name"]);
       formData.append("link", me.tempAddItems["link"]);
       formData.append("category", me.currentCategoryID);
+      formData.append("user_id", me.userID);
       formData.append("type", me.currentTypeID);
       formData.append("description", me.tempAddItems["description"]);
-      console.log(formData);
       /*
         Make the request to the POST /single-file URL
       */

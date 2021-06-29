@@ -8,11 +8,7 @@ class data_set (models.Model):
     description = models.TextField(default='')
     type_id = models.IntegerField(default=1)
     # Foreign keys
-    category = models.ForeignKey(
-        data_category
-        , default=1
-        , on_delete=models.CASCADE
-        )
+    category_id = models.IntegerField(default=1)
     linkFolder = models.TextField(default='')
 # analyzed
 class analyzed_data (models.Model):
