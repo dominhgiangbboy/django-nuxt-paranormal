@@ -110,8 +110,8 @@
         <v-tab>{{ $t("User analysis") }}</v-tab>
         <v-tabs-items class="card" v-model="tabModel">
           <v-tab-item>
-            <v-row class="pa-5">
-              <v-col cols="12" class="ma-5">
+            <v-row>
+              <v-col cols="10" class="ml-5 mt-5 mb-5">
                 <v-card elevation="2" outlined>
                   <v-card-title>{{ $t("Description") }}</v-card-title>
                   <v-card-text>
@@ -125,7 +125,7 @@
                   </v-card-text>
                 </v-card>
                 <v-row>
-                  <v-col :cols="mini ? '12' : '6'">
+                  <v-col>
                     <v-card outlined elevation="2" class="mt-5">
                       <v-card-title>{{ $t("FolderTree") }}</v-card-title>
                       <v-card-text>
@@ -171,7 +171,7 @@
                       </v-card-text>
                     </v-card>
                   </v-col>
-                  <v-col :cols="mini ? '12' : '6'">
+                  <v-col>
                     <v-card outlined elevation="2" class="mt-5">
                       <v-card-title>{{ $t("Preview") }}</v-card-title>
                       <v-card-text>
@@ -312,8 +312,6 @@ export default {
           }
         ]
       },
-
-      selectedItem: [],
       key: 0,
       initiallyOpen: ["public"],
       files: {

@@ -95,17 +95,6 @@ class FileDownloadDemo(APIView):
         except:
             response = "Error downloading file"
             return Response(response , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-class GetLink(APIView):
-    permission_classes = []
-    def post(self, request):
-        dataReq = request.data
-        print(dataReq)
-        userID = dataReq['user_id']
-
-        file_location2 = os.path.join(env("FOLDER_LINK"),userID)
-        if not path.exists(file_location2):
-            os.mkdir(file_location2)
-        return Response(file_location2)
 
 class FileUploadDemo(APIView):
     permission_classes = []
@@ -123,7 +112,7 @@ class FileUploadDemo(APIView):
             file_location2 = os.path.join(env("FOLDER_LINK"),userID)
             if not path.exists(file_location2):
                 os.mkdir(file_location2)
-            file_location = os.path.join(file_location2, dataName)
+            file_location = os.path.join(file_location2, link)
             if not path.exists(file_location):
                 os.mkdir(file_location)
             ## Save file

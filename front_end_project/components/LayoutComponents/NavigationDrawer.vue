@@ -16,7 +16,7 @@
       <v-list-item class="ml-10">
         <v-list-item-content>
           <v-list-item-title class="title-icon" v-on:click="openLink">
-            <span>{{ $t("Abnormal") }}<br />{{ $t("Action Dataset") }}</span>
+            {{ $t("Abnormal Action Dataset") }}
           </v-list-item-title>
           <v-list-item-subtitle>
             {{ $t("HUST 's System") }}
@@ -62,9 +62,6 @@
   margin-top: auto;
 }
 .title-icon {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   text-align: left;
   padding-top: 1rem;
   padding-bottom: 1rem;
