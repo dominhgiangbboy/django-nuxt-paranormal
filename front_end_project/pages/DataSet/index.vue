@@ -18,6 +18,7 @@
                 v-model="tempAddItems['name']"
                 type="String"
                 outlined
+                v-on:change="changeName"
                 dense
               >
               </v-text-field>
@@ -32,7 +33,8 @@
             </v-col>
             <v-col>
               <v-text-field
-                v-model="tempAddItems['link']"
+                disabled
+                v-model="serverFolderLink"
                 type="String"
                 outlined
                 dense
@@ -281,6 +283,8 @@ export default {
       // Plant data
       tableHeaders: [],
       userID: "",
+      serverFolderLink: "",
+      serverFolderLinkRoot: "",
       tableItems: [],
       links: [""],
       addDialog: false,
@@ -321,7 +325,8 @@ export default {
       status: false,
       //API link
       get_category_api: "index/category-list-get/",
-      get_data_set_api: "data-set-get/"
+      get_data_set_api: "data-set-get/",
+      get_user_link_api: "index/get-user-link/"
     };
   },
   methods: {
@@ -329,10 +334,25 @@ export default {
       this.refreshToken();
       this.getCategory();
       this.getDataSetItems();
+      this.getCurrentLink();
       this.currentURL = process.env.BASE_URL;
     },
     openAddDialog() {
       this.addDialog = true;
+    },
+    changeName(value) {
+      let me = this;
+      me.serverFolderLink = me.serverFolderLinkRoot + "/" + value;
+    },
+    getCurrentLink() {
+      var me = this;
+      var dataReq = {
+        user_id: me.userID
+      };
+      me.postToServer(dataReq, me.get_user_link_api).then(res => {
+        me.serverFolderLinkRoot = res;
+        me.serverFolderLink = res;
+      });
     },
     addLink(index) {
       this.links.push("");
