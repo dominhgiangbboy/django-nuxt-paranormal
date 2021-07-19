@@ -1,3 +1,8 @@
-
+*.env
 *.pyc
 */__pycache__/*
+*.pyc
+*.pyc
+*.zip
+back_end_project/fukakachi/authenticationModule/__pycache__/models.cpython-39.pyc
+*.pyc
